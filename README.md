@@ -1,1 +1,1 @@
-dview
+DataManager view
