@@ -7,22 +7,23 @@
     <template v-else-if="c_navview === 'center'">
       <nav class="navigation">
         <div>
-          <div v-on:click="routeMain" style="text-align: center;cursor: pointer; padding-top: 30px;">Logo Image</div>
+          <div v-on:click="routeMain" style="text-align: center;cursor: pointer; padding-top: 30px;"><img src="/img/logo.png"></div>
         </div>
       </nav>
     </template>
     <template v-else>
       <nav class="navigation" >
         <div class="nav_box">
-          <div class="logo" v-on:click="routeMain">Logo Image</div>
+          <div class="logo" v-on:click="routeMain"><img src="/img/logo.png"></div>
           <div class="nav_sp">
             <div class="nav_menu">
-              <div class="nmenu" v-bind:class="{on: menu_id === '1'}" v-on:click="Menu1">Menu1</div>
-              <div class="nmenu" v-bind:class="{on: menu_id === '2'}" v-on:click="Menu2">Menu2</div>
+              <div class="nmenu" v-bind:class="{on: menu_id === '1'}" v-on:click="Menu1">Data Management</div>
+              <div class="nmenu" v-bind:class="{on: menu_id === '2'}" v-on:click="Menu2">Statistics</div>
+              <div class="nmenu" v-bind:class="{on: menu_id === '2'}" v-on:click="Menu2">Member</div>
             </div>
           </div>
           <div class="nav_login">
-            <div style="display:flex; flex-direction: row;padding-top: 45px;justify-content: flex-end">
+            <div style="display:flex; flex-direction: row;padding-top: 40px;justify-content: flex-end">
               <template v-if="is_logged">
                 <div class="login_text"><span class="user_text">{{c_usrname}}</span> <span class="user_wel">회원님 환영합니다.</span></div>
                 <template v-if="c_isadmin === 'A'">
@@ -114,7 +115,8 @@ export default {
 
 <style scoped>
 .navigation {
-  min-height: 100px;
+  min-height: 70px;
+  background-color: #1c3048;
 }
 .nav_box {
   display:flex;
@@ -125,13 +127,15 @@ export default {
 }
 .nav_login{
   width: 500px;
+  padding-right: 30px;
 }
 .nav_menu{
   display: flex;
   flex-direction: row;
   font-weight: 600;
   font-size: 18px;
-  color: #030303;
+  /* color: #030303; */
+  color: rgba(255, 255, 255, 1);
   letter-spacing: -0.5px;
   padding-top: 35px;
 }
@@ -142,21 +146,21 @@ export default {
   color: #336a3c;
 }
 .nav_menu>.nmenu:hover{
-  color: #336a3c;
+  color: rgba(105, 105, 105, 0.7);
   cursor: pointer;
 }
 .logo {
   width: 187px;
-  padding: 27px 0 0 0px;
+  padding: 10px 0 0 20px;
   cursor: pointer;
 }
 .login_text{
   font-weight: 500;
   font-size: 12px;
-  color: #727272;
+  color: #ddd;
   letter-spacing: -0.5px;
 }
 .login_text:hover{
-  color: #336a3c;
+  color: rgba(155, 155, 155, 0.7);
 }
 </style>
