@@ -129,7 +129,7 @@
               </template>
             </div>
           </template>
-          <template v-if="visible.find_id_pw_text">
+          <!--<template v-if="visible.find_id_pw_text">
             <div class="find_wrapper">
               <span class="bar" v-on:click="findId">아이디 찾기</span>
               <span class="bar" v-on:click="findPassword">비밀번호 찾기</span>
@@ -141,7 +141,7 @@
               <span  class="bar" v-on:click="findPassword">비밀번호 찾기</span>
               <span class="inmember" v-on:click="onJoinClick">회원가입</span>
             </div>
-          </template>
+          </template>-->
         </form>
       </div>
     </div>
@@ -302,6 +302,7 @@ export default {
             localStorage.removeItem('user_id');
           }
           this.getUserData(result.member_seq);
+          this.$router.push({ name: 'dashboard' });
           return null;
         })
         .catch((e) => {

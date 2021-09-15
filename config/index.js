@@ -61,11 +61,11 @@ module.exports = {
           proxyReq.setHeader('Host', req.hostname);
         }
       },
-      '/apid1': {
-        target: 'http://localhost:3600/apid1',
+      '/apis1': {
+        target: 'http://localhost:3600/apis1',
         changeOrigin: true,
         pathRewrite: {
-          '^/apid1': '',
+          '^/apis1': '',
           secure: false
         },
         onProxyReq: function(proxyReq, req, res) {

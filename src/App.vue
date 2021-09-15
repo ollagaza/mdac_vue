@@ -84,7 +84,7 @@ export default {
   computed: {},
   methods: {
     loadSystemData() {
-      document.title = 'AI 바우처사업 - 지인';
+      document.title = 'Data Management System';
       this.is_data_load_complete = true;
     },
     appendFavicon() {
@@ -98,7 +98,7 @@ export default {
         link.rel = 'icon';
       }
 
-      link.href = '/favicon.ico';
+      link.href = '/img/favicon.ico';
 
       if (is_new) {
         document.head.appendChild(link);

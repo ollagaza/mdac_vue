@@ -4,14 +4,14 @@
       <div style="display:flex; flex-direction: row;" >
         <div class="left_menu">
           <div class="left_wrapper">
-            <div class="left_title">Data Status</div>
+            <div class="left_title" v-on:click="Menu1">Data Status</div>
             <div class="left_slice"></div>
-            <div class="left_title">Project Manager</div>
+            <div class="left_title" v-on:click="Menu2">Project Manager</div>
           </div>
         </div>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
-            Data Management
+            Data Status - Project List
           </div>
           <div style="padding: 20px 0 0 0 ;">
             <div class="grid_m header">
@@ -58,6 +58,12 @@ export default {
     };
   },
   methods: {
+    Menu1() {
+      this.$router.push({ name: 'datalist' });
+    },
+    Menu2() {
+      this.$router.push({ name: 'projectlist' });
+    },
   },
 };
 </script>

@@ -14,9 +14,9 @@ const mutations = {
   },
   SET_LOGGED_UPDATE(state, data) {
     // Vue.$log.debug('SET_LOGGED_UPDATE', data, state.logged_info);
-    state.logged_info.birth_day = data.birth_day;
-    state.logged_info.tel = data.tel;
-    state.logged_info.email_address = data.email_address;
+    //state.logged_info.birth_day = data.birth_day;
+    state.logged_info.phone = data.phone;
+    state.logged_info.email = data.email;
     // Vue.$log.debug('SET_LOGGED_UPDATE', state.logged_info);
   },
   SET_TOKEN(state, token) {
