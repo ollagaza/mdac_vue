@@ -148,7 +148,7 @@ export default {
         ,keyword:this.keyword          
       }        
 
-      apiuser.getUserList(page, is_used, search_type, keyword)
+      apiuser.getUserList(page, is_used, search_type, keyword, '')
         .then((result) => {
           
           // this.$log.debug(result);

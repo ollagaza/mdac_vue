@@ -75,6 +75,7 @@ import Datepicker from 'vuejs-datepicker';
 import apiitem from '../../api/ApiItem';
 import apilist from '../../api/ApiList';
 import BaseMixin from '../Mixins/BaseMixin';
+import apiuser from '../../api/ApiUser';
 
 export default {
   name: 'MemberPopup',
@@ -118,27 +119,17 @@ export default {
     },
   },
   mounted() {
-    this.loadData();
+    
   },
-  methods: {
-    loadData() {
-      // this.$log.debug('loadData ++++');
-      if (this.logged_info) {
-        // this.$log.debug('loadData ++++');
-        this.member_seq = this.logged_info.seq;
-        this.user_id = this.logged_info.user_id;
-        this.user_name = this.logged_info.user_name;
-        this.email = this.logged_info.email;
-        this.phone = this.logged_info.phone;
-        this.is_used = this.logged_info.is_used;
-      }
-    },    
+  methods: {   
     onRest() {
       this.user_id = '';
       this.user_name = '';
       this.email = '';
       this.phone = '';
+      this.memo = '';
       this.is_used = 'Y';
+      this.reason = '';
     },
     onVerify() {
       if (!this.othername || this.othername.length < 1) {
@@ -182,8 +173,33 @@ export default {
     },
     async openPopupBySeq(seq) {
       this.seq = seq;
+      console.log(this.seq)
       if (this.modeType === 'e') {
-        // await apilist.getMyplantInfo(seq)
+        await apiuser.getUserList('','','','', this.seq)
+          .then(async (result) => {
+            
+            // this.$log.debug(result);
+            if (result.error === 0) {
+              if (result.member_info.length > 0) {
+                  this.seq = result.member_info[0].seq
+                  this.user_id = result.member_info[0].user_id
+                  this.user_name = result.member_info[0].user_name
+                  this.email = result.member_info[0].email
+                  this.phone = result.member_info[0].phone
+                  this.memo = result.member_info[0].memo
+                  this.is_used = result.member_info[0].is_used
+                  this.reason = result.member_info[0].reason
+              }
+              this.member_list = result.member_info;
+              console.log(this.member_list)
+              this.is_open = true;
+            } else {
+              this.onError(result.message);
+              this.is_open = false;
+            }
+        });
+
+// await apilist.getMyplantInfo(seq)
         // .then(async (result) => {
         //   if (result.error === 0) {
         //     const info = result.data[0];
