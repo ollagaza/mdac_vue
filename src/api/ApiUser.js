@@ -39,7 +39,7 @@ export default {
   }),
 
   getUserList: (page, is_used, search_type, keyword) => request({
-    url: `/users/list?page=${page}&is_used=${is_used}&search_type=${search_type}&keyword=${keyword}`,
+    url: `/users/userinfo?page=${page}&is_used=${is_used}&search_type=${search_type}&keyword=${keyword}`,
     method: 'get',
   }),
 

@@ -29,7 +29,7 @@
 
           <div style="padding: 10px 0 0 0 ;">
             <div class="grid_m header">
-              <div><input type="checkbox" v-model="checked_all" value="A"></div>
+              <div><input type="checkbox" value="A"></div><!-- v-model="checked_all"  -->
               <div>이름</div>
               <div>아이디</div>
               <div>이메일</div>
@@ -48,8 +48,8 @@
 
             <template v-if="member_list.length > 0">
               <template v-for="(member, seq) in member_list">
-                <div class="grid_m body">
-                  <div><input type="checkbox" v-model="checked_user" value=""></div>
+                <div class="grid_m body" v-on:click="fnMemberDetail(member.seq)">
+                  <div><input type="checkbox" value=""></div><!-- v-model="checked_user"  -->
                   <div>{{ member.user_name }}</div>
                   <div>{{ member.user_id }}</div>
                   <div>{{ member.email }}</div>
@@ -79,16 +79,24 @@
       <a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
       <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
     </div>
+
+    <MemberPopup ref="memberpopup"
+             v-bind:modeType="modeType"
+             v-on:onDataChange="onDataChange"
+    ></MemberPopup>    
   </div>
 </template>
 
+
 <script>
 import apiuser from '../../api/ApiUser';
+//import LoginPopup from '../../components/popup/LoginPopup';
+import MemberPopup from '../../components/popup/MemberPopup';
 
 export default {
   name: 'MemberList',
-  componets: {
-    
+  components: {
+    MemberPopup
   },
   data() {
     return {
@@ -106,7 +114,8 @@ export default {
         var end_page = this.paging.end_page;
         for (var i = start_page; i <= end_page; i++) pageNumber.push(i);
         return pageNumber;
-      }
+      },
+      modeType: 'e',
     };
   },
   mounted() {
@@ -132,12 +141,12 @@ export default {
       let keyword = this.keyword;
       let page = this.$route.query.page ? this.$route.query.page:1;
       let user_name = '';
-      //this.body = { // 데이터 전송
-      //  page:this.page
-      //  ,is_used:this.is_used
-      //  ,search_type:this.search_type
-      //  ,keyword:this.keyword          
-      //}        
+      this.body = { // 데이터 전송
+        page:this.page
+        ,is_used:this.is_used
+        ,search_type:this.search_type
+        ,keyword:this.keyword          
+      }        
 
       apiuser.getUserList(page, is_used, search_type, keyword)
         .then((result) => {
@@ -177,6 +186,23 @@ export default {
     },
     fnSearch() {
 
+    },
+    
+    //fnMemberDetail() {
+    //  EventBus.emit('MPPopup');
+    //},
+    fnMemberDetail(seq) {
+      this.modeType = 'e';
+      this.$refs.memberpopup.openPopupBySeq(seq);
+    },
+    fnMemberRegister() {
+      this.modeType = 'c';
+      // this.$log.debug('result : ', this.modeType);
+      this.$refs.memberpopup.openPopup();
+    },
+    onDataChange() {
+      //alert('e');
+      this.list_data();
     },
   },
 };
