@@ -33,7 +33,7 @@
                 <div class="login_text pointer" style="margin-left: 20px;" v-on:click="logout">로그아웃</div>
               </template>
               <template v-else>
-                <div class="login_text pointer" v-on:click="login">{{logged_info}}로그인</div>
+                <div class="login_text pointer" v-on:click="login">로그인</div>
                 <!--<div class="login_text pointer" style="padding-left: 20px;" v-on:click="join('c')">회원가입</div>-->
               </template>
             </div>
