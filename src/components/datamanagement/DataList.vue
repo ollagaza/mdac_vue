@@ -59,10 +59,10 @@ export default {
   },
   methods: {
     Menu1() {
-      this.$router.push({ name: 'datalist' });
+      this.$router.push({ name: 'datastatus' });
     },
     Menu2() {
-      this.$router.push({ name: 'projectlist' });
+      this.$router.push({ name: 'project' });
     },
   },
 };

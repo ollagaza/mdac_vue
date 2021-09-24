@@ -15,12 +15,12 @@
         </div>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
-            프로젝트 리스트
+            분류 리스트
           </div>
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="status" style="width: 160px;height: 36px;" @change="fnProjectList(1)">
+              <select class="text" v-model="status" style="width: 160px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="1">진행중</option>
                 <option value="2">중지중</option>
@@ -33,11 +33,9 @@
                 <option value="CHECKER">검수자</option>
               </select>
                             
-              <input type="text" v-model="keyword" @keyup.enter="fnProjectList(1)" />
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnProjectList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:100px; height: 36px;" v-on:click="fnProjectDetail('')">프로젝트등록</div>
-              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="Menu3">분류관리</div>
-              <div class="btn navy" style="margin-left:5px;width:90px; height: 36px;" v-on:click="Menu4">클래스관리</div>
+              <input type="text" v-model="keyword" @keyup.enter="fnDivisionList(1)" />
+              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionList(1)">검색</div>
+              <div class="btn navy" style="margin-left:5px;width:100px; height: 36px;" v-on:click="fnDivisionDetail('')">분류등록</div>
             </div>
           </div>
 
@@ -50,7 +48,7 @@
             
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="ipp" style="width: 120px;" @change="fnProjectList(1)">
+                <select class="text" v-model="ipp" style="width: 120px;" @change="fnDivisionList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -79,12 +77,12 @@
             <template v-if="project_list.length > 0">
               <template v-for="(project, seq) in project_list">
                 <div class="grid_m body">
-                  <div style="align-items: left;justify-items: left !important;" v-on:click="fnProjectDetail(project.seq)">{{ project.project_name }}</div>
-                  <div v-on:click="fnProjectDetail(project.seq)">{{ project.labeler_str }}</div>
-                  <div v-on:click="fnProjectDetail(project.seq)">{{ project.checker_str }}</div>
-                  <div v-on:click="fnProjectDetail(project.seq)"><div :class="{ 'process_progress' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnProjectList(1)">{{ project.status_str }}</div></div>
-                  <div v-on:click="fnProjectDetail(project.seq)">{{ project.reg_date_dt }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnProjectDetail('')">통계</div></div>
+                  <div style="align-items: left;justify-items: left !important;" v-on:click="fnDivisionDetail(project.seq)">{{ project.project_name }}</div>
+                  <div v-on:click="fnDivisionDetail(project.seq)">{{ project.labeler_str }}</div>
+                  <div v-on:click="fnDivisionDetail(project.seq)">{{ project.checker_str }}</div>
+                  <div v-on:click="fnDivisionDetail(project.seq)"><div :class="{ 'process_progress' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnDivisionList(1)">{{ project.status_str }}</div></div>
+                  <div v-on:click="fnDivisionDetail(project.seq)">{{ project.reg_date_dt }}</div>
+                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnDivisionDetail('')">통계</div></div>
                 </div>
               </template>
             </template>            
@@ -117,7 +115,7 @@
 
     <ProjectPopup ref="projectpopup"
              v-bind:modeType="modeType"
-             v-on:callProjectList="fnProjectList"
+             v-on:callProjectList="fnDivisionList"
     ></ProjectPopup>    
 
   </div>
@@ -176,7 +174,7 @@ export default {
 
   },
   mounted() {
-    this.fnProjectList(1);
+    this.fnDivisionList(1);
   },
   methods: {
     Menu1() {
@@ -191,7 +189,7 @@ export default {
     Menu4() {
       this.$router.push({ name: 'class' });
     },    
-    fnProjectList(pg) {
+    fnDivisionList(pg) {
       //body = req.query;
       this.$log.debug('MEMBERLIST');
       this.showLoading(true);
@@ -281,7 +279,7 @@ export default {
     fnPage(n) {
       if(this.page != n) {
         this.page = n;
-        this.fnProjectList(n);
+        this.fnDivisionList(n);
       }
     },
     onAllCheckClick() {
@@ -346,7 +344,7 @@ export default {
         }
       }
     },
-    fnProjectDetail(seq) {
+    fnDivisionDetail(seq) {
       //console.log(`seq===${seq}`)
       //console.log(`modeType===${this.modeType}`)
       if(seq === '')

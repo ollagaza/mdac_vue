@@ -98,7 +98,7 @@ export default {
         link.rel = 'icon';
       }
 
-      link.href = '/img/favicon.ico';
+      link.href = '/img/datamanager/favicon.ico';
 
       if (is_new) {
         document.head.appendChild(link);

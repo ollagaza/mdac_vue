@@ -858,12 +858,12 @@ input::placeholder{
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/jiin/check_off.png");
+  background-image: url("/img/datamanager/check_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .check .check_box.on {
-  background-image: url("/img/jiin/check_on.png");
+  background-image: url("/img/datamanager/check_on.png");
 }
 
 .login_popup .check .check_wrapper {

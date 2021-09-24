@@ -1,7 +1,9 @@
 import IndexPage from '../pages/IndexPage';
 import DashBoard from '../pages/DashBoard';
-import Datalist from '../components/datamanagement/DataList';
-import ProjectList from '../components/datamanagement/ProjectList';
+import DataStatus from '../components/datamanagement/DataList';
+import Project from '../components/datamanagement/ProjectList';
+import Division from '../components/datamanagement/DivisionList';
+import Class from '../components/datamanagement/ClassList';
 import Page2 from '../pages/Page2';
 import StatisticsPerson from '../components/statistics/StatisticsPerson';
 import StatisticsProject from '../components/statistics/StatisticsProject';
@@ -21,15 +23,27 @@ const router_list = [
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
-    path: '/datalist',
-    name: 'datalist',
-    component: Datalist,
+    path: '/datastatus',
+    name: 'datastatus',
+    component: DataStatus,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
-    path: '/projectlist',
-    name: 'projectlist',
-    component: ProjectList,
+    path: '/project',
+    name: 'project',
+    component: Project,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
+  },
+  {
+    path: '/division',
+    name: 'division',
+    component: Division,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
+  },
+  {
+    path: '/class',
+    name: 'class',
+    component: Class,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {

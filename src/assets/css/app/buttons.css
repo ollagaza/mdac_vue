@@ -232,7 +232,7 @@
 
 .btn.neworange {
   font-weight: 400;
-  font-size: 16px;
+  font-size: 13px;
   color: #fff;
   background-color: #ec503b;
   text-align: center;
@@ -242,9 +242,33 @@
   background-color: #d73127;
 }
 
+.btn.navy {
+  font-weight: 400;
+  font-size: 13px;
+  color: #fff;
+  background-color: #1C3048;
+  text-align: center;
+  cursor: pointer;
+}
+.btn.navy:hover {
+  background-color: #415771;
+}
+
+.btn.deepgreen {
+  font-weight: 400;
+  font-size: 13px;
+  color: #fff;
+  background-color: #0D4E5C;
+  text-align: center;
+  cursor: pointer;
+}
+.btn.deepgreen:hover {
+  background-color: #197B90;
+}
+
 .btn.newgreen {
   font-weight: 400;
-  font-size: 16px;
+  font-size: 13px;
   color: #fff;
   background-color: #336a3c;
   text-align: center;
@@ -554,18 +578,18 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/jiin/check_off.png");
+  background-image: url("/img/datamanager/check_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .check_box.on {
-  background-image: url("/img/jiin/check_on.png");
+  background-image: url("/img/datamanager/check_on.png");
 }
 .check_box.over_image {
-  background-image: url("/img/jiin/check_off.png");
+  background-image: url("/img/datamanager/check_off.png");
 }
 .check_box.over_image.on {
-  background-image: url("/img/jiin/check_on.png");
+  background-image: url("/img/datamanager/check_on.png");
 }
 
 .verify_icon {
@@ -591,12 +615,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/check_off.png");
+  background-image: url("/img/datamanager/check_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .check_round.on {
-  background-image: url("/img/check_on.png");
+  background-image: url("/img/datamanager/check_on.png");
   cursor: default;
 }
 .radio_box {
@@ -604,12 +628,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/check_off.png");
+  background-image: url("/img/datamanager/check_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .radio_box.on {
-  background-image: url("/img/check_on_radio.png");
+  background-image: url("/img/datamanager/check_on_radio.png");
   cursor: default;
 }
 
@@ -752,4 +776,63 @@ input:checked + .toggle .toggle__handler{
   -webkit-transform: translateX(calc(100% + 3px));
   transform: translateX(calc(100% + 3px));
   border-color: #ffffff;
+}
+
+.process_progress {
+  display: flex;
+  flex-direction: row;
+  width: 60px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  transition: .3s;
+  background-position: 0 0;
+  background-color: rgba(22, 58, 71, 0.637);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(12, 35, 43, 0.637);
+  font-size: 13px;
+  color: #fff;
+}
+
+.process_stop {
+  display: flex;
+  flex-direction: row;
+  width: 60px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  transition: .3s;
+  background-position: 0 0;
+  background-color: rgba(252, 250, 250, 0.774);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(167, 166, 166, 0.6);
+  font-size: 13px;
+}
+
+.process_end {
+  display: flex;
+  flex-direction: row;
+  width: 60px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  transition: .3s;
+  background-position: 0 0;
+  background-color: rgba(153, 150, 150, 0.37);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid rgba(75, 74, 74, 0.6);
+  font-size: 13px;
+}
+
+.process_progress.wait {
+  border-color: #ddd;
+  background-color: #f5f5f5;
+  opacity: .5;
+  color: #000;
 }
