@@ -50,7 +50,7 @@
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
-                </<option value="100">100개씩 보기</option>
+                  <option value="100">100개씩 보기</option>
                 </select>
               </div>
             </div>
@@ -193,7 +193,7 @@ export default {
     
     fnMemberList(pg) {
       //body = req.query;
-      this.$log.debug('MEMBERLIST');
+      //this.$log.debug('MEMBERLIST');
       this.showLoading(true);
       //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
@@ -208,13 +208,13 @@ export default {
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`this.page===${this.page}`)
       if(this.page === 'undefined') {
         this.page = 1;
       }
       
-      this.$log.debug(`this.page===${this.page}`)
-      this.$log.debug(`pg===${pg}`)
+      //this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`pg===${pg}`)
 
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
@@ -234,7 +234,7 @@ export default {
         ,search_type:this.search_type
         ,keyword:this.keyword          
       };
-      apiuser.getUserInfo(data)
+      apiuser.getUserInfos(data)
         .then((result) => {
           
           //this.$log.debug(result);

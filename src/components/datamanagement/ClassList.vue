@@ -18,33 +18,44 @@
             클래스 리스트
           </div>
 
+ 
+
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="status" style="width: 160px;height: 36px;" @change="fnClassList(1)">
+              <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnClassList(1)">
+                <option value="" selected=true>전체프로젝트</option>
+                  <template v-for="(project, seq) in project_list">
+                    <option v-bind:value="project.seq">{{project.project_name}}</option>
+                  </template>                
+              </select>
+              
+              <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnClassList(1)">
                 <option value="" selected=true>상태(전체)</option>
-                <option value="1">진행중</option>
-                <option value="2">중지중</option>
-                <option value="3">종료</option>
+                <option value="Y" selected=true>사용중</option>
+                <option value="N">정지중</option>
               </select>
-                            
-              <select class="text" v-model="search_type" style="width: 180px;height: 36px;">
-                <option value="project_name" selected=true>프로젝트명</option>
-                <option value="LABELER">라벨러</option>
-                <option value="CHECKER">검수자</option>
+              
+              <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
+                <option value="class_name" selected=true>클래스명</option>
+                <option value="class_id">클래스아이디</option>
               </select>
-                            
+              
               <input type="text" v-model="keyword" @keyup.enter="fnClassList(1)" />
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:100px; height: 36px;" v-on:click="fnClassDetail('')">클래스등록</div>
+              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassDetail('')">등록</div>
             </div>
           </div>
 
           <div class=" ">
             <div style="height: fit-content;display: flex; flex-direction: row;">
               <!-- <input style="width:3%; height:30px; border-radius:3px; padding:0 10px; border:1px solid #888;" type="checkbox" v-model="allChecked" @click="checkedAll($event.target.checked)"> -->
-              <!-- <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('1')">진행중</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('3')">종료</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('2')">중지</div> -->
+              <div class="check_wrapper" v-on:click="onAllCheckClick">
+                <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
+              </div>
+
+              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('Y')">사용중</div>
+              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('N')">사용정지</div>
+              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('D')">삭제</div>
             
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
@@ -52,7 +63,7 @@
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
-                </<option value="100">100개씩 보기</option>
+                  <option value="100">100개씩 보기</option>
                 </select>
               </div>
             </div>
@@ -60,29 +71,30 @@
 
           <div style="padding: 10px 0 0 0 ;">
             <div class="grid_m header">
-              <div>프로젝트명</div>
-              <div>할당라벨러</div>
-              <div>할당검수자</div>
+              <div></div><!-- v-model="checked_all"  -->
+              <div>프로젝트</div>
+              <div>클래스코드</div>
+              <div>클래스명</div>
               <div>상태</div>
               <div>등록일</div>
-              <div>통계</div>
             </div>
 
-            <template v-if="project_list.length === 0">
-              <div class="grid_m">
+            <template v-if="class_list.length === 0">
+              <div class=" body">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
-            <template v-if="project_list.length > 0">
-              <template v-for="(project, seq) in project_list">
+            <template v-if="class_list.length > 0">
+              <template v-for="(pClass, seq) in class_list">
                 <div class="grid_m body">
-                  <div style="align-items: left;justify-items: left !important;" v-on:click="fnClassDetail(project.seq)">{{ project.project_name }}</div>
-                  <div v-on:click="fnClassDetail(project.seq)">{{ project.labeler_str }}</div>
-                  <div v-on:click="fnClassDetail(project.seq)">{{ project.checker_str }}</div>
-                  <div v-on:click="fnClassDetail(project.seq)"><div :class="{ 'process_progress' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnClassList(1)">{{ project.status_str }}</div></div>
-                  <div v-on:click="fnClassDetail(project.seq)">{{ project.reg_date_dt }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnClassDetail('')">통계</div></div>
+                  <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
+                  <div class="check_box" v-bind:class="[{on: checkData[pClass.seq]}]" v-on:click="onCheckClick(pClass.seq)"></div>
+                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.project_name }}</div>
+                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.class_id }}</div>
+                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.class_name }}</div>
+                  <div v-on:click="fnClassDetail(pClass.seq)"><div :class="{ 'process_progress' : pClass.is_used === 'Y', 'process_stop' : pClass.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnClassList(1)">{{ pClass.is_used_str }}</div></div>
+                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
                 </div>
               </template>
             </template>            
@@ -113,35 +125,37 @@
     </div>
 
 
-    <ProjectPopup ref="projectpopup"
+    <ClassPopup ref="classpopup"
              v-bind:modeType="modeType"
-             v-on:callProjectList="fnClassList"
-    ></ProjectPopup>    
-
+             v-bind:project_list="project_list"
+             v-on:callClassList="fnClassList"
+    ></ClassPopup>    
   </div>
 </template>
 
 
 <script>
 import apiproject from '../../api/ApiProject';
-import ProjectPopup from '../../components/popup/ProjectPopup';
-import BaseMixin from '../Mixins/BaseMixin';
+import ClassPopup from '../../components/popup/ClassPopup';
+import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 //import Pagination from '../../components/Pagination';
 
 export default {
-  name: 'ProjectList',
+  name: 'ClassList',
   components: {
-    ProjectPopup,
+    ClassPopup,
     //Pagination,
   },
   //props: ['page_navigation'],
   mixins: [BaseMixin],
   data() {
     return {
-      project_list: '',          // 회원 데이터 리스트
-      status: '',              // 사용여부
-      search_type: 'project_name', // 검색조건
+      project_list: '',         // 프로젝트 리스트
+      class_list: '',           // 클래스 데이터 리스트
+      project_seq: '',          // 프로젝트
+      is_used: '',              // 사용여부
+      search_type: 'class_name',// 검색조건
       keyword: '',              // 검색어
       no:'',                    //게시판 숫자
       paging:'',                //페이징 데이터
@@ -166,7 +180,7 @@ export default {
   },
   computed: {
     cis_data() {
-      if (this.project_list && this.project_list.length > 0) {
+      if (this.class_list && this.class_list.length > 0) {
         return true;
       }
       return false;
@@ -174,6 +188,17 @@ export default {
 
   },
   mounted() {
+    const data = {
+        page:1
+        ,ipp:''
+        ,status:''
+        ,search_type:''
+        ,keyword:''
+    }
+    apiproject.getProjectInfo(data)
+      .then((result) => {
+        this.project_list = result.project_info;
+      });    
     this.fnClassList(1);
   },
   methods: {
@@ -189,9 +214,9 @@ export default {
     Menu4() {
       this.$router.push({ name: 'class' });
     },    
+    
     fnClassList(pg) {
       //body = req.query;
-      this.$log.debug('MEMBERLIST');
       this.showLoading(true);
       //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
@@ -203,77 +228,70 @@ export default {
       //  params.search_type = this.roption.search_type;
       //  params.search = this.roption.search;
       //}
-      let status = this.status;
-      // console.log(status)
+      let project_seq = this.project_seq;
+      let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`this.is_used===${this.is_used}`)
+      //this.$log.debug(`this.page===${this.page}`)
       if(this.page === 'undefined') {
         this.page = 1;
       }
       
-      this.$log.debug(`this.page===${this.page}`)
-      this.$log.debug(`pg===${pg}`)
+      //this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`pg===${pg}`)
 
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
       this.page = page;
-      let user_name = '';
-      this.body = { // 데이터 전송
-        page:this.page
-        ,status:this.status
-        ,search_type:this.search_type
-        ,keyword:this.keyword          
-      }        
-
-      const data = {
+      const data = { 
         page:this.page
         ,ipp:this.ipp
-        ,status:this.status
+        ,project_seq:this.project_seq
+        ,is_used:this.is_used
         ,search_type:this.search_type
-        ,keyword:this.keyword       
-      }
-      apiproject.getProjectInfo(data)
+        ,keyword:this.keyword          
+      };
+      apiproject.getClassInfo(data)
         .then((result) => {
           
           //this.$log.debug(result);
-          if (result.project_info.length > 0) {
+          if (result.class_info.length > 0) {
               //this.paging = 10;
               //this.no = 1;            
-            for (const key in result.project_info) {
-              const reg_date = result.project_info[key].reg_date;
+            for (const key in result.class_info) {
+              const reg_date = result.class_info[key].reg_date;
               if (reg_date) {
-                result.project_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
+                result.class_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
               }
-              if (result.project_info[key].status == '1') {
-                result.project_info[key].status_str = '진행중';
-              } else if(result.project_info[key].status == '3') {
-                result.project_info[key].status_str = "종료";
+              if (result.class_info[key].is_used == 'Y') {
+                result.class_info[key].is_used = 'Y';
+                result.class_info[key].is_used_str = '사용중';
               } else {
-                result.project_info[key].status_str = "중지중";
+                result.class_info[key].is_used_str = "정지중";
               }
-
-              if(result.project_info[key].labeler_cnt == 0)
-              {
-                result.project_info[key].labeler_str = '-'
-              }else{
-                result.project_info[key].labeler_str = `${result.project_info[key].labeler_cnt} 명`
-              }
-              if(result.project_info[key].checker_cnt == 0)
-              {
-                result.project_info[key].checker_str = '-'
-              }else{
-                result.project_info[key].checker_str = `${result.project_info[key].checker_cnt} 명`
-              }
+              //this.totalCount = result.class_info[key].totalcount
+              //result.data[key].result_str = result.data[key].result_text;
+              //if (result.data[key].result_itemname) {
+              //  result.data[key].result_str = result.data[key].result_itemname;
+              //}
+              //result.data[key].error_title = '';
+              //if (result.data[key].status === Constants.FileError) {
+              //   result.data[key].error_title = result.data[key].result_text;
+              //   result.data[key].result_text = '';
+              //}
             }
             // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
           }
-          this.project_list = result.project_info;
+          this.class_list = result.class_info;
           this.paging = result.paging;
           this.no = this.paging.totalCount - ((this.paging.page-1) * this.paging.ipp);
           //console.log(this.paging)
         });
       this.showLoading(false);
+    },
+    fnSearch() {
+
     },
     
     fnPage(n) {
@@ -282,47 +300,51 @@ export default {
         this.fnClassList(n);
       }
     },
+    isUsed: function (state) {
+      if(state == 2) return true;
+      else false;
+    },
     onAllCheckClick() {
       this.check_click = !this.check_click;
       this.allCheck(this.check_click);
     },
 
-    onCheckClick(user_id) {
-      this.$set(this.checkData, user_id, this.checkData[user_id] !== true);
+    onCheckClick(seq) {
+      this.$set(this.checkData, seq, this.checkData[seq] !== true);
       // this.$log.debug(this.checkData);
     },
     allCheck(value) {
       if (this.cis_data) {
-        Object.keys(this.project_list).forEach((key) => {
-          if (this.project_list[key].is_admin !== 'A') {
-            const seq = this.project_list[key].seq;
+        Object.keys(this.class_list).forEach((key) => {
+          if (this.class_list[key].is_admin !== 'A') {
+            const seq = this.class_list[key].seq;
             this.$set(this.checkData, seq, value);
           }
         });
       }
     },
 
-    project_change(itype) {
+    class_change(itype) {
       const options = {};
       const checkData = this.checkData;
       let confirm_msg = '';
       let close_msg = '';
       let szTitle = '';
       switch(itype) {
-        case '1' :
-          confirm_msg = '선택 프로젝트를 진행중으로 변경 하시겠습니까?';
-          close_msg = '진행중으로 변경되었습니다.';
-          szTitle = '진행중';
+        case 'Y' :
+          confirm_msg = '선택 클래스를 사용중으로 변경 하시겠습니까?';
+          close_msg = '사용중으로 변경되었습니다.';
+          szTitle = '사용중';
           break;
-        case '2' :
-          confirm_msg = '선택 프로젝트를 중지중으로 변경 하시겠습니까?';
-          close_msg = '중지중으로 변경되었습니다.';
-          szTitle = '중지중';
+        case 'N' :
+          confirm_msg = '선택 클래스를 사용정지 시겠습니까?';
+          close_msg = '사용정지 시켰습니다.';
+          szTitle = '사용정지';
           break;
-        case '3' :
-          confirm_msg = '선택 프로젝트를 종료로 변경 하시겠습니까?';
-          close_msg = '종료로 변경되었습니다.';
-          szTitle = '종료';
+        case 'D' :
+          confirm_msg = '선택 클래스를 삭제 하시겠습니까?';
+          close_msg = '삭제했습니다.';
+          szTitle = '클래스삭제';
           break;
       }
       let selUserCo = 0;
@@ -332,41 +354,86 @@ export default {
         }
       }
       if (selUserCo < 1) {
-        EventBus.emit('alertPopupOpen', null, '선택한 프로젝트가 없습니다.', null);
+        EventBus.emit('alertPopupOpen', null, '선택한 클래스가 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
-        if (itype === 'N') { // 활동정지??
-          this.$refs.used_pop.openPopup(sendParam, this.member_used_change);
-        } else if(itype === 'D') {
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.member_delete, options);
+        if (itype === 'D') { // 활동정지??
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_delete, options);
         } else {
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.member_used_change, options);
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_used_change, options);
         }
       }
     },
+
+    class_used_change(sendParam, setDate) {
+      const checkData = sendParam.checkData;
+      const arrData = [];
+      Object.keys(checkData).forEach((key) => {
+        if (checkData[key]) {
+          arrData.push(key);
+        }
+      });
+      // this.$log.debug('sendParam', sendParam, setDate);
+      const params = {};
+      params.used = sendParam.itype;
+      params.classes = arrData;
+      apiproject.setClassUsed(params).then((data) => {
+        console.log(`data.error===${data.error}`)
+        if (data.error === 0) {
+          EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
+          this.fnClassList(1);
+        } else {
+          this.onError(data.message);
+        }
+        EventBus.emit('confirmPopupClose', true);
+      });
+    },     
+    class_delete(sendParam, setDate) {
+      const checkData = sendParam.checkData;
+      const arrData = [];
+      Object.keys(checkData).forEach((key) => {
+        if (checkData[key]) {
+          arrData.push(key);
+        }
+      });
+      // this.$log.debug('sendParam', sendParam, setDate);
+      const params = {};
+      params.used = sendParam.itype;
+      params.classes = arrData;
+      apiproject.delClass(params).then((data) => {
+        console.log(`data.error===${data.error}`)
+        if (data.error === 0) {
+          EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
+          this.fnClassList(1);
+        } else {
+          this.onError(data.message);
+        }
+        EventBus.emit('confirmPopupClose', true);
+      });
+    },    
     fnClassDetail(seq) {
       //console.log(`seq===${seq}`)
       //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';
-        this.$refs.projectpopup.openPopup();
+        this.$refs.classpopup.openPopup();
       }else{
         this.modeType = 'e';
-        this.$refs.projectpopup.openPopupBySeq(seq);
+        this.$refs.classpopup.openPopupBySeq(seq);
       }
     },
     checkedAll(checked) {
       //if (this.cis_data) {
         this.allChecked = checked
-        for (let i in this.project_list) {
-            this.project_list[i].selected = this.allChecked;
+        for (let i in this.class_list) {
+            this.class_list[i].selected = this.allChecked;
         }
       //}
     },
     selected (e) {
-        for (let i in this.project_list) {
-            if(! this.project_list[i].selected) {
+        for (let i in this.class_list) {
+            if(! this.class_list[i].selected) {
                 this.allChecked = false;
                 return;
             } else {
@@ -376,9 +443,9 @@ export default {
     },
     getSelected(){
         let user_ids = [];
-        for (let i in this.project_list) {
-            if(this.project_list[i].selected) {
-                user_ids.push(this.project_list[i].seq);
+        for (let i in this.class_list) {
+            if(this.class_list[i].selected) {
+                user_ids.push(this.class_list[i].seq);
             }
         }
         console.log(user_ids)
@@ -399,7 +466,7 @@ export default {
 </script>
 
 <style scoped>
-.searchWrap{border:1px solid #888; border-radius:5px; text-align:center; padding:10px 10px 10px 10px ; margin-bottom:10px; margin-top :5px;}
+.searchWrap{border:1px solid #888; border-radius:5px; text-align:center;  padding:10px 10px 10px 10px; margin-bottom:10px; margin-top :5px;}
 .searchWrap input{width:60%; height:36px; border-radius:3px; padding:0 10px; border:1px solid #888;}
 
 .pagination{margin:20px 0 0 0; text-align:center;}
@@ -447,7 +514,7 @@ export default {
 }
 .grid_m {
   display: grid;
-  grid-template-columns: 350px 150px 150px 150px 100px 100px;
+  grid-template-columns: 50px 250px 150px 250px 150px 150px;
   padding: 0px 0 0px 0;
   align-items: center;
   justify-items: center;

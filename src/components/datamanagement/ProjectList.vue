@@ -54,7 +54,7 @@
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
-                </<option value="100">100개씩 보기</option>
+                  <option value="100">100개씩 보기</option>
                 </select>
               </div>
             </div>
@@ -193,7 +193,7 @@ export default {
     },    
     fnProjectList(pg) {
       //body = req.query;
-      this.$log.debug('MEMBERLIST');
+      //this.$log.debug('PROJECTLIST');
       this.showLoading(true);
       //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
@@ -209,18 +209,17 @@ export default {
       // console.log(status)
       let search_type = this.search_type;
       let keyword = this.keyword;
-      this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`this.page===${this.page}`)
       if(this.page === 'undefined') {
         this.page = 1;
       }
       
-      this.$log.debug(`this.page===${this.page}`)
-      this.$log.debug(`pg===${pg}`)
+      //this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`pg===${pg}`)
 
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
       this.page = page;
-      let user_name = '';
       this.body = { // 데이터 전송
         page:this.page
         ,status:this.status

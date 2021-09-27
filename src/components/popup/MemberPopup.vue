@@ -373,7 +373,7 @@ export default {
         member_seq: this.seq
       };      
     
-      await apiuser.getUserInfo(data)
+      await apiuser.getUserInfos(data)
         .then(async (result) => {
           
           // this.$log.debug(result);

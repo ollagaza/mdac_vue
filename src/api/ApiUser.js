@@ -43,16 +43,16 @@ export default {
   //   method: 'post',
   // }),
 
-  getUserInfo: data => request({
-    url: '/users/userinfo',
-    method: 'post',
-    data,
+  getUserInfos: data => request({
+   url: '/users/userinfo',
+   method: 'post',
+   data,
   }),
 
-  // getUserInfo: () => request({
-  //   url: '/users/me',
-  //   method: 'get',
-  // }),
+  getUserInfo: () => request({
+    url: '/users/me',
+    method: 'get',
+  }),
 
   findUserId: data => request({
     url: '/users/find/id',

@@ -59,9 +59,9 @@ export default {
   computed: {
     ...mapGetters(['logged_info', 'is_logged']),
     c_usrname() {
-      console.log(this.logged_info)
+      //console.log(this.logged_info)
       if(this.logged_info) {
-        this.$log.debug(this.logged_info);
+        //this.$log.debug(this.logged_info);
         return this.logged_info.user_name;
       }
       return '';
