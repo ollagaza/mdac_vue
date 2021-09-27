@@ -26,6 +26,7 @@ export default {
   },
   computed: {
     ...mapGetters(['is_logged']),
+
   },
   methods: {
     // list_data() {
@@ -33,6 +34,12 @@ export default {
     //     this.$router.push({ name: 'list' });
     //   }
     // },
+  },
+  mounted() {
+    console.log(`Logged_Index :: ${this.is_logged}`);
+    if (this.is_logged) {
+      this.$router.push({ name: 'dashboard' });
+    }
   },
 };
 </script>

@@ -7,34 +7,34 @@
     <template v-else-if="c_navview === 'center'">
       <nav class="navigation">
         <div>
-          <div v-on:click="routeMain" style="text-align: center;cursor: pointer; padding-top: 30px;"><img src="/img/logo.png"></div>
+          <div v-on:click="routeMain" style="text-align: center;cursor: pointer; padding-top: 30px;"><img src="/img/datamanager/logo.png"></div>
         </div>
       </nav>
     </template>
     <template v-else>
       <nav class="navigation" >
         <div class="nav_box">
-          <div class="logo" v-on:click="routeMain"><img src="/img/logo.png"></div>
+          <div class="logo" v-on:click="routeMain"><img src="/img/datamanager/logo.png"></div>
           <div class="nav_sp">
             <div class="nav_menu">
               <div class="nmenu" v-bind:class="{on: menu_id === '1'}" v-on:click="Menu1">Data Management</div>
               <div class="nmenu" v-bind:class="{on: menu_id === '2'}" v-on:click="Menu2">Statistics</div>
-              <div class="nmenu" v-bind:class="{on: menu_id === '2'}" v-on:click="Menu2">Member</div>
+              <div class="nmenu" v-bind:class="{on: menu_id === '3'}" v-on:click="Menu3">Member</div>
             </div>
           </div>
           <div class="nav_login">
             <div style="display:flex; flex-direction: row;padding-top: 40px;justify-content: flex-end">
               <template v-if="is_logged">
                 <div class="login_text"><span class="user_text">{{c_usrname}}</span> <span class="user_wel">회원님 환영합니다.</span></div>
-                <template v-if="c_isadmin === 'A'">
-                  <div class="login_text" style="padding-left:10px;color:red;cursor: pointer;"  v-on:click="adminMenu">관리자페이지</div>
+                <template v-if="c_isadmin === 'Y'">
+                  <div class="login_text" style="padding-left:10px;color:red;cursor: pointer;"  v-on:click="adminMenu">관리자</div>
                 </template>
-                <div class="login_text pointer" style="margin-left: 20px;" v-on:click="infoMod">정보수정</div>
+                <!--<div class="login_text pointer" style="margin-left: 20px;" v-on:click="infoMod">정보수정</div>-->
                 <div class="login_text pointer" style="margin-left: 20px;" v-on:click="logout">로그아웃</div>
               </template>
               <template v-else>
                 <div class="login_text pointer" v-on:click="login">로그인</div>
-                <div class="login_text pointer" style="padding-left: 20px;" v-on:click="join('c')">회원가입</div>
+                <!--<div class="login_text pointer" style="padding-left: 20px;" v-on:click="join('c')">회원가입</div>-->
               </template>
             </div>
           </div>
@@ -59,15 +59,16 @@ export default {
   computed: {
     ...mapGetters(['logged_info', 'is_logged']),
     c_usrname() {
+      //console.log(this.logged_info)
       if(this.logged_info) {
-        this.$log.debug(this.logged_info);
+        //this.$log.debug(this.logged_info);
         return this.logged_info.user_name;
       }
       return '';
     },
     c_isadmin() {
       if (this.logged_info) {
-        return this.logged_info.used_admin;
+        return this.logged_info.is_admin;
       }
       return '';
     },
@@ -85,16 +86,20 @@ export default {
   methods: {
     ...mapActions(['LogOut']),
     Menu1() {
-      this.$router.push({ name: 'page1' });
+      this.$router.push({ name: 'datastatus' });
     },
     Menu2() {
-      this.$router.push({ name: 'page2' });
+      this.$router.push({ name: 'statisticsperson' });
+    },
+    Menu3() {
+      this.$router.push({ name: 'member' });
     },
     routeMain() {
       this.$router.push({ name: 'index' });
     },
     logout() {
       this.LogOut();
+      console.log('logout');
       this.$router.push({ name: 'index' });
     },
     login() {
@@ -108,6 +113,8 @@ export default {
     },
     infoMod() {
       this.join('e');
+    },
+    adminMenu() {
     }
   },
 };
