@@ -2,6 +2,7 @@ import * as types from './mutation-types';
 import api_user from '../api/ApiUser';
 import Vue from 'vue';
 import TokenManager from '../managers/TokenManager';
+import logger from '../utils/logger';
 
 export const setTitle = ({ commit }, title) => {
   commit(types.SET_TITLE, title);
@@ -9,6 +10,7 @@ export const setTitle = ({ commit }, title) => {
 
 export const Login = async ({ commit, dispatch }, { user_id, password }) => {
   const result = await api_user.login(user_id, password);
+  
   if (result && result.error === 0) {
     TokenManager.setToken(result);
     await dispatch('GetUserInfo');
@@ -20,6 +22,7 @@ export const GetUserInfo = async ({ commit }) => {
   if (!TokenManager.isValidToken()) return {};
 
   const { member_info } = await api_user.getUserInfo();
+  Vue.$log.debug('member_info', member_info);
   if (!member_info) {
     return {};
   }

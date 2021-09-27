@@ -54,7 +54,7 @@ router.beforeEach(async (to, from, next) => {
       return next({ name: 'index' });
     }
     if (to.path.indexOf('admin') !== -1) {
-      if (logged_info.used_admin !== 'A') {
+      if (logged_info.is_admin !== 'A') {
         return next({ name: 'index' });
       }
     } else if (to.meta.guest_only) {

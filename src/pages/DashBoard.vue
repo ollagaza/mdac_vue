@@ -2,16 +2,16 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <div class="left_menu">
+        <!--<div class="left_menu">
           <div class="left_wrapper">
             <div class="left_title">Data Status</div>
             <div class="left_slice"></div>
             <div class="left_title">Project Manager</div>
           </div>
-        </div>
+        </div>-->
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
-            Data Management
+            Dashboard
           </div>
           <div style="padding: 20px 0 0 0 ;">
             <div class="grid_m header">
@@ -49,15 +49,40 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
+
 export default {
-  name: 'Page1',
+  name: 'Dashboard',
   componets: [],
   data() {
     return {
       testid: '',
     };
   },
+  computed: {
+    ...mapGetters(['is_logged']),
+
+  },
   methods: {
+  },
+  beforeCreate() { 
+    //const isLoggedIn = this.$store.getters['is_logged'];
+    //if(!isLoggedIn) {
+    //  this.$router.push({ name: 'index' });
+    //}        
+    //console.log(`Logged1 :: ${isLoggedIn}`);
+  },
+  mounted() {
+
+    console.log(`Logged3 :: ${this.is_logged}`);
+    if (!this.is_logged) {
+      this.$router.push({ name: 'index' });
+    }
+  },
+  destroyed() {
+
+    //const isLoggedIn = this.$store.getters['is_logged'];
+    //console.log(`Logged2 :: ${isLoggedIn}`);
   },
 };
 </script>
