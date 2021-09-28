@@ -21,6 +21,38 @@ export default {
   }),
 
   // DIVISION
+  getDivisionInfo: data => request({
+    url: '/project/divisioninfo',
+    method: 'post',
+    data,
+  }),
+
+  createDivision: division_info => request({
+    url: '/project/createdivision',
+    method: 'post',
+    data: division_info,
+  }),
+
+  updateDivision: (division_seq, division_info) => request({
+    url: `/project/${division_seq}/updatedivision`,
+    method: 'post',
+    data: division_info,
+  }),
+
+  setDivisionUsed: params => request({
+    url: '/project/setdivisiondata',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),  
+  delDivision: params => request({
+    url: '/project/deldivision',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
 
   // CLASS
   getClassInfo: data => request({
