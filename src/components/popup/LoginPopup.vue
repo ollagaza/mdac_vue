@@ -39,7 +39,7 @@
                 <div class="lds-facebook"><div></div><div></div><div></div></div>
               </template>
               <template v-else>
-                <div class="btn newgreen login"  v-on:click="onLoginClick"><span>로그인</span></div>
+                <div class="btn navy login"  v-on:click="onLoginClick"><span>로그인</span></div>
               </template>
             </div>
           </template>
@@ -928,7 +928,7 @@ input::placeholder{
 .confirm_btn {
   margin-top: 20px;
 }
-.btn.newgreen.login {
+.btn.navy.login {
   border-radius: 6px;
   width:480px;
   height: 50px;
@@ -939,7 +939,7 @@ input::placeholder{
   color: #fff;
 }
 
-.btn.newgreen.login.mbottom5 {
+.btn.navy.login.mbottom5 {
   margin-bottom: 5px;
 }
 
