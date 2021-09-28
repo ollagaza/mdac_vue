@@ -56,3 +56,21 @@ tr.content:hover td.title{
   color: #3d3292;
   letter-spacing: -0.5px;
 }
+
+.grid_m {
+  display: grid;
+  padding: 0px 0 0px 0;
+  align-items: center;
+  justify-items: center;
+  grid-auto-rows: minmax(40px, auto);
+  border-bottom: 1px solid #ccc;
+}
+.grid_m.header {
+  background-color: #eee;
+}
+.grid_m.body {
+  cursor: pointer;
+}
+.grid_m.body:hover {
+  background-color: #dddddd;
+}

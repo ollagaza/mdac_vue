@@ -110,8 +110,8 @@ export default {
 </script>
 
 <style>
-body { background-color: #f5f2ee; }
-.app_main { background-color: #f5f2ee; }
+body { background-color: #fff; }
+.app_main { background-color: #fff; }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
