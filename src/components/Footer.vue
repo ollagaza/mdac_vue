@@ -1,6 +1,6 @@
 <template>
   <footer class="footer" >
-    <div class="footer_wrapper" style="margin-top:20px;border-top: 1px solid #CCC;">
+    <div class="footer_wrapper" style="margin-top:0px;border-top: 1px solid #CCC;">
       <div class="footer_copyright">copyright©2021 . All rights reserved.</div>
     </div>
   </footer>

@@ -18,7 +18,7 @@
             클래스 리스트
           </div>
 
- 
+
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -26,20 +26,20 @@
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
-                  </template>                
+                  </template>
               </select>
-              
+
               <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnClassList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">정지중</option>
               </select>
-              
+
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="class_name" selected=true>클래스명</option>
                 <option value="class_id">클래스아이디</option>
               </select>
-              
+
               <input type="text" v-model="keyword" @keyup.enter="fnClassList(1)" />
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassList(1)">검색</div>
               <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassDetail('')">등록</div>
@@ -56,7 +56,7 @@
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('Y')">사용중</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('N')">사용정지</div>
               <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('D')">삭제</div>
-            
+
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
                 <select class="text" v-model="ipp" style="width: 120px;" @change="fnClassList(1)">
@@ -97,7 +97,7 @@
                   <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
                 </div>
               </template>
-            </template>            
+            </template>
           </div>
 
           <div class="pagination" v-if="paging.totalCount > 0">
@@ -129,7 +129,7 @@
              v-bind:modeType="modeType"
              v-bind:project_list="project_list"
              v-on:callClassList="fnClassList"
-    ></ClassPopup>    
+    ></ClassPopup>
   </div>
 </template>
 
@@ -198,7 +198,7 @@ export default {
     apiproject.getProjectInfo(data)
       .then((result) => {
         this.project_list = result.project_info;
-      });    
+      });
     this.fnClassList(1);
   },
   methods: {
@@ -207,14 +207,14 @@ export default {
     },
     Menu2() {
       this.$router.push({ name: 'project' });
-    },   
+    },
     Menu3() {
       this.$router.push({ name: 'division' });
-    },   
+    },
     Menu4() {
       this.$router.push({ name: 'class' });
-    },    
-    
+    },
+
     fnClassList(pg) {
       //body = req.query;
       this.showLoading(true);
@@ -237,28 +237,28 @@ export default {
       if(this.page === 'undefined') {
         this.page = 1;
       }
-      
+
       //this.$log.debug(`this.page===${this.page}`)
       //this.$log.debug(`pg===${pg}`)
 
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
       this.page = page;
-      const data = { 
+      const data = {
         page:this.page
         ,ipp:this.ipp
         ,project_seq:this.project_seq
         ,is_used:this.is_used
         ,search_type:this.search_type
-        ,keyword:this.keyword          
+        ,keyword:this.keyword
       };
       apiproject.getClassInfo(data)
         .then((result) => {
-          
+
           //this.$log.debug(result);
           if (result.class_info.length > 0) {
               //this.paging = 10;
-              //this.no = 1;            
+              //this.no = 1;
             for (const key in result.class_info) {
               const reg_date = result.class_info[key].reg_date;
               if (reg_date) {
@@ -293,7 +293,7 @@ export default {
     fnSearch() {
 
     },
-    
+
     fnPage(n) {
       if(this.page != n) {
         this.page = n;
@@ -387,7 +387,7 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },     
+    },
     class_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -410,7 +410,7 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },    
+    },
     fnClassDetail(seq) {
       //console.log(`seq===${seq}`)
       //console.log(`modeType===${this.modeType}`)
@@ -449,7 +449,7 @@ export default {
             }
         }
         console.log(user_ids)
-    },   
+    },
     cpage_navigation() {
       const null_navigation = {};
       if (this.page_navigation) {
@@ -460,7 +460,7 @@ export default {
     onMovePage(page) {
       this.checkData = {};
       this.$emit('onMovePage', page);
-    }, 
+    },
   },
 };
 </script>
@@ -518,7 +518,7 @@ export default {
   padding: 0px 0 0px 0;
   align-items: center;
   justify-items: center;
-  grid-auto-rows: minmax(30px, auto);
+  grid-auto-rows: minmax(50px, auto);
   border-bottom: 1px solid #ccc;
 }
 .grid_m.body {
