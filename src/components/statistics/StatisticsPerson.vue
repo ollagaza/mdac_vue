@@ -2,13 +2,7 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <div class="left_menu">
-          <div class="left_wrapper">
-            <div class="left_title" v-on:click="Menu1">작업자 통계</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu2">프로젝트 통계</div>
-          </div>
-        </div>
+        <Statistics_Left v-bind:menu_id="1"></Statistics_Left>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
             작업자 통계
@@ -49,21 +43,20 @@
 </template>
 
 <script>
+import Statistics_Left from './Statistics_Left';
+
 export default {
-  name: 'Page1',
-  componets: [],
+  name: 'StatisticsPerson',
+  components: {
+    Statistics_Left,
+    //Pagination,
+  },
   data() {
     return {
       testid: '',
     };
   },
   methods: {
-    Menu1() {
-      this.$router.push({ name: 'statisticsperson' });
-    },
-    Menu2() {
-      this.$router.push({ name: 'statisticsproject' });
-    },
   },
 };
 </script>

@@ -19,6 +19,7 @@
               class="text"
               v-model="project_seq"
               style="width: 380px; padding-right: 5px"
+              v-on:change="fnGetDivision"
               :disabled="c_modeType === 'e' ? true : false">
 
                 <option value="" selected=true>프로젝트를 선택해주세요</option>
@@ -26,6 +27,23 @@
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>                
             </select>
+          </div>
+        </div>
+
+        <div class="item_title">
+          <div class="item">상위분류</div>
+          <div>
+            <select
+              class="text"
+              v-model="parent_division_seq"
+              style="width: 380px; padding-right: 5px">
+
+                <option value="" selected=true>분류를 선택해주세요</option>
+                  <template v-for="(project, seq) in c_project_list">
+                    <option v-bind:value="project.seq">{{project.project_name}}</option>
+                  </template>                
+            </select>
+            <div>parent_path</div>
           </div>
         </div>
 
@@ -122,9 +140,11 @@ export default {
   data() {
     return {
       project_seq: "",
+      parent_division_seq: "",
+      
       seq: -1,
-      class_id: "",
-      class_name: "",
+      division_id: "",
+      division_name: "",
       is_used: "Y",
       is_open: false,
       date_locale_ko: ko,
@@ -310,6 +330,9 @@ export default {
     fnCheckUsed() {
       console.log(this.status);
     },
+    fnGetDivision() {
+      console.log(`fnGetDivision`)
+    }
   },
 };
 </script>

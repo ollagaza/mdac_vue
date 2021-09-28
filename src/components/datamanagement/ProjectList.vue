@@ -2,17 +2,7 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <div class="left_menu">
-          <div class="left_wrapper">
-            <div class="left_title" v-on:click="Menu1">Data Status</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu2">Project Manager</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu3">분류관리</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu4">클래스관리</div>
-          </div>
-        </div>
+        <Datalist_Left v-bind:menu_id="2"></Datalist_Left>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
             프로젝트 리스트
@@ -26,13 +16,13 @@
                 <option value="2">중지중</option>
                 <option value="3">종료</option>
               </select>
-                            
+
               <select class="text" v-model="search_type" style="width: 180px;height: 36px;">
                 <option value="project_name" selected=true>프로젝트명</option>
                 <option value="LABELER">라벨러</option>
                 <option value="CHECKER">검수자</option>
               </select>
-                            
+
               <input type="text" v-model="keyword" @keyup.enter="fnProjectList(1)" />
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnProjectList(1)">검색</div>
               <div class="btn navy" style="margin-left:5px;width:100px; height: 36px;" v-on:click="fnProjectDetail('')">프로젝트등록</div>
@@ -47,7 +37,7 @@
               <!-- <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('1')">진행중</div>
               <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('3')">종료</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('2')">중지</div> -->
-            
+
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
                 <select class="text" v-model="ipp" style="width: 120px;" @change="fnProjectList(1)">
@@ -61,7 +51,7 @@
           </div>
 
           <div style="padding: 10px 0 0 0 ;">
-            <div class="grid_m header">
+            <div class="grid_m project header">
               <div>프로젝트명</div>
               <div>할당라벨러</div>
               <div>할당검수자</div>
@@ -71,14 +61,14 @@
             </div>
 
             <template v-if="project_list.length === 0">
-              <div class="grid_m">
+              <div class="grid_m project nodata">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="project_list.length > 0">
               <template v-for="(project, seq) in project_list">
-                <div class="grid_m body">
+                <div class="grid_m project body">
                   <div style="align-items: left;justify-items: left !important;" v-on:click="fnProjectDetail(project.seq)">{{ project.project_name }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.labeler_str }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.checker_str }}</div>
@@ -87,7 +77,7 @@
                   <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnProjectDetail('')">통계</div></div>
                 </div>
               </template>
-            </template>            
+            </template>
           </div>
 
           <div class="pagination" v-if="paging.totalCount > 0">
@@ -118,7 +108,7 @@
     <ProjectPopup ref="projectpopup"
              v-bind:modeType="modeType"
              v-on:callProjectList="fnProjectList"
-    ></ProjectPopup>    
+    ></ProjectPopup>
 
   </div>
 </template>
@@ -129,12 +119,14 @@ import apiproject from '../../api/ApiProject';
 import ProjectPopup from '../../components/popup/ProjectPopup';
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
+import Datalist_Left from './Datalist_Left';
 //import Pagination from '../../components/Pagination';
 
 export default {
   name: 'ProjectList',
   components: {
     ProjectPopup,
+    Datalist_Left,
     //Pagination,
   },
   //props: ['page_navigation'],
@@ -145,10 +137,10 @@ export default {
       status: '',              // 사용여부
       search_type: 'project_name', // 검색조건
       keyword: '',              // 검색어
-      no:'',                    //게시판 숫자
-      paging:'',                //페이징 데이터
-      start_page:'',            //페이징-시작페이지
-      end_page: '',             //페이징-마지막페이지
+      no:'',                    // 게시판 숫자
+      paging:'',                // 페이징 데이터
+      start_page:'',            // 페이징-시작페이지
+      end_page: '',             // 페이징-마지막페이지
       totalCount: 0,            //게시물수
       total_page: 0,            //전체페이지
       ipp: 20,                  //페이지카운트
@@ -179,18 +171,12 @@ export default {
     this.fnProjectList(1);
   },
   methods: {
-    Menu1() {
-      this.$router.push({ name: 'datastatus' });
-    },
-    Menu2() {
-      this.$router.push({ name: 'project' });
-    },   
     Menu3() {
       this.$router.push({ name: 'division' });
-    },   
+    },
     Menu4() {
       this.$router.push({ name: 'class' });
-    },    
+    },
     fnProjectList(pg) {
       //body = req.query;
       //this.$log.debug('PROJECTLIST');
@@ -213,7 +199,7 @@ export default {
       if(this.page === 'undefined') {
         this.page = 1;
       }
-      
+
       //this.$log.debug(`this.page===${this.page}`)
       //this.$log.debug(`pg===${pg}`)
 
@@ -224,23 +210,23 @@ export default {
         page:this.page
         ,status:this.status
         ,search_type:this.search_type
-        ,keyword:this.keyword          
-      }        
+        ,keyword:this.keyword
+      }
 
       const data = {
         page:this.page
         ,ipp:this.ipp
         ,status:this.status
         ,search_type:this.search_type
-        ,keyword:this.keyword       
+        ,keyword:this.keyword
       }
       apiproject.getProjectInfo(data)
         .then((result) => {
-          
+
           //this.$log.debug(result);
           if (result.project_info.length > 0) {
               //this.paging = 10;
-              //this.no = 1;            
+              //this.no = 1;
             for (const key in result.project_info) {
               const reg_date = result.project_info[key].reg_date;
               if (reg_date) {
@@ -276,7 +262,7 @@ export default {
         });
       this.showLoading(false);
     },
-    
+
     fnPage(n) {
       if(this.page != n) {
         this.page = n;
@@ -383,7 +369,7 @@ export default {
             }
         }
         console.log(user_ids)
-    },   
+    },
     cpage_navigation() {
       const null_navigation = {};
       if (this.page_navigation) {
@@ -394,71 +380,51 @@ export default {
     onMovePage(page) {
       this.checkData = {};
       this.$emit('onMovePage', page);
-    }, 
+    },
   },
 };
 </script>
 
 <style scoped>
-.searchWrap{border:1px solid #888; border-radius:5px; text-align:center; padding:10px 10px 10px 10px ; margin-bottom:10px; margin-top :5px;}
-.searchWrap input{width:60%; height:36px; border-radius:3px; padding:0 10px; border:1px solid #888;}
-
-.pagination{margin:20px 0 0 0; text-align:center;}
-.first, .prev, .next, .last{border:1px solid #666; margin:0 5px;}
-.pagination span{display:inline-block; padding:0 5px; color:#333;}
-.pagination a{text-decoration:none; display:inline-blcok; padding:0 5px; color:#666;}
-
-.layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0;
-  flex: 1;
-  height: fit-content;
+.searchWrap {
+  border: 1px solid #888;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
-.layout2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0px;
+.searchWrap input {
+  width: 60%;
+  height: 36px;
+  border-radius: 3px;
+  padding: 0 10px;
+  border: 1px solid #888;
 }
-
-.left_menu{
-  width:180px;
+.pagination {
+  margin: 20px 0 0 0;
+  text-align: center;
 }
-.left_wrapper{
-  padding: 40px 0 0 14px;
+.first, .prev, .next, .last {
+  border: 1px solid #666;
+  margin: 0 5px;
 }
-.left_title {
-  padding: 5px;
-  font-weight: 400;
-  font-size: 15px;
+.pagination span {
+  display: inline-block;
+  padding: 0 5px;
   color: #333;
-  cursor: pointer;
 }
-.left_title:hover {
-  background-color: #dddddd;
+.pagination a {
+  text-decoration: none;
+  display: inline-blcok;
+  padding: 0 5px;
+  color: #666;
 }
-.left_title:hover {
-  color: #009DE0;
-}
-.left_slice{
-  margin-top: 6px;
-}
-.grid_m {
-  display: grid;
+
+.grid_m.project {
   grid-template-columns: 350px 150px 150px 150px 100px 100px;
-  padding: 0px 0 0px 0;
-  align-items: center;
-  justify-items: center;
-  grid-auto-rows: minmax(30px, auto);
-  border-bottom: 1px solid #ccc;
 }
-.grid_m.body {
-  cursor: pointer;
-}
-.grid_m.body:hover {
-  background-color: #dddddd;
+.grid_m.nodata {
+  grid-template-columns: 1000px;
 }
 </style>
