@@ -32,6 +32,11 @@
 
         <div class="item_title">
           <div class="item">상위분류</div>
+          <div class="item" style="color:blue;font-weight:bold;">{{ parent_path }}</div>
+        </div>
+
+        <div class="item_title">
+          <div class="item">상위분류</div>
           <div>
             <select
               class="text"
@@ -43,7 +48,6 @@
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>                
             </select>
-            <div>parent_path</div>
           </div>
         </div>
 
@@ -141,7 +145,7 @@ export default {
     return {
       project_seq: "",
       parent_division_seq: "",
-      
+      parent_path: "",      
       seq: -1,
       division_id: "",
       division_name: "",
@@ -187,6 +191,7 @@ export default {
   mounted() {},
   methods: {
     onRest() {
+      this.parent_path = "";
       this.project_seq = "";
       this.division_id = "";
       this.division_name = "";
@@ -301,6 +306,7 @@ export default {
         if (result.error === 0) {
           if (result.division_info.length > 0) {
             this.onRest();
+            this.parent_path = result.division_info[0].parent_path;
             this.project_seq = result.division_info[0].project_seq;
             this.seq = result.division_info[0].seq;
             this.division_id = result.division_info[0].division_id;
@@ -331,7 +337,33 @@ export default {
       console.log(this.status);
     },
     fnGetDivision() {
-      console.log(`fnGetDivision`)
+
+      const data = {
+        project_seq: this.project_seq,
+        division_seq: this.seq,
+      };
+
+      apiproject.getDivision(data).then(async (result) => {
+        this.$log.debug(result);
+        if (result.error === 0) {
+          if (result.division_info.length > 0) {
+            this.onRest();
+            // this.parent_path = result.division_info[0].parent_path;
+            // this.project_seq = result.division_info[0].project_seq;
+            his.seq = result.division_info[0].seq;
+            this.division_id = result.division_info[0].division_id;
+            this.division_name = result.division_info[0].division_name;
+            this.is_used = result.division_info[0].is_used;
+          }
+          this.division_info = result.division_info;
+          console.log(this.division_info);
+          this.is_open = true;
+        } else {
+          this.onError(result.message);
+          this.is_open = false;
+        }
+      });
+      
     }
   },
 };

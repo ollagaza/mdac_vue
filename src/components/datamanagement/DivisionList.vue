@@ -209,6 +209,7 @@ export default {
       this.$router.push({ name: 'class' });
     },    
     
+    // 분류리스트 조회
     fnDivisionList(pg) {
       //body = req.query;
       this.showLoading(true);
@@ -246,6 +247,7 @@ export default {
         ,search_type:this.search_type
         ,keyword:this.keyword          
       };
+      // 분류조회 API 호출
       apiproject.getDivisionInfo(data)
         .then((result) => {
           
@@ -264,18 +266,7 @@ export default {
               } else {
                 result.division_info[key].is_used_str = "정지중";
               }
-              //this.totalCount = result.division_info[key].totalcount
-              //result.data[key].result_str = result.data[key].result_text;
-              //if (result.data[key].result_itemname) {
-              //  result.data[key].result_str = result.data[key].result_itemname;
-              //}
-              //result.data[key].error_title = '';
-              //if (result.data[key].status === Constants.FileError) {
-              //   result.data[key].error_title = result.data[key].result_text;
-              //   result.data[key].result_text = '';
-              //}
             }
-            // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
           }
           this.division_list = result.division_info;
           this.paging = result.paging;
@@ -283,11 +274,7 @@ export default {
           //console.log(this.paging)
         });
       this.showLoading(false);
-    },
-    fnSearch() {
-
-    },
-    
+    },    
     fnPage(n) {
       if(this.page != n) {
         this.page = n;
@@ -318,6 +305,7 @@ export default {
       }
     },
 
+    // 분류 상태 변경
     division_change(itype) {
       const options = {};
       const checkData = this.checkData;
@@ -359,6 +347,7 @@ export default {
       }
     },
 
+    // 분류 상태 변경 실행
     division_used_change(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -367,7 +356,6 @@ export default {
           arrData.push(key);
         }
       });
-      // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
       params.divisions = arrData;
@@ -382,6 +370,8 @@ export default {
         EventBus.emit('confirmPopupClose', true);
       });
     },     
+
+    // 분류 삭제
     division_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -390,7 +380,6 @@ export default {
           arrData.push(key);
         }
       });
-      // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
       params.divisions = arrData;
@@ -404,10 +393,10 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },    
+    },   
+    
+    // 분류 상세 보기
     fnDivisionDetail(seq) {
-      //console.log(`seq===${seq}`)
-      //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';

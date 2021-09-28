@@ -21,6 +21,12 @@ export default {
   }),
 
   // DIVISION
+  getDivision: data => request({
+    url: '/project/division',
+    method: 'post',
+    data,
+  }),
+
   getDivisionInfo: data => request({
     url: '/project/divisioninfo',
     method: 'post',

@@ -95,11 +95,6 @@
             <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
           </div>
 
-          <!-- <div style="margin: 20px 0 40px 0;">
-            <Pagination ref="Pagination"
-                        :pageNationObj = "page_navigation"
-                        v-on:onMovePage = "onMovePage"></Pagination>
-          </div> -->
         </div>
       </div>
     </div>
@@ -115,8 +110,8 @@
 
 
 <script>
-import apiproject from '../../api/ApiProject';
-import ProjectPopup from '../../components/popup/ProjectPopup';
+import apiproject from '../../api/ApiProject';      // API
+import ProjectPopup from '../../components/popup/ProjectPopup'; // 프로젝트 팝업
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 import Datalist_Left from './Datalist_Left';
@@ -133,17 +128,17 @@ export default {
   mixins: [BaseMixin],
   data() {
     return {
-      project_list: '',          // 회원 데이터 리스트
-      status: '',              // 사용여부
-      search_type: 'project_name', // 검색조건
-      keyword: '',              // 검색어
-      no:'',                    // 게시판 숫자
-      paging:'',                // 페이징 데이터
-      start_page:'',            // 페이징-시작페이지
-      end_page: '',             // 페이징-마지막페이지
-      totalCount: 0,            //게시물수
-      total_page: 0,            //전체페이지
-      ipp: 20,                  //페이지카운트
+      project_list: '',             // 프로젝트 데이터 리스트
+      status: '',                   // 사용여부
+      search_type: 'project_name',  // 검색조건
+      keyword: '',                  // 검색어
+      no:'',                        // 게시판 숫자
+      paging:'',                    // 페이징 데이터
+      start_page:'',                // 페이징-시작페이지
+      end_page: '',                 // 페이징-마지막페이지
+      totalCount: 0,                // 게시물수
+      total_page: 0,                // 전체페이지
+      ipp: 20,                      // 페이지카운트
       page:this.$route.query.page ? this.$route.query.page:1,
       modeType: 'e',            // 수정/등록모드
       allChecked: false,        // All check
@@ -178,19 +173,9 @@ export default {
       this.$router.push({ name: 'class' });
     },
     fnProjectList(pg) {
-      //body = req.query;
-      //this.$log.debug('PROJECTLIST');
       this.showLoading(true);
-      //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
-      //  stype: null,
-      //  search: null,
-      //  page: this.page_navigation.cur_page,
       };
-      //if (this.roption.search && this.roption.search.length > 0) {
-      //  params.search_type = this.roption.search_type;
-      //  params.search = this.roption.search;
-      //}
       let status = this.status;
       // console.log(status)
       let search_type = this.search_type;
@@ -199,9 +184,6 @@ export default {
       if(this.page === 'undefined') {
         this.page = 1;
       }
-
-      //this.$log.debug(`this.page===${this.page}`)
-      //this.$log.debug(`pg===${pg}`)
 
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
@@ -220,10 +202,11 @@ export default {
         ,search_type:this.search_type
         ,keyword:this.keyword
       }
+
+      // 프로젝트 조회 API 호출
       apiproject.getProjectInfo(data)
         .then((result) => {
 
-          //this.$log.debug(result);
           if (result.project_info.length > 0) {
               //this.paging = 10;
               //this.no = 1;
@@ -258,7 +241,6 @@ export default {
           this.project_list = result.project_info;
           this.paging = result.paging;
           this.no = this.paging.totalCount - ((this.paging.page-1) * this.paging.ipp);
-          //console.log(this.paging)
         });
       this.showLoading(false);
     },
@@ -289,6 +271,7 @@ export default {
       }
     },
 
+    // 프로젝트 상태 변경
     project_change(itype) {
       const options = {};
       const checkData = this.checkData;
@@ -322,15 +305,17 @@ export default {
         EventBus.emit('alertPopupOpen', null, '선택한 프로젝트가 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
-        if (itype === 'N') { // 활동정지??
+        if (itype === 'N') { // 사용안함
           this.$refs.used_pop.openPopup(sendParam, this.member_used_change);
-        } else if(itype === 'D') {
+        } else if(itype === 'D') { // 삭제
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.member_delete, options);
         } else {
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.member_used_change, options);
         }
       }
     },
+
+    // 프로젝트 상세 보기
     fnProjectDetail(seq) {
       //console.log(`seq===${seq}`)
       //console.log(`modeType===${this.modeType}`)
