@@ -51,7 +51,7 @@ export default {
     data: {
       params,
     },
-  }),  
+  }),
   delDivision: params => request({
     url: '/project/deldivision',
     method: 'post',
@@ -87,6 +87,20 @@ export default {
     },
   }),
   delClass: params => request({
+    url: '/project/delclass',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
+  testClass: params => request({
+    url: '/project/delclass',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
+  testClass2: params => request({
     url: '/project/delclass',
     method: 'post',
     data: {
