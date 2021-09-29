@@ -51,7 +51,7 @@ export default {
     data: {
       params,
     },
-  }),  
+  }),
   delDivision: params => request({
     url: '/project/deldivision',
     method: 'post',
