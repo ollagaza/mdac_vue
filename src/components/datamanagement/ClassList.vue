@@ -2,22 +2,11 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <div class="left_menu">
-          <div class="left_wrapper">
-            <div class="left_title" v-on:click="Menu1">Data Status</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu2">Project Manager</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu3">분류관리</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu4">클래스관리</div>
-          </div>
-        </div>
+        <Datalist_Left v-bind:menu_id="4"></Datalist_Left>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
             클래스 리스트
           </div>
-
 
 
           <div class="searchWrap">
@@ -37,7 +26,7 @@
 
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="class_name" selected=true>클래스명</option>
-                <option value="class_id">클래스아이디</option>
+                <option value="class_id">클래스코드</option>
               </select>
 
               <input type="text" v-model="keyword" @keyup.enter="fnClassList(1)" />
@@ -70,7 +59,7 @@
           </div>
 
           <div style="padding: 10px 0 0 0 ;">
-            <div class="grid_m header">
+            <div class="grid_m class header">
               <div></div><!-- v-model="checked_all"  -->
               <div>프로젝트</div>
               <div>클래스코드</div>
@@ -80,14 +69,14 @@
             </div>
 
             <template v-if="class_list.length === 0">
-              <div class=" body">
+              <div class="grid_m class nodata">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="class_list.length > 0">
               <template v-for="(pClass, seq) in class_list">
-                <div class="grid_m body">
+                <div class="grid_m class body">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
                   <div class="check_box" v-bind:class="[{on: checkData[pClass.seq]}]" v-on:click="onCheckClick(pClass.seq)"></div>
                   <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.project_name }}</div>
@@ -139,12 +128,14 @@ import apiproject from '../../api/ApiProject';
 import ClassPopup from '../../components/popup/ClassPopup';
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
+import Datalist_Left from './Datalist_Left';
 //import Pagination from '../../components/Pagination';
 
 export default {
   name: 'ClassList',
   components: {
     ClassPopup,
+    Datalist_Left,
     //Pagination,
   },
   //props: ['page_navigation'],
@@ -157,13 +148,13 @@ export default {
       is_used: '',              // 사용여부
       search_type: 'class_name',// 검색조건
       keyword: '',              // 검색어
-      no:'',                    //게시판 숫자
-      paging:'',                //페이징 데이터
-      start_page:'',            //페이징-시작페이지
-      end_page: '',             //페이징-마지막페이지
-      totalCount: 0,            //게시물수
-      total_page: 0,            //전체페이지
-      ipp: 20,                  //페이지카운트
+      no:'',                    // 게시판 숫자
+      paging:'',                // 페이징 데이터
+      start_page:'',            // 페이징-시작페이지
+      end_page: '',             // 페이징-마지막페이지
+      totalCount: 0,            // 게시물수
+      total_page: 0,            // 전체페이지
+      ipp: 20,                  // 페이지카운트
       page:this.$route.query.page ? this.$route.query.page:1,
       modeType: 'e',            // 수정/등록모드
       allChecked: false,        // All check
@@ -215,6 +206,7 @@ export default {
       this.$router.push({ name: 'class' });
     },
 
+    // 클래스 리스트 조회
     fnClassList(pg) {
       //body = req.query;
       this.showLoading(true);
@@ -238,9 +230,6 @@ export default {
         this.page = 1;
       }
 
-      //this.$log.debug(`this.page===${this.page}`)
-      //this.$log.debug(`pg===${pg}`)
-
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
       this.page = page;
@@ -252,13 +241,11 @@ export default {
         ,search_type:this.search_type
         ,keyword:this.keyword
       };
-      apiproject.getClassInfo(data)
+      apiproject.getClassInfo(data) // 클래스 API 호출
         .then((result) => {
 
           //this.$log.debug(result);
           if (result.class_info.length > 0) {
-              //this.paging = 10;
-              //this.no = 1;
             for (const key in result.class_info) {
               const reg_date = result.class_info[key].reg_date;
               if (reg_date) {
@@ -270,16 +257,6 @@ export default {
               } else {
                 result.class_info[key].is_used_str = "정지중";
               }
-              //this.totalCount = result.class_info[key].totalcount
-              //result.data[key].result_str = result.data[key].result_text;
-              //if (result.data[key].result_itemname) {
-              //  result.data[key].result_str = result.data[key].result_itemname;
-              //}
-              //result.data[key].error_title = '';
-              //if (result.data[key].status === Constants.FileError) {
-              //   result.data[key].error_title = result.data[key].result_text;
-              //   result.data[key].result_text = '';
-              //}
             }
             // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
           }
@@ -289,9 +266,6 @@ export default {
           //console.log(this.paging)
         });
       this.showLoading(false);
-    },
-    fnSearch() {
-
     },
 
     fnPage(n) {
@@ -304,6 +278,7 @@ export default {
       if(state == 2) return true;
       else false;
     },
+    // 체크박스 전체
     onAllCheckClick() {
       this.check_click = !this.check_click;
       this.allCheck(this.check_click);
@@ -324,6 +299,7 @@ export default {
       }
     },
 
+    // 상태 변경
     class_change(itype) {
       const options = {};
       const checkData = this.checkData;
@@ -357,7 +333,7 @@ export default {
         EventBus.emit('alertPopupOpen', null, '선택한 클래스가 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
-        if (itype === 'D') { // 활동정지??
+        if (itype === 'D') { // 삭제
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_delete, options);
         } else {
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_used_change, options);
@@ -365,6 +341,7 @@ export default {
       }
     },
 
+    // 상태변경 실행
     class_used_change(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -388,6 +365,8 @@ export default {
         EventBus.emit('confirmPopupClose', true);
       });
     },
+
+    // 삭제 실행
     class_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -411,9 +390,9 @@ export default {
         EventBus.emit('confirmPopupClose', true);
       });
     },
+
+    // 클래스 상세보기
     fnClassDetail(seq) {
-      //console.log(`seq===${seq}`)
-      //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';
@@ -466,65 +445,44 @@ export default {
 </script>
 
 <style scoped>
-.searchWrap{border:1px solid #888; border-radius:5px; text-align:center;  padding:10px 10px 10px 10px; margin-bottom:10px; margin-top :5px;}
-.searchWrap input{width:60%; height:36px; border-radius:3px; padding:0 10px; border:1px solid #888;}
-
-.pagination{margin:20px 0 0 0; text-align:center;}
-.first, .prev, .next, .last{border:1px solid #666; margin:0 5px;}
-.pagination span{display:inline-block; padding:0 5px; color:#333;}
-.pagination a{text-decoration:none; display:inline-blcok; padding:0 5px; color:#666;}
-
-.layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0;
-  flex: 1;
-  height: fit-content;
+.searchWrap {
+  border: 1px solid #888;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
-.layout2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0px;
+.searchWrap input {
+  width: 60%;
+  height: 36px;
+  border-radius: 3px;
+  padding: 0 10px;
+  border: 1px solid #888;
 }
-
-.left_menu{
-  width:180px;
+.pagination {
+  margin: 20px 0 0 0;
+  text-align: center;
 }
-.left_wrapper{
-  padding: 40px 0 0 14px;
+.first, .prev, .next, .last {
+  border: 1px solid #666;
+  margin: 0 5px;
 }
-.left_title {
-  padding: 5px;
-  font-weight: 400;
-  font-size: 15px;
+.pagination span {
+  display: inline-block;
+  padding: 0 5px;
   color: #333;
-  cursor: pointer;
 }
-.left_title:hover {
-  background-color: #dddddd;
+.pagination a {
+  text-decoration: none;
+  display: inline-blcok;
+  padding: 0 5px;
+  color: #666;
 }
-.left_title:hover {
-  color: #009DE0;
-}
-.left_slice{
-  margin-top: 6px;
-}
-.grid_m {
-  display: grid;
+.grid_m.class {
   grid-template-columns: 50px 250px 150px 250px 150px 150px;
-  padding: 0px 0 0px 0;
-  align-items: center;
-  justify-items: center;
-  grid-auto-rows: minmax(50px, auto);
-  border-bottom: 1px solid #ccc;
 }
-.grid_m.body {
-  cursor: pointer;
-}
-.grid_m.body:hover {
-  background-color: #dddddd;
+.grid_m.nodata {
+  grid-template-columns: 1000px;
 }
 </style>

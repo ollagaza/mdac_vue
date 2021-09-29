@@ -74,3 +74,6 @@ tr.content:hover td.title{
 .grid_m.body:hover {
   background-color: #dddddd;
 }
+.grid_m.nodata {
+  grid-template-columns: 1000px;
+}

@@ -3,10 +3,10 @@
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
         <Member_Left></Member_Left>
-        <div style="flex: 2; padding: 40px 0;">
-          <!--div style="font-weight: 600; font-size: 15pt; color: #333">
+        <div style="flex: 2; padding: 14px 0;">
+          <div style="font-weight: 600; font-size: 15pt; color: #333">
             작업자 리스트
-          </div-->
+          </div>
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
               <select class="text" v-model="is_used" style="width: 100px;height: 36px;" @change="fnMemberList(1)">
@@ -63,7 +63,7 @@
             </div>
 
             <template v-if="member_list.length === 0">
-              <div class=" body">
+              <div class="grid_m member nodata">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
@@ -147,23 +147,23 @@ export default {
   mixins: [BaseMixin],
   data() {
     return {
-      member_list: '',          // 회원 데이터 리스트
-      is_used: '',              // 사용여부
-      search_type: 'user_name', // 검색조건
-      keyword: '',              // 검색어
-      no: '',                    // 게시판 숫자
-      paging: '',                // 페이징 데이터
-      start_page: '',            // 페이징-시작페이지
-      end_page: '',             // 페이징-마지막페이지
-      totalCount: 0,            // 게시물수
-      total_page: 0,            // 전체페이지
-      ipp: 20,                  // 페이지카운트
+      member_list: '',              // 회원 데이터 리스트
+      is_used: '',                  // 사용여부
+      search_type: 'user_name',     // 검색조건
+      keyword: '',                  // 검색어
+      no: '',                       // 게시판 숫자
+      paging: '',                   // 페이징 데이터
+      start_page: '',               // 페이징-시작페이지
+      end_page: '',                 // 페이징-마지막페이지
+      totalCount: 0,                // 게시물수
+      total_page: 0,                // 전체페이지
+      ipp: 20,                      // 페이지카운트
       page:this.$route.query.page ? this.$route.query.page:1,
-      modeType: 'e',            // 수정/등록모드
-      allChecked: false,        // All check
+      modeType: 'e',                // 수정/등록모드
+      allChecked: false,            // All check
       checkData: {},
       check_click: false,
-      paginavigation:function() { //페이징 처리
+      paginavigation:function() {   //페이징 처리
         var pageNumber = [];
         var start_page = this.paging.start_page;
         var end_page = this.paging.end_page;
@@ -185,10 +185,8 @@ export default {
     this.fnMemberList(1);
   },
   methods: {
-
+    // 회원정보 조회
     fnMemberList(pg) {
-      //body = req.query;
-      //this.$log.debug('MEMBERLIST');
       this.showLoading(true);
       //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
@@ -208,20 +206,11 @@ export default {
         this.page = 1;
       }
 
-      //this.$log.debug(`this.page===${this.page}`)
-      //this.$log.debug(`pg===${pg}`)
-
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
       this.page = page;
       let user_name = '';
-      // this.body = { // 데이터 전송
-      //   page:this.page
-      //   ,ipp:this.ipp
-      //   ,is_used:this.is_used
-      //   ,search_type:this.search_type
-      //   ,keyword:this.keyword
-      // }
+
       const data = {
         page:this.page
         ,ipp:this.ipp
@@ -229,6 +218,7 @@ export default {
         ,search_type:this.search_type
         ,keyword:this.keyword
       };
+      // 회원정보조회 API 호출
       apiuser.getUserInfos(data)
         .then((result) => {
 
@@ -247,16 +237,6 @@ export default {
               } else {
                 result.member_info[key].is_used_str = "정지중";
               }
-              //this.totalCount = result.member_info[key].totalcount
-              //result.data[key].result_str = result.data[key].result_text;
-              //if (result.data[key].result_itemname) {
-              //  result.data[key].result_str = result.data[key].result_itemname;
-              //}
-              //result.data[key].error_title = '';
-              //if (result.data[key].status === Constants.FileError) {
-              //   result.data[key].error_title = result.data[key].result_text;
-              //   result.data[key].result_text = '';
-              //}
             }
             // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
           }
@@ -267,10 +247,6 @@ export default {
         });
       this.showLoading(false);
     },
-    fnSearch() {
-
-    },
-
     fnPage(n) {
       if(this.page != n) {
         this.page = n;
@@ -301,6 +277,7 @@ export default {
       }
     },
 
+    // 회원 상태 변경
     member_change(itype) {
       const options = {};
       const checkData = this.checkData;
@@ -334,9 +311,9 @@ export default {
         EventBus.emit('alertPopupOpen', null, '선택한 회원이 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
-        if (itype === 'N') { // 활동정지??
+        if (itype === 'N') { // 사용정지
           this.$refs.used_pop.openPopup(sendParam, this.member_used_change);
-        } else if(itype === 'D') {
+        } else if(itype === 'D') { // 삭제
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.member_delete, options);
         } else {
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.member_used_change, options);
@@ -344,6 +321,7 @@ export default {
       }
     },
 
+    // 회원 상태 정보 실행
     member_used_change(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -352,7 +330,6 @@ export default {
           arrData.push(key);
         }
       });
-      // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
       params.users = arrData;
@@ -370,6 +347,8 @@ export default {
         EventBus.emit('confirmPopupClose', true);
       });
     },
+
+    // 회원 삭제
     member_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -378,7 +357,6 @@ export default {
           arrData.push(key);
         }
       });
-      // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
       params.users = arrData;
@@ -396,9 +374,8 @@ export default {
         EventBus.emit('confirmPopupClose', true);
       });
     },
+    // 회원정보 상세보기
     fnMemberDetail(seq) {
-      //console.log(`seq===${seq}`)
-      //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';
@@ -490,4 +467,7 @@ export default {
   color: #666;
 }
 
+.grid_m.nodata {
+  grid-template-columns: 1000px;
+}
 </style>
