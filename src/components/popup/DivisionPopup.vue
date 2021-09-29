@@ -19,47 +19,57 @@
               class="text"
               v-model="project_seq"
               style="width: 380px; padding-right: 5px"
-              v-on:change="fnGetDivision"
+              v-on:change="fnGetDivision('P')"
               :disabled="c_modeType === 'e' ? true : false">
 
                 <option value="" selected=true>프로젝트를 선택해주세요</option>
-                  <template v-for="(project, seq) in c_project_list">
-                    <option v-bind:value="project.seq">{{project.project_name}}</option>
-                  </template>                
+                  <!-- <template v-for="(project, seq) in c_project_list"> -->
+                <option v-for="plist in c_project_list" v-bind:value="plist.seq">{{plist.project_name}}</option>
+                  <!-- </template>                 -->
             </select>
           </div>
         </div>
 
-        <div class="item_title">
-          <div class="item">상위분류</div>
-          <div class="item" style="color:blue;font-weight:bold;">{{ parent_path }}</div>
-        </div>
-
-        <div class="item_title">
+        <div class="item_title" v-if="c_modeType === 'c'">
           <div class="item">상위분류</div>
           <div>
             <select
               class="text"
               v-model="parent_division_seq"
-              style="width: 380px; padding-right: 5px">
+              v-on:change="fnGetDivision('D')"
+              style="width: 380px; padding-right: 5px;">
 
                 <option value="" selected=true>분류를 선택해주세요</option>
-                  <template v-for="(project, seq) in c_project_list">
-                    <option v-bind:value="project.seq">{{project.project_name}}</option>
-                  </template>                
+                <option value="RESET" style="color:red;">분류초기화</option>
+                  <!-- <template v-for="(division, seq) in division_info"> -->
+                <option v-for="dlist in division_info" v-bind:value="{ seq: dlist.seq, name: dlist.division_name }">{{dlist.division_name}}</option>
+                  <!-- </template>                     -->
             </select>
           </div>
         </div>
 
         <div class="item_title">
-          <div class="item">분류아이디</div>
+          <div class="item">상위분류</div>
+          <div>
+            <input
+              type="text"
+              ref="parent_path"
+              v-model="parent_path"
+              style="width: 380px;  color: blue;"
+              readonly="true"
+            />
+          </div>          
+        </div>
+
+        <div class="item_title">
+          <div class="item">분류코드</div>
           <div>
             <input
               type="text"
               ref="division_id"
               v-model="division_id"
               style="width: 380px"
-              placeholder="분류아이디를 입력하세요."
+              placeholder="분류코드를 입력하세요."
               maxlength="20"
             />
           </div>
@@ -96,19 +106,17 @@
 
           <template v-if="c_modeType === 'c'">
             <div
-              class="btn newgreen"
+              class="btn navy"
               style="width: 160px; height: 50px"
-              v-on:click="onVerify"
-            >
+              v-on:click="onVerify">
               등록
             </div>
           </template>
           <template v-else>
             <div
-              class="btn newgreen"
+              class="btn navy"
               style="width: 160px; height: 50px"
-              v-on:click="onModify"
-            >
+              v-on:click="onModify">
               수정
             </div>
           </template>
@@ -116,8 +124,7 @@
           <div
             class="btn_cancel"
             style="width: 160px; height: 50px"
-            v-on:click="onCancel"
-          >
+            v-on:click="onCancel">
             취소
           </div>
           <div style="flex: 1"></div>
@@ -143,8 +150,10 @@ export default {
   created() {},
   data() {
     return {
+      division_info: "",
       project_seq: "",
       parent_division_seq: "",
+      parent_division_name: "",
       parent_path: "",      
       seq: -1,
       division_id: "",
@@ -188,10 +197,21 @@ export default {
       return '';
     },    
   },
+  watch:{
+    // 분류코드 한글 입력 방지
+    division_id(val){
+          const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+        if(reg.exec(val)!==null){
+        return this.division_id = this.division_id.slice(0,-1);
+        }
+    }
+  },
   mounted() {},
   methods: {
     onRest() {
       this.parent_path = "";
+      this.parent_seq = "";
       this.project_seq = "";
       this.division_id = "";
       this.division_name = "";
@@ -207,7 +227,7 @@ export default {
     onModify() {
       if (!this.c_is_verify_division_id) {
         this.$refs.division_id.focus();
-        this.onError("분류아이디를 입력해주세요.");
+        this.onError("분류코드를 입력해주세요.");
         return;
       }
       if (!this.c_is_verify_division_name) {
@@ -226,7 +246,7 @@ export default {
       }
       if (!this.c_is_verify_division_id) {
         this.$refs.division_id.focus();
-        this.onError("분류아이디를 입력해주세요.");
+        this.onError("분류코드를 입력해주세요.");
         return;
       }
       if (!this.c_is_verify_division_name) {
@@ -240,6 +260,7 @@ export default {
       this.$log.debug("on Next");
       //const bday = this.dateFormatter(this.birth_day);
       const division_info = {
+        parent_division_seq: this.parent_seq, 
         project_seq: this.project_seq,
         division_id: this.division_id,
         division_name: this.division_name,
@@ -314,7 +335,6 @@ export default {
             this.is_used = result.division_info[0].is_used;
           }
           this.division_info = result.division_info;
-          console.log(this.division_info);
           this.is_open = true;
         } else {
           this.onError(result.message);
@@ -336,28 +356,52 @@ export default {
     fnCheckUsed() {
       console.log(this.status);
     },
-    fnGetDivision() {
-
+    fnGetDivision(itype) {
       const data = {
+        dmode: 'CHILD',
         project_seq: this.project_seq,
-        division_seq: this.seq,
+        parent_division_seq: this.parent_division_seq.seq,
+        division_seq: '',
       };
 
+      this.$log.debug(`project_seq===${this.project_seq}`)
+      this.$log.debug(`division_seq===${this.division_seq}`)
+
+      // 분류 초기화 start
+      if(this.parent_division_seq === "RESET") {
+        this.parent_seq = ""
+        this.parent_division_seq = "";
+        this.parent_path = "";
+      }
+      // 분류 초기화 end
+
+      // 분류 조회
       apiproject.getDivision(data).then(async (result) => {
-        this.$log.debug(result);
+        // this.$log.debug(result);
+        this.$log.debug(`this.parent_division_seq.seq===${this.parent_division_seq.seq}`)
+        if(itype==='D') { // 분류 selectbox 선택시 ( 프로젝트 선택 X)
+          if(this.parent_path) {
+            this.parent_path = this.parent_path + ' > '
+          }
+          this.parent_path = this.parent_path + this.parent_division_seq.name
+          this.parent_seq = this.parent_division_seq.seq
+        }
+        
+        if(this.parent_division_seq.seq === undefined) {
+          /// this.$log.debug(`parent_path reset`)
+          this.parent_path = ""
+          this.parent_seq = ""
+        }
+
         if (result.error === 0) {
           if (result.division_info.length > 0) {
-            this.onRest();
             // this.parent_path = result.division_info[0].parent_path;
             // this.project_seq = result.division_info[0].project_seq;
-            his.seq = result.division_info[0].seq;
-            this.division_id = result.division_info[0].division_id;
-            this.division_name = result.division_info[0].division_name;
-            this.is_used = result.division_info[0].is_used;
+            this.division_info = result.division_info;
+          }else {
+            this.division_info = "";
           }
-          this.division_info = result.division_info;
-          console.log(this.division_info);
-          this.is_open = true;
+          this.parent_division_seq = ''
         } else {
           this.onError(result.message);
           this.is_open = false;
@@ -417,8 +461,5 @@ input::placeholder {
   background-color: #6e5f49;
 }
 
-.member_input {
-  display: flex;
-  flex-direction: row;
-}
+.member_input {  display: flex;  flex-direction: row;}
 </style>

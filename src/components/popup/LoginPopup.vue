@@ -221,8 +221,6 @@ export default {
       return util.replaceByTemplate(this.c_lang.C_0006, { user_name: this.find_id_result.user_name });
     },
   },
-  watch: {
-  },
   mounted() {
     this.addKeyboardEvent();
   },
