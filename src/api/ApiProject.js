@@ -93,4 +93,11 @@ export default {
       params,
     },
   }),
+  testClass: params => request({
+    url: '/project/delclass',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
 }
