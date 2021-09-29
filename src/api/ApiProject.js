@@ -85,7 +85,7 @@ export default {
     data: {
       params,
     },
-  }),  
+  }),
   delClass: params => request({
     url: '/project/delclass',
     method: 'post',
@@ -93,5 +93,4 @@ export default {
       params,
     },
   }),
-
 }

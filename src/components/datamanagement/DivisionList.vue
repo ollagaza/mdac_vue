@@ -27,7 +27,7 @@
               
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="division_name" selected=true>분류명</option>
-                <option value="division_id">분류아이디</option>
+                <option value="division_id">분류코드</option>
               </select>
               
               <input type="text" v-model="keyword" @keyup.enter="fnDivisionList(1)" />
@@ -70,11 +70,9 @@
               <div>등록일</div>
             </div>
 
-            <template v-if="division_list.length === 0">
-              <div class="grid_m division nodata">
-                <div style='align-items: center;'>등록된 데이터가 없습니다</div>
-              </div>
-            </template>
+            <div v-if="division_list.length === 0" class="grid_m division nodata">
+              <div style='align-items: center;'>등록된 데이터가 없습니다</div>
+            </div>
 
             <template v-if="division_list.length > 0">
               <template v-for="(pDivision, seq) in division_list">
@@ -265,6 +263,9 @@ export default {
                 result.division_info[key].is_used_str = '사용중';
               } else {
                 result.division_info[key].is_used_str = "정지중";
+              }
+              if(!result.division_info[key].parent_path) {
+                result.division_info[key].parent_path = "-"
               }
             }
           }

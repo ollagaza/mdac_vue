@@ -172,12 +172,12 @@ export default {
     Menu4() {
       this.$router.push({ name: 'class' });
     },
+    // 프로젝트 리스트 조회
     fnProjectList(pg) {
       this.showLoading(true);
       const params = {
       };
       let status = this.status;
-      // console.log(status)
       let search_type = this.search_type;
       let keyword = this.keyword;
       //this.$log.debug(`this.page===${this.page}`)

@@ -26,7 +26,7 @@
 
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="class_name" selected=true>클래스명</option>
-                <option value="class_id">클래스아이디</option>
+                <option value="class_id">클래스코드</option>
               </select>
 
               <input type="text" v-model="keyword" @keyup.enter="fnClassList(1)" />
@@ -479,7 +479,6 @@ export default {
   padding: 0 5px;
   color: #666;
 }
-
 .grid_m.class {
   grid-template-columns: 50px 250px 150px 250px 150px 150px;
 }
