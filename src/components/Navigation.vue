@@ -98,9 +98,14 @@ export default {
       this.$router.push({ name: 'index' });
     },
     logout() {
-      this.LogOut();
-      console.log('logout');
+      this.LogOut()
+      // this.$store.dispatch('LogOut')
+      // this.$log.debug(`logout`);
+      // this.$store.getters['is_logged']
+      // this.$log.debug(`logout_Logged_Navigation :: ${this.is_logged}`)
+      this.$log.debug(`logout_Logged_Navigation :: ${this.is_logged}`)
       this.$router.push({ name: 'index' });
+      // this.$router.go();
     },
     login() {
       EventBus.emit('loginPopupOpen');
