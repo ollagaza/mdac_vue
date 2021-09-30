@@ -1,6 +1,6 @@
 <template>
   <footer class="footer" >
-    <div class="footer_wrapper" style="margin-top:20px;border-top: 1px solid #CCC;">
+    <div class="footer_wrapper" style="margin-top:0px;border-top: 1px solid #CCC;">
       <div class="footer_copyright">copyright©2021 . All rights reserved.</div>
     </div>
   </footer>
@@ -33,6 +33,7 @@ export default {
       const route = this.$route;
       this.route_name = route.name;
     },
+
   },
 };
 </script>
@@ -60,7 +61,7 @@ export default {
 .footer_copyright{
   font-weight: 400;
   font-size: 14px;
-  font-color: #888;
+  color: #888;
   letter-spacing: -0.5px;
 }
 

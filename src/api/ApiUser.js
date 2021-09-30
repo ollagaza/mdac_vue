@@ -38,8 +38,8 @@ export default {
     method: 'get',
   }),
 
-  // getUserList: (page, ipp, is_used, search_type, keyword, member_seq) => request({
-  //   url: `/users/userinfo?page=${page}&ipp=${ipp}&is_used=${is_used}&search_type=${search_type}&keyword=${keyword}&member_seq=${member_seq}`,
+  // getUserList: (page, list_count, is_used, search_type, keyword, member_seq) => request({
+  //   url: `/users/userinfo?page=${page}&list_count=${list_count}&is_used=${is_used}&search_type=${search_type}&keyword=${keyword}&member_seq=${member_seq}`,
   //   method: 'post',
   // }),
 
