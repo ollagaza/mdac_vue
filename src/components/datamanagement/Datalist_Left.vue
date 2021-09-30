@@ -27,10 +27,11 @@ export default {
   },
   computed: {
     c_menu_show() {
-      if (this.menu_id === 2 || this.menu_id === 3 || this.menu_id === 4){
-        return true;
-      }
-      return false;
+      return true;
+      // if (this.menu_id === 2 || this.menu_id === 3 || this.menu_id === 4){
+      //   return true;
+      // }
+      // return false;
     },
   },
   watch: {

@@ -663,7 +663,7 @@ export default {
         this.closePopup();
         return;
       }
-      this.$router.push({ name: 'list' });
+      this.$router.push({ name: 'dashboard' });
       this.closePopup();
     },
     setSavedId() {

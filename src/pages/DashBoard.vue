@@ -74,23 +74,23 @@ export default {
   methods: {
   },
   beforeCreate() { 
-    //const isLoggedIn = this.$store.getters['is_logged'];
-    //if(!isLoggedIn) {
+    // const isLoggedIn = this.$store.getters['is_logged'];
+    // if(!isLoggedIn) {
     //  this.$router.push({ name: 'index' });
-    //}        
-    //console.log(`Logged1 :: ${isLoggedIn}`);
+    // }        
+    // console.log(`Logged1 :: ${isLoggedIn}`);
   },
   mounted() {
 
-    console.log(`Logged3 :: ${this.is_logged}`);
+    this.$log.debug(`Logged_Dashboard :: ${this.is_logged}`);
     if (!this.is_logged) {
       this.$router.push({ name: 'index' });
     }
   },
   destroyed() {
 
-    //const isLoggedIn = this.$store.getters['is_logged'];
-    //console.log(`Logged2 :: ${isLoggedIn}`);
+    // const isLoggedIn = this.$store.getters['is_logged'];
+    // console.log(`Logged2 :: ${isLoggedIn}`);
   },
 };
 </script>
