@@ -1,3 +1,11 @@
+<!--
+=======================================
+'	파일명 : ClassList.vue
+'	작성자 : djyu
+'	작성일 : 2021.09.30
+'	기능   : class list
+'	=====================================
+-->
 <template>
   <div class="layout">
     <div class="layout2" style="width: 100%;">
@@ -48,7 +56,7 @@
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="ipp" style="width: 120px;" @change="fnClassList(1)">
+                <select class="text" v-model="list_count" style="width: 120px;" @change="fnClassList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -89,30 +97,14 @@
             </template>
           </div>
 
-          <div class="pagination" v-if="paging.totalCount > 0">
-            <a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
-            <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
-            <template v-for=" (n,index) in paginavigation()">
-              <template v-if="paging.page==n">
-                <strong :key="index">{{n}}</strong>
-              </template>
-              <template v-else>
-                <a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
-              </template>
-            </template>
-            <a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
-            <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
-          </div>
-
-          <!-- <div style="margin: 20px 0 40px 0;">
+          <div style="margin: 20px 0 40px 0;">
             <Pagination ref="Pagination"
-                        :pageNationObj = "page_navigation"
+                        :pageNationObj = "cpage_navigation"
                         v-on:onMovePage = "onMovePage"></Pagination>
-          </div> -->
+          </div>
         </div>
       </div>
     </div>
-
 
     <ClassPopup ref="classpopup"
              v-bind:modeType="modeType"
@@ -129,16 +121,15 @@ import ClassPopup from '../../components/popup/ClassPopup';
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 import Datalist_Left from './Datalist_Left';
-//import Pagination from '../../components/Pagination';
+import Pagination from '../../components/Pagination';
 
 export default {
   name: 'ClassList',
   components: {
     ClassPopup,
     Datalist_Left,
-    //Pagination,
+    Pagination,
   },
-  //props: ['page_navigation'],
   mixins: [BaseMixin],
   data() {
     return {
@@ -150,26 +141,34 @@ export default {
       keyword: '',              // 검색어
       no:'',                    // 게시판 숫자
       paging:'',                // 페이징 데이터
-      start_page:'',            // 페이징-시작페이지
-      end_page: '',             // 페이징-마지막페이지
-      totalCount: 0,            // 게시물수
+      first_page:'',            // 페이징-시작페이지
+      last_page: '',             // 페이징-마지막페이지
+      total_count: 0,            // 게시물수
       total_page: 0,            // 전체페이지
-      ipp: 20,                  // 페이지카운트
-      page:this.$route.query.page ? this.$route.query.page:1,
+      list_count: 20,            // 페이지카운트
+      cur_page:this.$route.query.cur_page ? this.$route.query.cur_page:1,
       modeType: 'e',            // 수정/등록모드
       allChecked: false,        // All check
       checkData: {},
       check_click: false,
-      paginavigation:function() { //페이징 처리
-        var pageNumber = [];
-        var start_page = this.paging.start_page;
-        var end_page = this.paging.end_page;
-        for (var i = start_page; i <= end_page; i++) pageNumber.push(i);
-        return pageNumber;
+
+      page_navigation: {
+        cur_page: 1,
+        list_count: 20,
+        total_count: 100,
+        first_page: 1,
+        page_count: 10,
       },
     };
   },
   computed: {
+    cpage_navigation() {
+      const null_navigation = {};
+      if (this.page_navigation) {
+        return this.page_navigation;
+      }
+      return null_navigation;
+    },
     cis_data() {
       if (this.class_list && this.class_list.length > 0) {
         return true;
@@ -180,8 +179,7 @@ export default {
   },
   mounted() {
     const data = {
-        page:1
-        ,ipp:''
+        list_count:''
         ,status:''
         ,search_type:''
         ,keyword:''
@@ -210,32 +208,22 @@ export default {
     fnClassList(pg) {
       //body = req.query;
       this.showLoading(true);
-      //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
-      const params = {
-      //  stype: null,
-      //  search: null,
-      //  page: this.page_navigation.cur_page,
-      };
-      //if (this.roption.search && this.roption.search.length > 0) {
-      //  params.search_type = this.roption.search_type;
-      //  params.search = this.roption.search;
-      //}
       let project_seq = this.project_seq;
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      //this.$log.debug(`this.is_used===${this.is_used}`)
-      //this.$log.debug(`this.page===${this.page}`)
-      if(this.page === 'undefined') {
-        this.page = 1;
+      // this.$log.debug(`this.is_used===${this.is_used}`)
+      // this.$log.debug(`this.page===${this.page}`)
+      if(this.cur_page === 'undefined') {
+        this.cur_page = 1;
       }
 
-      let page = pg === 'undefined' ? this.page : pg;
-      page = page ? page : this.page;
-      this.page = page;
+      let cur_page = pg === 'undefined' ? this.cur_page : pg;
+      cur_page = cur_page ? cur_page : this.cur_page;
+      this.cur_page = cur_page;
       const data = {
-        page:this.page
-        ,ipp:this.ipp
+        cur_page:this.cur_page
+        ,list_count:this.list_count
         ,project_seq:this.project_seq
         ,is_used:this.is_used
         ,search_type:this.search_type
@@ -258,19 +246,21 @@ export default {
                 result.class_info[key].is_used_str = "정지중";
               }
             }
-            // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
           }
           this.class_list = result.class_info;
           this.paging = result.paging;
-          this.no = this.paging.totalCount - ((this.paging.page-1) * this.paging.ipp);
-          //console.log(this.paging)
+          this.no = this.paging.total_count - ((this.paging.cur_page-1) * this.paging.list_count);
+          // this.page_navigation = { cur_page: result.paging.total_page, list_count: result.paging.list_count, total_count: result.paging.total_count, first_page: result.paging.first_page, page_count: 10 };
+          this.page_navigation = this.paging
         });
       this.showLoading(false);
     },
-
+    onMovePage(page) {
+      this.fnPage(page);
+    },
     fnPage(n) {
-      if(this.page != n) {
-        this.page = n;
+      if(this.cur_page != n) {
+        this.cur_page = n;
         this.fnClassList(n);
       }
     },
@@ -429,17 +419,6 @@ export default {
         }
         console.log(user_ids)
     },
-    cpage_navigation() {
-      const null_navigation = {};
-      if (this.page_navigation) {
-        return this.page_navigation;
-      }
-      return null_navigation;
-    },
-    onMovePage(page) {
-      this.checkData = {};
-      this.$emit('onMovePage', page);
-    },
   },
 };
 </script>
@@ -459,25 +438,6 @@ export default {
   border-radius: 3px;
   padding: 0 10px;
   border: 1px solid #888;
-}
-.pagination {
-  margin: 20px 0 0 0;
-  text-align: center;
-}
-.first, .prev, .next, .last {
-  border: 1px solid #666;
-  margin: 0 5px;
-}
-.pagination span {
-  display: inline-block;
-  padding: 0 5px;
-  color: #333;
-}
-.pagination a {
-  text-decoration: none;
-  display: inline-blcok;
-  padding: 0 5px;
-  color: #666;
 }
 .grid_m.class {
   grid-template-columns: 50px 250px 150px 250px 150px 150px;

@@ -59,7 +59,11 @@ export default {
       } else if (page === this.PREV) {
         this.onMovePage(this.page_info.skipPrev);
       } else if (page === this.NEXT) {
-        this.onMovePage(this.page_info.skipNext);
+        console.log(this.page_info.last_page)
+        // last page가 skipNext보다 클때만. 이동
+        if(this.page_info.last_page > this.page_info.skipNext) {
+          this.onMovePage(this.page_info.skipNext);
+        }
       } else {
         this.onMovePage(page);
       }
@@ -122,33 +126,33 @@ export default {
 
 .move.first {
   margin-right: 6px;
-  background-image: url(/img/jiin/first_arrow.png);
+  background-image: url(/img/first_arrow.png);
 }
 .move.prev {
-  background-image: url(/img/jiin/pre_arrow.png);
+  background-image: url(/img/pre_arrow.png);
 }
 .move.next {
   margin-left: 20px;
-  background-image: url(/img/jiin/next_arrow.png);
+  background-image: url(/img/next_arrow.png);
 }
 .move.last {
   margin-left: 6px;
-  background-image: url(/img/jiin/end_arrow.png);
+  background-image: url(/img/end_arrow.png);
 }
 
 .move.first:hover {
   margin-right: 6px;
-  background-image: url(/img/jiin/first_arrow.png);
+  background-image: url(/img/first_arrow.png);
 }
 .move.prev:hover {
-  background-image: url(/img/jiin/pre_arrow.png);
+  background-image: url(/img/pre_arrow.png);
 }
 .move.next:hover {
   margin-left: 20px;
-  background-image: url(/img/jiin/next_arrow.png);
+  background-image: url(/img/next_arrow.png);
 }
 .move.last:hover {
-  background-image: url(/img/jiin/end_arrow.png);
+  background-image: url(/img/end_arrow.png);
 }
 .paging_wrapper {
   display: flex;

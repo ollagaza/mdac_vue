@@ -1,3 +1,11 @@
+<!--
+=======================================
+'	파일명 : ProjectPopup.vue
+'	작성자 : djyu
+'	작성일 : 2021.09.30
+'	기능   : project create / modify / view
+'	=====================================
+-->
 <template>
   <div class="popup_dim" v-bind:class="{ hide: !is_open }" style="">
     <div
