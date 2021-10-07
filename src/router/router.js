@@ -2,11 +2,14 @@ import VueRouter from 'vue-router';
 import Vue from 'vue';
 import store from '../vuex/store';
 import router_list from './router_list';
+import router_june from './router_june';
 import EventBus from '../utils/eventbus';
 
 Vue.use(VueRouter);
 
-const routes = router_list;
+const list_routes = router_list;
+const june_routes = router_june;
+const routes = list_routes.concat(june_routes);
 
 const scrollBehavior = (to, from, savedPosition) => {
   // if the returned position is falsy or an empty object,
