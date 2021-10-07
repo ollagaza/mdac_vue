@@ -1,6 +1,6 @@
 <!--
 =======================================
-'	파일명 : StatisticsProject.vue
+'	파일명 : StatisticsWorker.vue
 '	작성자 : djyu
 '	작성일 : 2021.09.30
 '	기능   : 프로젝트통계
@@ -10,10 +10,10 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Statistics_Left v-bind:menu_id="2"></Statistics_Left>
+        <Statistics_Left v-bind:menu_id="1"></Statistics_Left>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
-            프로젝트 통계
+            작업자 통계
           </div>
 
 
@@ -64,15 +64,13 @@
           <div style="padding: 10px 0 0 0 ;">
             <div class="grid_m class header">
               <div>프로젝트</div>
+              <div>작업자</div>
               <div>총작업량</div>
-              <div>라벨링진행</div>
-              <div>라벨링완료</div>
-              <div>라벨링반려</div>
+              <div>진행</div>
+              <div>완료</div>
+              <div>반려</div>
               <div>반려율</div>
-              <div>라벨링진행율</div>
-              <div>검수진행</div>
-              <div>검수완료</div>
-              <div>검수진행율</div>
+              <div>진행율</div>
             </div>
 
             <template v-if="statistics_list.length === 0">
@@ -85,15 +83,13 @@
               <template v-for="(pStatistics, seq) in statistics_list">
                 <div class="grid_m class body">
                   <div>{{ pStatistics.project_name }}</div>
+                  <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_perReject }}%</div>
                   <div>{{ pStatistics.label_perComplete }}%</div>
-                  <div>{{ pStatistics.check_ing }}</div>
-                  <div>{{ pStatistics.check_complete }}</div>
-                  <div>{{ pStatistics.check_perComplete }}%</div>
                 </div>
               </template>
             </template>
@@ -121,7 +117,7 @@
 <script>
 import apiproject from '../../api/ApiProject';
 import apistatistics from '../../api/ApiStatistics';
-import BaseMixin from '../../components/Mixins/BaseMixin';
+import BaseMixin from '../Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 import Statistics_Left from './Statistics_Left';
 import { ko } from 'vuejs-datepicker/dist/locale';
@@ -130,7 +126,7 @@ import Datepicker from 'vuejs-datepicker';
 import {Bar} from 'vue-chartjs'
 import ChartPage from './Chart.vue';
 export default {
-  name: 'StatisticsProject',
+  name: 'StatisticsWorker',
   components: {
     Statistics_Left,
     Datepicker,
@@ -141,7 +137,7 @@ export default {
     return {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
-      search_seq: '3',          // 프로젝트
+      search_seq: 1,            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: '',          // 프로젝트
       search_type: '',          // 조회기준
       no:'',                    // 게시판 숫자
@@ -182,7 +178,7 @@ export default {
       this.showLoading(true);
       let project_seq = this.project_seq;
       const data = {
-        search_seq: 4,
+        search_seq: 1,
         project_seq: this.project_seq,
         search_type: this.search_type,
         start_date: this.start_date,
@@ -237,7 +233,7 @@ export default {
   border: 1px solid #888;
 }
 .grid_m.class {
-  grid-template-columns: 280px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
+  grid-template-columns: 300px 100px 100px 100px 100px 100px 100px 100px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
