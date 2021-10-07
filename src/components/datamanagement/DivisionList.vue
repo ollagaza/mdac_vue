@@ -1,45 +1,41 @@
+<!--
+=======================================
+'	파일명 : DivisionList.vue
+'	작성자 : djyu
+'	작성일 : 2021.09.30
+'	기능   : 분류 List
+'	=====================================
+-->
 <template>
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <div class="left_menu">
-          <div class="left_wrapper">
-            <div class="left_title" v-on:click="Menu1">Data Status</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu2">Project Manager</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu3">분류관리</div>
-            <div class="left_slice"></div>
-            <div class="left_title" v-on:click="Menu4">클래스관리</div>
-          </div>
-        </div>
+        <Datalist_Left v-bind:menu_id="3"></Datalist_Left>
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
             분류 리스트
-          </div>
-
-
+          </div> 
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
               <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>전체프로젝트</option>
-                <template v-for="(project, seq) in project_list">
-                  <option v-bind:value="project.seq">{{project.project_name}}</option>
-                </template>
+                  <template v-for="(project, seq) in project_list">
+                    <option v-bind:value="project.seq">{{project.project_name}}</option>
+                  </template>                
               </select>
-
+              
               <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">정지중</option>
               </select>
-
+              
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="division_name" selected=true>분류명</option>
-                <option value="division_id">분류아이디</option>
+                <option value="division_id">분류코드</option>
               </select>
-
+              
               <input type="text" v-model="keyword" @keyup.enter="fnDivisionList(1)" />
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionList(1)">검색</div>
               <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionDetail('')">등록</div>
@@ -56,10 +52,10 @@
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('Y')">사용중</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('N')">사용정지</div>
               <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('D')">삭제</div>
-
+            
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="ipp" style="width: 120px;" @change="fnDivisionList(1)">
+                <select class="text" v-model="list_count" style="width: 120px;" @change="fnDivisionList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -70,39 +66,39 @@
           </div>
 
           <div style="padding: 10px 0 0 0 ;">
-            <div class="grid_m header">
+            <div class="grid_m division header">
               <div></div><!-- v-model="checked_all"  -->
               <div>프로젝트</div>
-              <div>클래스코드</div>
-              <div>클래스명</div>
+              <div>상위분류</div>
+              <div>분류코드</div>
+              <div>분류명</div>
               <div>상태</div>
               <div>등록일</div>
             </div>
 
-            <template v-if="division_list.length === 0">
-              <div class=" body">
-                <div style='align-items: center;'>등록된 데이터가 없습니다</div>
-              </div>
-            </template>
+            <div v-if="division_list.length === 0" class="grid_m division nodata">
+              <div style='align-items: center;'>등록된 데이터가 없습니다</div>
+            </div>
 
             <template v-if="division_list.length > 0">
-              <template v-for="(pClass, seq) in division_list">
-                <div class="grid_m body">
+              <template v-for="(pDivision, seq) in division_list">
+                <div class="grid_m division body">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
-                  <div class="check_box" v-bind:class="[{on: checkData[pClass.seq]}]" v-on:click="onCheckClick(pClass.seq)"></div>
-                  <div v-on:click="fnDivisionDetail(pClass.seq)">{{ pClass.project_name }}</div>
-                  <div v-on:click="fnDivisionDetail(pClass.seq)">{{ pClass.class_id }}</div>
-                  <div v-on:click="fnDivisionDetail(pClass.seq)">{{ pClass.class_name }}</div>
-                  <div v-on:click="fnDivisionDetail(pClass.seq)"><div :class="{ 'process_progress' : pClass.is_used === 'Y', 'process_stop' : pClass.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnDivisionList(1)">{{ pClass.is_used_str }}</div></div>
-                  <div v-on:click="fnDivisionDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
+                  <div class="check_box" v-bind:class="[{on: checkData[pDivision.seq]}]" v-on:click="onCheckClick(pDivision.seq)"></div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.project_name }}</div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.parent_path }}</div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.division_id }}</div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.division_name }}</div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)"><div :class="{ 'process_progress' : pDivision.is_used === 'Y', 'process_stop' : pDivision.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnDivisionList(1)">{{ pDivision.is_used_str }}</div></div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.reg_date_dt }}</div>
                 </div>
               </template>
-            </template>
+            </template>            
           </div>
 
-          <div class="pagination" v-if="paging.totalCount > 0">
+          <!-- <div class="pagination" v-if="paging.total_count > 0">
             <a href="javascript:;" @click="fnPage(1)" class="first">&lt;&lt;</a>
-            <a href="javascript:;" v-if="paging.start_page > 10" @click="fnPage(`${paging.start_page-1}`)"  class="prev">&lt;</a>
+            <a href="javascript:;" v-if="paging.first_page > 10" @click="fnPage(`${paging.first_page-1}`)"  class="prev">&lt;</a>
             <template v-for=" (n,index) in paginavigation()">
               <template v-if="paging.page==n">
                 <strong :key="index">{{n}}</strong>
@@ -111,25 +107,25 @@
                 <a href="javascript:;" @click="fnPage(`${n}`)" :key="index">{{n}}</a>
               </template>
             </template>
-            <a href="javascript:;" v-if="paging.total_page > paging.end_page" @click="fnPage(`${paging.end_page+1}`)"  class="next">&gt;</a>
+            <a href="javascript:;" v-if="paging.total_page > paging.last_page" @click="fnPage(`${paging.last_page+1}`)"  class="next">&gt;</a>
             <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
-          </div>
-
-          <!-- <div style="margin: 20px 0 40px 0;">
-            <Pagination ref="Pagination"
-                        :pageNationObj = "page_navigation"
-                        v-on:onMovePage = "onMovePage"></Pagination>
           </div> -->
+
+          <div style="margin: 20px 0 40px 0;">
+            <Pagination ref="Pagination"
+                        :pageNationObj = "cpage_navigation"
+                        v-on:onMovePage = "onMovePage"></Pagination>
+          </div>
         </div>
       </div>
     </div>
 
 
     <DivisionPopup ref="divisionpopup"
-                   v-bind:modeType="modeType"
-                   v-bind:project_list="project_list"
-                   v-on:callDivisionList="fnDivisionList"
-    ></DivisionPopup>
+             v-bind:modeType="modeType"
+             v-bind:project_list="project_list"
+             v-on:callDivisionList="fnDivisionList"
+    ></DivisionPopup>    
   </div>
 </template>
 
@@ -139,46 +135,63 @@ import apiproject from '../../api/ApiProject';
 import DivisionPopup from '../../components/popup/DivisionPopup';
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
-//import Pagination from '../../components/Pagination';
+import Datalist_Left from './Datalist_Left';
+import Pagination from '../../components/Pagination';
 
 export default {
-  name: 'ClassList',
+  name: 'DivisionList',
   components: {
     DivisionPopup,
-    //Pagination,
+    Datalist_Left,
+    Pagination,
   },
   //props: ['page_navigation'],
   mixins: [BaseMixin],
   data() {
     return {
       project_list: '',         // 프로젝트 리스트
-      division_list: '',           // 클래스 데이터 리스트
+      division_list: '',        // 분류 데이터 리스트
       project_seq: '',          // 프로젝트
       is_used: '',              // 사용여부
       search_type: 'division_name',// 검색조건
       keyword: '',              // 검색어
-      no:'',                    //게시판 숫자
-      paging:'',                //페이징 데이터
-      start_page:'',            //페이징-시작페이지
-      end_page: '',             //페이징-마지막페이지
-      totalCount: 0,            //게시물수
-      total_page: 0,            //전체페이지
-      ipp: 20,                  //페이지카운트
-      page:this.$route.query.page ? this.$route.query.page:1,
+      no:'',                    // 게시판 숫자
+      paging:'',                // 페이징 데이터
+      first_page:'',            // 페이징-시작페이지
+      last_page: '',             // 페이징-마지막페이지
+      total_count: 0,            // 게시물수
+      total_page: 0,            // 전체페이지
+      list_count: 20,                  // 페이지카운트
+      cur_page:this.$route.query.cur_page ? this.$route.query.cur_page:1,
       modeType: 'e',            // 수정/등록모드
       allChecked: false,        // All check
       checkData: {},
       check_click: false,
-      paginavigation:function() { //페이징 처리
-        var pageNumber = [];
-        var start_page = this.paging.start_page;
-        var end_page = this.paging.end_page;
-        for (var i = start_page; i <= end_page; i++) pageNumber.push(i);
-        return pageNumber;
+
+      page_navigation: {
+        cur_page: 1,
+        list_count: 20,
+        total_count: 100,
+        first_page: 1,
+        page_count: 10,
       },
+      // paginavigation:function() { // 페이징 처리
+      //   var pageNumber = [];
+      //   var first_page = this.paging.first_page;
+      //   var last_page = this.paging.last_page;
+      //   for (var i = first_page; i <= last_page; i++) pageNumber.push(i);
+      //   return pageNumber;
+      // },
     };
   },
   computed: {
+    cpage_navigation() {
+      const null_navigation = {};
+      if (this.page_navigation) {
+        return this.page_navigation;
+      }
+      return null_navigation;
+    },    
     cis_data() {
       if (this.division_list && this.division_list.length > 0) {
         return true;
@@ -189,16 +202,15 @@ export default {
   },
   mounted() {
     const data = {
-      page:1
-      ,ipp:''
-      ,status:''
-      ,search_type:''
-      ,keyword:''
+        list_count:''
+        ,status:''
+        ,search_type:''
+        ,keyword:''
     }
     apiproject.getProjectInfo(data)
       .then((result) => {
         this.project_list = result.project_info;
-      });
+      });    
     this.fnDivisionList(1);
   },
   methods: {
@@ -207,22 +219,23 @@ export default {
     },
     Menu2() {
       this.$router.push({ name: 'project' });
-    },
+    },   
     Menu3() {
       this.$router.push({ name: 'division' });
-    },
+    },   
     Menu4() {
       this.$router.push({ name: 'class' });
-    },
-
+    },    
+    
+    // 분류리스트 조회
     fnDivisionList(pg) {
       //body = req.query;
       this.showLoading(true);
       //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
-        //  stype: null,
-        //  search: null,
-        //  page: this.page_navigation.cur_page,
+      //  stype: null,
+      //  search: null,
+      //  page: this.page_navigation.cur_page,
       };
       //if (this.roption.search && this.roption.search.length > 0) {
       //  params.search_type = this.roption.search_type;
@@ -232,33 +245,31 @@ export default {
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      //this.$log.debug(`this.is_used===${this.is_used}`)
-      //this.$log.debug(`this.page===${this.page}`)
-      if(this.page === 'undefined') {
-        this.page = 1;
+      // this.$log.debug(`this.is_used===${this.is_used}`)
+      // this.$log.debug(`this.page===${this.page}`)
+      if(this.cur_page === 'undefined') {
+        this.cur_page = 1;
       }
-
-      //this.$log.debug(`this.page===${this.page}`)
-      //this.$log.debug(`pg===${pg}`)
-
-      let page = pg === 'undefined' ? this.page : pg;
-      page = page ? page : this.page;
-      this.page = page;
-      const data = {
-        page:this.page
-        ,ipp:this.ipp
+      
+      let cur_page = pg === 'undefined' ? this.cur_page : pg;
+      cur_page = cur_page ? cur_page : this.cur_page;
+      this.cur_page = cur_page;
+      const data = { 
+        cur_page:this.cur_page
+        ,list_count:this.list_count
         ,project_seq:this.project_seq
         ,is_used:this.is_used
         ,search_type:this.search_type
-        ,keyword:this.keyword
+        ,keyword:this.keyword          
       };
-      apiproject.getClassInfo(data)
+      // 분류조회 API 호출
+      apiproject.getDivisionInfo(data)
         .then((result) => {
-
-          //this.$log.debug(result);
+          
+          // this.$log.debug(result);
           if (result.division_info.length > 0) {
-            //this.paging = 10;
-            //this.no = 1;
+              // this.paging = 10;
+              // this.no = 1;            
             for (const key in result.division_info) {
               const reg_date = result.division_info[key].reg_date;
               if (reg_date) {
@@ -270,33 +281,25 @@ export default {
               } else {
                 result.division_info[key].is_used_str = "정지중";
               }
-              //this.totalCount = result.division_info[key].totalcount
-              //result.data[key].result_str = result.data[key].result_text;
-              //if (result.data[key].result_itemname) {
-              //  result.data[key].result_str = result.data[key].result_itemname;
-              //}
-              //result.data[key].error_title = '';
-              //if (result.data[key].status === Constants.FileError) {
-              //   result.data[key].error_title = result.data[key].result_text;
-              //   result.data[key].result_text = '';
-              //}
+              if(!result.division_info[key].parent_path) {
+                result.division_info[key].parent_path = "-"
+              }
             }
-            // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
           }
           this.division_list = result.division_info;
           this.paging = result.paging;
-          this.no = this.paging.totalCount - ((this.paging.page-1) * this.paging.ipp);
-          //console.log(this.paging)
+          this.no = this.paging.total_count - ((this.paging.cur_page-1) * this.paging.list_count);
+          this.page_navigation = this.paging
+          // console.log(this.paging)
         });
       this.showLoading(false);
+    },   
+    onMovePage(page) {
+      this.fnPage(page);
     },
-    fnSearch() {
-
-    },
-
     fnPage(n) {
-      if(this.page != n) {
-        this.page = n;
+      if(this.cur_page != n) {
+        this.cur_page = n;
         this.fnDivisionList(n);
       }
     },
@@ -324,6 +327,7 @@ export default {
       }
     },
 
+    // 분류 상태 변경
     division_change(itype) {
       const options = {};
       const checkData = this.checkData;
@@ -332,19 +336,19 @@ export default {
       let szTitle = '';
       switch(itype) {
         case 'Y' :
-          confirm_msg = '선택 클래스를 사용중으로 변경 하시겠습니까?';
+          confirm_msg = '선택 분류를 사용중으로 변경 하시겠습니까?';
           close_msg = '사용중으로 변경되었습니다.';
           szTitle = '사용중';
           break;
         case 'N' :
-          confirm_msg = '선택 클래스를 사용정지 시겠습니까?';
+          confirm_msg = '선택 분류를 사용정지 시겠습니까?';
           close_msg = '사용정지 시켰습니다.';
           szTitle = '사용정지';
           break;
         case 'D' :
-          confirm_msg = '선택 클래스를 삭제 하시겠습니까?';
+          confirm_msg = '선택 분류를 삭제 하시겠습니까?';
           close_msg = '삭제했습니다.';
-          szTitle = '클래스삭제';
+          szTitle = '분류삭제';
           break;
       }
       let selUserCo = 0;
@@ -354,18 +358,19 @@ export default {
         }
       }
       if (selUserCo < 1) {
-        EventBus.emit('alertPopupOpen', null, '선택한 클래스가 없습니다.', null);
+        EventBus.emit('alertPopupOpen', null, '선택한 분류가 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
         if (itype === 'D') { // 활동정지??
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_delete, options);
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.division_delete, options);
         } else {
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_used_change, options);
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.division_used_change, options);
         }
       }
     },
 
-    class_used_change(sendParam, setDate) {
+    // 분류 상태 변경 실행
+    division_used_change(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
       Object.keys(checkData).forEach((key) => {
@@ -373,11 +378,10 @@ export default {
           arrData.push(key);
         }
       });
-      // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
-      params.classes = arrData;
-      apiproject.setClassUsed(params).then((data) => {
+      params.divisions = arrData;
+      apiproject.setDivisionUsed(params).then((data) => {
         console.log(`data.error===${data.error}`)
         if (data.error === 0) {
           EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
@@ -387,8 +391,10 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },
-    class_delete(sendParam, setDate) {
+    },     
+
+    // 분류 삭제
+    division_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
       Object.keys(checkData).forEach((key) => {
@@ -396,11 +402,10 @@ export default {
           arrData.push(key);
         }
       });
-      // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
-      params.classes = arrData;
-      apiproject.delClass(params).then((data) => {
+      params.divisions = arrData;
+      apiproject.delDivision(params).then((data) => {
         console.log(`data.error===${data.error}`)
         if (data.error === 0) {
           EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
@@ -410,121 +415,90 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },
+    },   
+    
+    // 분류 상세 보기
     fnDivisionDetail(seq) {
-      //console.log(`seq===${seq}`)
-      //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';
-        this.$refs.classpopup.openPopup();
+        this.$refs.divisionpopup.openPopup();
       }else{
         this.modeType = 'e';
-        this.$refs.classpopup.openPopupBySeq(seq);
+        this.$refs.divisionpopup.openPopupBySeq(seq);
       }
     },
     checkedAll(checked) {
       //if (this.cis_data) {
-      this.allChecked = checked
-      for (let i in this.division_list) {
-        this.division_list[i].selected = this.allChecked;
-      }
+        this.allChecked = checked
+        for (let i in this.division_list) {
+            this.division_list[i].selected = this.allChecked;
+        }
       //}
     },
     selected (e) {
-      for (let i in this.division_list) {
-        if(! this.division_list[i].selected) {
-          this.allChecked = false;
-          return;
-        } else {
-          this.allChecked = true;
+        for (let i in this.division_list) {
+            if(! this.division_list[i].selected) {
+                this.allChecked = false;
+                return;
+            } else {
+                this.allChecked = true;
+            }
         }
-      }
     },
     getSelected(){
-      let user_ids = [];
-      for (let i in this.division_list) {
-        if(this.division_list[i].selected) {
-          user_ids.push(this.division_list[i].seq);
+        let user_ids = [];
+        for (let i in this.division_list) {
+            if(this.division_list[i].selected) {
+                user_ids.push(this.division_list[i].seq);
+            }
         }
-      }
-      console.log(user_ids)
-    },
-    cpage_navigation() {
-      const null_navigation = {};
-      if (this.page_navigation) {
-        return this.page_navigation;
-      }
-      return null_navigation;
-    },
-    onMovePage(page) {
-      this.checkData = {};
-      this.$emit('onMovePage', page);
-    },
+        console.log(user_ids)
+    },   
   },
 };
 </script>
 
 <style scoped>
-.searchWrap{border:1px solid #888; border-radius:5px; text-align:center;  padding:10px 10px 10px 10px; margin-bottom:10px; margin-top :5px;}
-.searchWrap input{width:60%; height:36px; border-radius:3px; padding:0 10px; border:1px solid #888;}
-
-.pagination{margin:20px 0 0 0; text-align:center;}
-.first, .prev, .next, .last{border:1px solid #666; margin:0 5px;}
-.pagination span{display:inline-block; padding:0 5px; color:#333;}
-.pagination a{text-decoration:none; display:inline-blcok; padding:0 5px; color:#666;}
-
-.layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0;
-  flex: 1;
-  height: fit-content;
+.searchWrap {
+  border: 1px solid #888;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+  margin-top: 5px;
 }
-.layout2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0px;
+.searchWrap input {
+  width: 60%;
+  height: 36px;
+  border-radius: 3px;
+  padding: 0 10px;
+  border: 1px solid #888;
 }
-
-.left_menu{
-  width:180px;
+.pagination {
+  margin: 20px 0 0 0;
+  text-align: center;
 }
-.left_wrapper{
-  padding: 40px 0 0 14px;
+.first, .prev, .next, .last {
+  border: 0px solid #666;
+  margin: 0 5px;
 }
-.left_title {
-  padding: 5px;
-  font-weight: 400;
-  font-size: 15px;
+.pagination span {
+  display: inline-block;
+  padding: 0 5px;
   color: #333;
-  cursor: pointer;
 }
-.left_title:hover {
-  background-color: #dddddd;
+.pagination a {
+  text-decoration: none;
+  display: inline-blcok;
+  padding: 0 5px;
+  color: #666;
 }
-.left_title:hover {
-  color: #009DE0;
+
+.grid_m.division {
+  grid-template-columns: 50px 150px 150px 150px 200px 150px 150px;
 }
-.left_slice{
-  margin-top: 6px;
-}
-.grid_m {
-  display: grid;
-  grid-template-columns: 50px 250px 150px 250px 150px 150px;
-  padding: 0px 0 0px 0;
-  align-items: center;
-  justify-items: center;
-  grid-auto-rows: minmax(30px, auto);
-  border-bottom: 1px solid #ccc;
-}
-.grid_m.body {
-  cursor: pointer;
-}
-.grid_m.body:hover {
-  background-color: #dddddd;
+.grid_m.nodata {
+  grid-template-columns: 1000px;
 }
 </style>
