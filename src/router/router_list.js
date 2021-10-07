@@ -7,7 +7,7 @@ import Class from '../components/datamanagement/ClassList';
 import Page2 from '../pages/Page2';
 import StatisticsWorker from '../components/statistics/StatisticsWorker';
 import StatisticsProject from '../components/statistics/StatisticsProject';
-import Chart from '../components/statistics/Charttest';
+import Chart from '../components/statistics/ChartTest';
 import MemberList from '../components/member/MemberList';
 
 const router_list = [
