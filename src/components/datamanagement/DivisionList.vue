@@ -14,7 +14,13 @@
         <div style="flex: 2; padding-top: 14px;">
           <div style="font-weight: 600; font-size: 15pt; color: #333">
             분류 리스트
+<<<<<<< Updated upstream
           </div> 
+=======
+          </div>
+
+
+>>>>>>> Stashed changes
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
@@ -22,20 +28,20 @@
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
-                  </template>                
+                  </template>
               </select>
-              
+
               <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">정지중</option>
               </select>
-              
+
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="division_name" selected=true>분류명</option>
                 <option value="division_id">분류코드</option>
               </select>
-              
+
               <input type="text" v-model="keyword" @keyup.enter="fnDivisionList(1)" />
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionList(1)">검색</div>
               <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionDetail('')">등록</div>
@@ -52,7 +58,7 @@
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('Y')">사용중</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('N')">사용정지</div>
               <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('D')">삭제</div>
-            
+
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
                 <select class="text" v-model="list_count" style="width: 120px;" @change="fnDivisionList(1)">
@@ -93,7 +99,7 @@
                   <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.reg_date_dt }}</div>
                 </div>
               </template>
-            </template>            
+            </template>
           </div>
 
           <!-- <div class="pagination" v-if="paging.total_count > 0">
@@ -125,15 +131,15 @@
              v-bind:modeType="modeType"
              v-bind:project_list="project_list"
              v-on:callDivisionList="fnDivisionList"
-    ></DivisionPopup>    
+    ></DivisionPopup>
   </div>
 </template>
 
 
 <script>
 import apiproject from '../../api/ApiProject';
-import DivisionPopup from '../../components/popup/DivisionPopup';
-import BaseMixin from '../../components/Mixins/BaseMixin';
+import DivisionPopup from '../popup/DivisionPopup';
+import BaseMixin from '../Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 import Datalist_Left from './Datalist_Left';
 import Pagination from '../../components/Pagination';
@@ -210,7 +216,7 @@ export default {
     apiproject.getProjectInfo(data)
       .then((result) => {
         this.project_list = result.project_info;
-      });    
+      });
     this.fnDivisionList(1);
   },
   methods: {
@@ -219,15 +225,20 @@ export default {
     },
     Menu2() {
       this.$router.push({ name: 'project' });
-    },   
+    },
     Menu3() {
       this.$router.push({ name: 'division' });
-    },   
+    },
     Menu4() {
       this.$router.push({ name: 'class' });
+<<<<<<< Updated upstream
     },    
     
     // 분류리스트 조회
+=======
+    },
+
+>>>>>>> Stashed changes
     fnDivisionList(pg) {
       //body = req.query;
       this.showLoading(true);
@@ -250,6 +261,7 @@ export default {
       if(this.cur_page === 'undefined') {
         this.cur_page = 1;
       }
+<<<<<<< Updated upstream
       
       let cur_page = pg === 'undefined' ? this.cur_page : pg;
       cur_page = cur_page ? cur_page : this.cur_page;
@@ -257,19 +269,39 @@ export default {
       const data = { 
         cur_page:this.cur_page
         ,list_count:this.list_count
+=======
+
+      //this.$log.debug(`this.page===${this.page}`)
+      //this.$log.debug(`pg===${pg}`)
+
+      let page = pg === 'undefined' ? this.page : pg;
+      page = page ? page : this.page;
+      this.page = page;
+      const data = {
+        page:this.page
+        ,ipp:this.ipp
+>>>>>>> Stashed changes
         ,project_seq:this.project_seq
         ,is_used:this.is_used
         ,search_type:this.search_type
-        ,keyword:this.keyword          
+        ,keyword:this.keyword
       };
       // 분류조회 API 호출
       apiproject.getDivisionInfo(data)
         .then((result) => {
+<<<<<<< Updated upstream
           
           // this.$log.debug(result);
           if (result.division_info.length > 0) {
               // this.paging = 10;
               // this.no = 1;            
+=======
+
+          //this.$log.debug(result);
+          if (result.division_info.length > 0) {
+              //this.paging = 10;
+              //this.no = 1;
+>>>>>>> Stashed changes
             for (const key in result.division_info) {
               const reg_date = result.division_info[key].reg_date;
               if (reg_date) {
@@ -297,6 +329,13 @@ export default {
     onMovePage(page) {
       this.fnPage(page);
     },
+<<<<<<< Updated upstream
+=======
+    fnSearch() {
+
+    },
+
+>>>>>>> Stashed changes
     fnPage(n) {
       if(this.cur_page != n) {
         this.cur_page = n;
@@ -391,10 +430,15 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
+<<<<<<< Updated upstream
     },     
 
     // 분류 삭제
     division_delete(sendParam, setDate) {
+=======
+    },
+    class_delete(sendParam, setDate) {
+>>>>>>> Stashed changes
       const checkData = sendParam.checkData;
       const arrData = [];
       Object.keys(checkData).forEach((key) => {
@@ -415,9 +459,13 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
+<<<<<<< Updated upstream
     },   
     
     // 분류 상세 보기
+=======
+    },
+>>>>>>> Stashed changes
     fnDivisionDetail(seq) {
       if(seq === '')
       {
@@ -454,7 +502,22 @@ export default {
             }
         }
         console.log(user_ids)
+<<<<<<< Updated upstream
     },   
+=======
+    },
+    cpage_navigation() {
+      const null_navigation = {};
+      if (this.page_navigation) {
+        return this.page_navigation;
+      }
+      return null_navigation;
+    },
+    onMovePage(page) {
+      this.checkData = {};
+      this.$emit('onMovePage', page);
+    },
+>>>>>>> Stashed changes
   },
 };
 </script>
