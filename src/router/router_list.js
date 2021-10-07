@@ -1,6 +1,5 @@
 import IndexPage from '../pages/IndexPage';
 import DashBoard from '../pages/DashBoard';
-import DataStatus from '../components/datamanagement/DataList';
 import Project from '../components/datamanagement/ProjectList';
 import Division from '../components/datamanagement/DivisionList';
 import Class from '../components/datamanagement/ClassList';
@@ -21,12 +20,6 @@ const router_list = [
     path: '/dashboard',
     name: 'dashboard',
     component: DashBoard,
-    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
-  },
-  {
-    path: '/datastatus',
-    name: 'datastatus',
-    component: DataStatus,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
