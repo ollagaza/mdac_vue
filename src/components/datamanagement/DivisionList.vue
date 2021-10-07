@@ -18,28 +18,28 @@
             분류 리스트
           </div>
 
- 
+
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
               <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>전체프로젝트</option>
-                  <template v-for="(project, seq) in project_list">
-                    <option v-bind:value="project.seq">{{project.project_name}}</option>
-                  </template>                
+                <template v-for="(project, seq) in project_list">
+                  <option v-bind:value="project.seq">{{project.project_name}}</option>
+                </template>
               </select>
-              
+
               <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">정지중</option>
               </select>
-              
+
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
                 <option value="division_name" selected=true>분류명</option>
                 <option value="division_id">분류아이디</option>
               </select>
-              
+
               <input type="text" v-model="keyword" @keyup.enter="fnDivisionList(1)" />
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionList(1)">검색</div>
               <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnDivisionDetail('')">등록</div>
@@ -56,7 +56,7 @@
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('Y')">사용중</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('N')">사용정지</div>
               <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('D')">삭제</div>
-            
+
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
                 <select class="text" v-model="ipp" style="width: 120px;" @change="fnDivisionList(1)">
@@ -97,7 +97,7 @@
                   <div v-on:click="fnDivisionDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
                 </div>
               </template>
-            </template>            
+            </template>
           </div>
 
           <div class="pagination" v-if="paging.totalCount > 0">
@@ -126,10 +126,10 @@
 
 
     <DivisionPopup ref="divisionpopup"
-             v-bind:modeType="modeType"
-             v-bind:project_list="project_list"
-             v-on:callDivisionList="fnDivisionList"
-    ></DivisionPopup>    
+                   v-bind:modeType="modeType"
+                   v-bind:project_list="project_list"
+                   v-on:callDivisionList="fnDivisionList"
+    ></DivisionPopup>
   </div>
 </template>
 
@@ -189,16 +189,16 @@ export default {
   },
   mounted() {
     const data = {
-        page:1
-        ,ipp:''
-        ,status:''
-        ,search_type:''
-        ,keyword:''
+      page:1
+      ,ipp:''
+      ,status:''
+      ,search_type:''
+      ,keyword:''
     }
     apiproject.getProjectInfo(data)
       .then((result) => {
         this.project_list = result.project_info;
-      });    
+      });
     this.fnDivisionList(1);
   },
   methods: {
@@ -207,22 +207,22 @@ export default {
     },
     Menu2() {
       this.$router.push({ name: 'project' });
-    },   
+    },
     Menu3() {
       this.$router.push({ name: 'division' });
-    },   
+    },
     Menu4() {
       this.$router.push({ name: 'class' });
-    },    
-    
+    },
+
     fnDivisionList(pg) {
       //body = req.query;
       this.showLoading(true);
       //this.page_navigation = { cur_page: 1, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
       const params = {
-      //  stype: null,
-      //  search: null,
-      //  page: this.page_navigation.cur_page,
+        //  stype: null,
+        //  search: null,
+        //  page: this.page_navigation.cur_page,
       };
       //if (this.roption.search && this.roption.search.length > 0) {
       //  params.search_type = this.roption.search_type;
@@ -237,28 +237,28 @@ export default {
       if(this.page === 'undefined') {
         this.page = 1;
       }
-      
+
       //this.$log.debug(`this.page===${this.page}`)
       //this.$log.debug(`pg===${pg}`)
 
       let page = pg === 'undefined' ? this.page : pg;
       page = page ? page : this.page;
       this.page = page;
-      const data = { 
+      const data = {
         page:this.page
         ,ipp:this.ipp
         ,project_seq:this.project_seq
         ,is_used:this.is_used
         ,search_type:this.search_type
-        ,keyword:this.keyword          
+        ,keyword:this.keyword
       };
       apiproject.getClassInfo(data)
         .then((result) => {
-          
+
           //this.$log.debug(result);
           if (result.division_info.length > 0) {
-              //this.paging = 10;
-              //this.no = 1;            
+            //this.paging = 10;
+            //this.no = 1;
             for (const key in result.division_info) {
               const reg_date = result.division_info[key].reg_date;
               if (reg_date) {
@@ -293,7 +293,7 @@ export default {
     fnSearch() {
 
     },
-    
+
     fnPage(n) {
       if(this.page != n) {
         this.page = n;
@@ -387,7 +387,7 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },     
+    },
     class_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
@@ -410,7 +410,7 @@ export default {
         }
         EventBus.emit('confirmPopupClose', true);
       });
-    },    
+    },
     fnDivisionDetail(seq) {
       //console.log(`seq===${seq}`)
       //console.log(`modeType===${this.modeType}`)
@@ -425,31 +425,31 @@ export default {
     },
     checkedAll(checked) {
       //if (this.cis_data) {
-        this.allChecked = checked
-        for (let i in this.division_list) {
-            this.division_list[i].selected = this.allChecked;
-        }
+      this.allChecked = checked
+      for (let i in this.division_list) {
+        this.division_list[i].selected = this.allChecked;
+      }
       //}
     },
     selected (e) {
-        for (let i in this.division_list) {
-            if(! this.division_list[i].selected) {
-                this.allChecked = false;
-                return;
-            } else {
-                this.allChecked = true;
-            }
+      for (let i in this.division_list) {
+        if(! this.division_list[i].selected) {
+          this.allChecked = false;
+          return;
+        } else {
+          this.allChecked = true;
         }
+      }
     },
     getSelected(){
-        let user_ids = [];
-        for (let i in this.division_list) {
-            if(this.division_list[i].selected) {
-                user_ids.push(this.division_list[i].seq);
-            }
+      let user_ids = [];
+      for (let i in this.division_list) {
+        if(this.division_list[i].selected) {
+          user_ids.push(this.division_list[i].seq);
         }
-        console.log(user_ids)
-    },   
+      }
+      console.log(user_ids)
+    },
     cpage_navigation() {
       const null_navigation = {};
       if (this.page_navigation) {
@@ -460,7 +460,7 @@ export default {
     onMovePage(page) {
       this.checkData = {};
       this.$emit('onMovePage', page);
-    }, 
+    },
   },
 };
 </script>

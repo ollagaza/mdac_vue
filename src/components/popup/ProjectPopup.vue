@@ -1,3 +1,11 @@
+<!--
+=======================================
+'	파일명 : ProjectPopup.vue
+'	작성자 : djyu
+'	작성일 : 2021.09.30
+'	기능   : project create / modify / view
+'	=====================================
+-->
 <template>
   <div class="popup_dim" v-bind:class="{ hide: !is_open }" style="">
     <div
@@ -83,19 +91,17 @@
 
           <template v-if="c_modeType === 'c'">
             <div
-              class="btn newgreen"
+              class="btn navy"
               style="width: 160px; height: 50px"
-              v-on:click="onVerify"
-            >
+              v-on:click="onVerify">
               등록
             </div>
           </template>
           <template v-else>
             <div
-              class="btn newgreen"
+              class="btn navy"
               style="width: 160px; height: 50px"
-              v-on:click="onModify"
-            >
+              v-on:click="onModify">
               수정
             </div>
           </template>
@@ -103,8 +109,7 @@
           <div
             class="btn_cancel"
             style="width: 160px; height: 50px"
-            v-on:click="onCancel"
-          >
+            v-on:click="onCancel">
             취소
           </div>
           <div style="flex: 1"></div>

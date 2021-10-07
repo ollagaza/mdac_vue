@@ -1,3 +1,11 @@
+<!--
+=======================================
+'	파일명 : DataList.vue
+'	작성자 : djyu
+'	작성일 : 2021.09.30
+'	기능   : data 관리리스트
+'	=====================================
+-->
 <template>
   <div class="layout">
     <div class="layout2" style="width: 100%;">
@@ -62,5 +70,8 @@ export default {
 <style scoped>
 .grid_m.datalist {
   grid-template-columns: 50px 200px 150px 100px 100px 100px 100px 100px 100px;
+}
+.grid_m.nodata {
+  grid-template-columns: 1000px;
 }
 </style>

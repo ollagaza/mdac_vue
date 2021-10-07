@@ -1,3 +1,11 @@
+<!--
+=======================================
+'	파일명 : ClassPopup.vue
+'	작성자 : djyu
+'	작성일 : 2021.09.30
+'	기능   : class create / modify / view
+'	=====================================
+-->
 <template>
   <div class="popup_dim" v-bind:class="{ hide: !is_open }" style="">
     <div
@@ -30,14 +38,14 @@
         </div>
 
         <div class="item_title">
-          <div class="item">클래스아이디</div>
+          <div class="item">클래스코드</div>
           <div>
             <input
               type="text"
               ref="class_id"
               v-model="class_id"
               style="width: 380px"
-              placeholder="클래스아이디를 입력하세요."
+              placeholder="클래스코드를 입력하세요."
               maxlength="20"
             />
           </div>
@@ -74,19 +82,17 @@
 
           <template v-if="c_modeType === 'c'">
             <div
-              class="btn newgreen"
+              class="btn navy"
               style="width: 160px; height: 50px"
-              v-on:click="onVerify"
-            >
+              v-on:click="onVerify">
               등록
             </div>
           </template>
           <template v-else>
             <div
-              class="btn newgreen"
+              class="btn navy"
               style="width: 160px; height: 50px"
-              v-on:click="onModify"
-            >
+              v-on:click="onModify">
               수정
             </div>
           </template>
@@ -94,8 +100,7 @@
           <div
             class="btn_cancel"
             style="width: 160px; height: 50px"
-            v-on:click="onCancel"
-          >
+            v-on:click="onCancel">
             취소
           </div>
           <div style="flex: 1"></div>
@@ -164,6 +169,16 @@ export default {
       return '';
     },    
   },
+  watch:{
+    // 클래스코드 한글 입력 방지
+    class_id(val){
+          const reg = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+        if(reg.exec(val)!==null){
+        return this.class_id = this.class_id.slice(0,-1);
+        }
+    }
+  },
   mounted() {},
   methods: {
     onRest() {
@@ -182,7 +197,7 @@ export default {
     onModify() {
       if (!this.c_is_verify_class_id) {
         this.$refs.class_id.focus();
-        this.onError("클래스아이디를 입력해주세요.");
+        this.onError("클래스코드를 입력해주세요.");
         return;
       }
       if (!this.c_is_verify_class_name) {
@@ -201,7 +216,7 @@ export default {
       }
       if (!this.c_is_verify_class_id) {
         this.$refs.class_id.focus();
-        this.onError("클래스아이디를 입력해주세요.");
+        this.onError("클래스코드를 입력해주세요.");
         return;
       }
       if (!this.c_is_verify_class_name) {

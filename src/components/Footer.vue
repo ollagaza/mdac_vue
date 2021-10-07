@@ -33,6 +33,7 @@ export default {
       const route = this.$route;
       this.route_name = route.name;
     },
+
   },
 };
 </script>
@@ -60,7 +61,7 @@ export default {
 .footer_copyright{
   font-weight: 400;
   font-size: 14px;
-  font-color: #888;
+  color: #888;
   letter-spacing: -0.5px;
 }
 
