@@ -47,7 +47,7 @@ const router_list = [
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
-    path: '/statisticsworker',
+    path: '/statisticsworker/:search_seq',
     name: 'statisticsworker',
     component: StatisticsWorker,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
