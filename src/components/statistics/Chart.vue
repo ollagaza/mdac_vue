@@ -1,15 +1,56 @@
 <script>
-  //Importing Line class from the vue-chartjs wrapper
+   //Importing Line class from the vue-chartjs wrapper
   import {Bar} from 'vue-chartjs'
   import apistatistics from '../../api/ApiStatistics';
   import moment from "moment/moment";
   import BaseMixin from "../Mixins/BaseMixin";
-  //Exporting this so it can be used in other components
+  import ExcelJS from 'exceljs';
+  import * as FileSaver from 'file-saver';
+ 
+  Chart.pluginService.register({
+    beforeRender: function(chart) {
+      if (chart.config.options.showAllTooltips) {
+      chart.pluginTooltips = [];
+      chart.config.data.datasets.forEach(function(dataset, i) {
+        chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+        chart.pluginTooltips.push(new Chart.Tooltip({
+          _chart: chart.chart,
+          _chartInstance: chart,
+          _data: chart.data,
+          _options: chart.options.tooltips,
+          _active: [sector]
+        }, chart));
+        });
+      }); // turn off normal tooltips 
+      chart.options.tooltips.enabled = false;
+      }
+    },
+    afterDraw: function(chart, easing) {
+      if (chart.config.options.showAllTooltips) { // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once 
+      if (!chart.allTooltipsOnce) {
+        if (easing !== 1) return;
+        chart.allTooltipsOnce = true;
+      }
+      chart.options.tooltips.enabled = true;
+      Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+        tooltip.initialize();
+        tooltip.update(); // we don't actually need this since we are not animating tooltips 
+        tooltip.pivot();
+        tooltip.transition(easing).draw();
+      });
+      chart.options.tooltips.enabled = false;
+      }
+    }
+  }); 
+ 
+ //Exporting this so it can be used in other components
   export default { 
     name: 'BarChart',
     extends: Bar,
     props: ['chartData','statistics_list','project_list', 'chart_title', 'search_seq', 'search_type', 'project_seq','start_date','end_date'],
     mixins: [BaseMixin],
+
+    
     data () {
       return {   
         labels: [],
@@ -87,6 +128,10 @@
         },
         //Chart.js options that controls the appearance of the chart
         options: {
+          showAllTooltips: true,
+          tooltips: {
+            enabled: true,
+          },
           scales: {
             x: {
               stacked: true,
@@ -94,30 +139,35 @@
             y: {
               stacked: true
             },
-            // yAxes: [{
-            //   ticks: {
-            //     beginAtZero: true,
-            //     // stepSize: 10,    // y축 간격 
-            //     // suggestedMin: 0, // y축 최소 값 
-            //     // suggestedMax: 20,// y축 최대값
-            //   },
-            //   gridLines: {
-            //     display: true,
-            //     // borderDash: [2, 2], 
-            //     // borderDashOffset: 0.2
-            //   }
-            // }],
-            // xAxes: [ {
-            //   gridLines: {
-            //     display: false
-            //   }
-            // }],
+            yAxes: [{
+              ticks: {
+                beginAtZero: true,
+                 stepSize: 1,    // y축 간격 
+                // suggestedMin: 0, // y축 최소 값 
+                // suggestedMax: 20,// y축 최대값
+                // min: 0,
+                // max: 100,
+                // stepSize: 20,
+              },
+              gridLines: {
+                display: true,
+                // borderDash: [3, 3], 
+                // borderDashOffset: 0.2,
+                // color: "black"
+
+              }
+            }],
+            xAxes: [ {
+              gridLines: {
+                display: true
+              }
+            }],
             
           },
           title: {
                 display: true,
                 text: '통계',
-            },
+          },
           legend: {
             display: true
           },
@@ -134,36 +184,37 @@
             }
             return delay;
           },
-        
-          // tooltips: {
-				  //   enabled: false
-			    // },
-          hover: {
-            animationDuration: 0
-          },
-          responsiveAnimationDuration: 0
-          ,
+            
+          // 툴팁 대신 데이터 보이기 시작
+          // hover: {
+          //   animationDuration: 0
+          // },
+          // responsiveAnimationDuration: 0
+          // ,
           // animation: {
           //   duration: 1,
           //   onComplete: function () {
           //     var chartInstance = this.chart,
-          //       ctx = chartInstance.ctx;
+          //     ctx = chartInstance.ctx;
           //     ctx.font = Chart.helpers.fontString(Chart.defaults.global.defaultFontSize, Chart.defaults.global.defaultFontStyle, Chart.defaults.global.defaultFontFamily);
-          //     ctx.fillStyle = 'purple';
+          //     ctx.fillStyle = 'black';
           //     ctx.textAlign = 'center';
-          //     ctx.textBaseline = 'bottom';
+          //     ctx.textBaseline = 'hanging';
 
           //     this.data.datasets.forEach(function (dataset, i) {
           //       var meta = chartInstance.controller.getDatasetMeta(i);
           //       meta.data.forEach(function (bar, index) {
-          //         var data = `${dataset.data[index]}`;	// ${dataset.label} : 						
-          //         ctx.fillText(data, bar._model.x, bar._model.y - 5);
+          //         var data = `${dataset.label}: ${dataset.data[index]}`;	// ${dataset.label} : 						
+          //         ctx.fillText(data, bar._model.x, bar._model.y + 10);
           //       });
           //     });
           //   }
           // }
-        }
+          // 툴팁 대신 데이터 보이기 종료
+        },
+        
       }
+      
     },
     computed: {
       c_statistics_list() {
@@ -181,10 +232,9 @@
     },
     methods: {
         init() {
-            console.log(`statistics_start`)
-            console.log(this.statistics_list)
-            console.log(this.search_seq)
-            console.log(`statistics_end`)
+            // console.log(`statistics_start`)
+            // console.log(this.statistics_list)
+            // console.log(`statistics_end`)
             this.labels = []
             this.color_back = []
             this.color_fore = []
@@ -194,7 +244,7 @@
             this.label_reject_count = []
             this.check_ing_count = []
             this.check_complete_count = []
-            console.log(`project_seq===${this.project_seq}`)
+            // console.log(`project_seq===${this.project_seq}`)
             //let data = this.chartData.chartData 
             let datasets = [] 
             const data = {
@@ -203,13 +253,39 @@
               search_type: this.search_type,
               start_date: moment(this.start_date).format('YYYY-MM-DD'),
               end_date: moment(this.end_date).format('YYYY-MM-DD')
-            };            
+            };    
+
+            this.datacollection = { 
+              labels: this.labels, 
+              datasets: datasets,
+            }
+            this.options.title = {
+                display: true,
+                text: this.chart_title,
+            }
+            this.options.responsive = true,
+            this.options.legend = {
+              display: false,
+            }
+            this.options.scaleShowLabelBackdrop = true,
+            this.options.showAllTooltips = false,
+            // this.options.tooltips = {
+            //   enabled: true,
+            //   displayColors: false,
+            //   callbacks: {
+            //     title: function(tooltipItem, data) {
+            //       return;
+            //     },
+            //     label: function(tooltipItem, data) {
+            //       return 'aaaaa:fdfdf';
+            //     }
+            //   }
+            // }                    
             apistatistics.getStatistics(data)
             .then((result) => {
                 // console.log(result.statistics_info)
+                // this.statistics_list = result.statistics_info
                 for (const key in result.statistics_info) {
-                    // console.log(`key===${key}`)
-                    // console.log(`project_name===${result[0][key].project_name}`)
                     if(this.search_seq === 3) {
                       this.labels.push(result.statistics_info[key].project_name)
                     } else {
@@ -222,6 +298,9 @@
                     this.check_ing_count.push(result.statistics_info[key].check_ing)
                     this.check_complete_count.push(result.statistics_info[key].check_complete)
 
+
+                    // console.log(`check_ing_count===${result.statistics_info[key].check_ing}`)
+                    // console.log(`check_complete_count===${result.statistics_info[key].check_complete}`)
                     // datasets.push({ 
                     //     label: result[0][key].project_name, 
                     //     borderWidth: 2, 
@@ -234,14 +313,6 @@
                     // }) ;
                 } 
 
-                this.datacollection = { 
-                  labels: this.labels, 
-                  datasets: datasets,
-                }
-                this.options.title = {
-                    display: true,
-                    text: this.chart_title,
-                }
 
                 this.render() 
 
@@ -253,74 +324,253 @@
               this.color_back.push(colors.back)
               this.color_fore.push(colors.fore)
             }
-            datasets.push( 
-            {
-              label: '총작업량',
-              backgroundColor: this.color_back[0],
-              pointBackgroundColor: this.color_back[0],
-              borderWidth: 1,
-              pointBorderColor: this.color_fore[0],
-              //Data to be represented on y-axis
-              data: this.total_count,
-              barPercentage: 0.7
-            },
-            {
-              label: '라벨링진행',
-              backgroundColor: this.color_back[1],
-              pointBackgroundColor: this.color_back[1],
-              borderWidth: 1,
-              pointBorderColor: this.color_fore[1],
-              //Data to be represented on y-axis
-              data: this.label_ing_count,
-              barPercentage: 0.5
-            },
-            {
-              label: '라벨링완료',
-              backgroundColor: this.color_back[2],
-              pointBackgroundColor: this.color_back[2],
-              borderWidth: 1,
-              pointBorderColor: this.color_fore[2],
-              //Data to be represented on y-axis
-              data: this.label_complete_count,
-              barPercentage: 0.5
-              
-            },
-            {
-              label: '반려',
-              backgroundColor: this.color_back[3],
-              pointBackgroundColor: this.color_back[3],
-              borderWidth: 1,
-              pointBorderColor: this.color_fore[3],
-              //Data to be represented on y-axis
-              data: this.label_reject_count,
-              barPercentage: 0.5
-            },
-            {
-              label: '검수진행',
-              backgroundColor: this.color_back[4],
-              pointBackgroundColor: this.color_back[4],
-              borderWidth: 1,
-              pointBorderColor: this.color_fore[4],
-              //Data to be represented on y-axis
-              data: this.check_ing_count,
-              barPercentage: 0.5
-            },
-            {
-              label: '검수완료',
-              backgroundColor: this.color_back[5],
-              pointBackgroundColor: this.color_back[5],
-              borderWidth: 1,
-              pointBorderColor: this.color_fore[5],
-              //Data to be represented on y-axis
-              data: this.check_complete_count,
-              barPercentage: 0.5
-            })
-          
+            if(this.search_seq === '1') {
+              datasets.push( 
+              {
+                label: '총작업량',
+                backgroundColor: this.color_back[0],
+                pointBackgroundColor: this.color_back[0],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[0],
+                //Data to be represented on y-axis
+                data: this.total_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '라벨링진행',
+                backgroundColor: this.color_back[1],
+                pointBackgroundColor: this.color_back[1],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[1],
+                //Data to be represented on y-axis
+                data: this.label_ing_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '라벨링완료',
+                backgroundColor: this.color_back[2],
+                pointBackgroundColor: this.color_back[2],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[2],
+                //Data to be represented on y-axis
+                data: this.label_complete_count,
+                barPercentage: 0.8
+                
+              },
+              {
+                label: '반려',
+                backgroundColor: this.color_back[3],
+                pointBackgroundColor: this.color_back[3],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[3],
+                //Data to be represented on y-axis
+                data: this.label_reject_count,
+                barPercentage: 0.8
+              })
+            } else if(this.search_seq === '2') {
+              datasets.push( 
+              {
+                label: '총작업량',
+                backgroundColor: this.color_back[0],
+                pointBackgroundColor: this.color_back[0],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[0],
+                //Data to be represented on y-axis
+                data: this.total_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수진행',
+                backgroundColor: this.color_back[1],
+                pointBackgroundColor: this.color_back[1],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[1],
+                //Data to be represented on y-axis
+                data: this.check_ing_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수완료',
+                backgroundColor: this.color_back[2],
+                pointBackgroundColor: this.color_back[2],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[2],
+                //Data to be represented on y-axis
+                data: this.check_complete_count,
+                barPercentage: 0.8
+              })
+            } else {
+              datasets.push( 
+              {
+                label: '총작업량',
+                backgroundColor: this.color_back[0],
+                pointBackgroundColor: this.color_back[0],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[0],
+                //Data to be represented on y-axis
+                data: this.total_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '라벨링진행',
+                backgroundColor: this.color_back[1],
+                pointBackgroundColor: this.color_back[1],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[1],
+                //Data to be represented on y-axis
+                data: this.label_ing_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '라벨링완료',
+                backgroundColor: this.color_back[2],
+                pointBackgroundColor: this.color_back[2],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[2],
+                //Data to be represented on y-axis
+                data: this.label_complete_count,
+                barPercentage: 0.8
+                
+              },
+              {
+                label: '반려',
+                backgroundColor: this.color_back[3],
+                pointBackgroundColor: this.color_back[3],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[3],
+                //Data to be represented on y-axis
+                data: this.label_reject_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수진행',
+                backgroundColor: this.color_back[4],
+                pointBackgroundColor: this.color_back[4],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[4],
+                //Data to be represented on y-axis
+                data: this.check_ing_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수완료',
+                backgroundColor: this.color_back[5],
+                pointBackgroundColor: this.color_back[5],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[5],
+                //Data to be represented on y-axis
+                data: this.check_complete_count,
+                barPercentage: 0.8
+              })
+            }
+         
             
         }, 
         render() { 
             this.renderChart(this.datacollection, this.options) 
-        }
+        },
+
+        viewTooltips() {
+          if(this.options.showAllTooltips) {
+            this.options.showAllTooltips = false;
+          } else {
+            this.options.showAllTooltips = true;
+          }
+          this.render()
+        },
+        filexls() {
+          // let base64Image = document.getElementById("datalist").toDataURL(1.0);
+          let file_name = 'statistics_label'
+          let base64Image = document.getElementById("bar-chart").toDataURL(1.0);  // Chart img convert
+          // excel js 객체 생성
+          let workbook = new ExcelJS.Workbook();
+
+          // 워크시트 생성
+          let worksheet =  workbook.addWorksheet('Data List');    // Data List
+          let worksheet2 =  workbook.addWorksheet('Data Chart');  // Chart
+
+          // Header 셋팅
+          if(this.search_seq === '1') {
+            worksheet.columns = [ 
+              { header: '프로젝트', key: 'project_name', width: 25  },
+              { header: '작업자', key: 'user_name', width: 20 },
+              { header: '총작업량', key: 'total', width: 15 },
+              { header: '라벨링진행', key: 'label_ing', width: 15 },
+              { header: '라벨링완료', key: 'label_complete', width: 15 },
+              { header: '라벨링완료율', key: 'label_avgComplete', width: 15 },
+              { header: '반려', key: 'label_reject', width: 15 },
+              { header: '반려율', key: 'label_avgReject', width: 15 },
+            ];
+          } else if(this.search_seq === '2') { 
+            worksheet.columns = [ 
+              { header: '프로젝트', key: 'project_name', width: 25  },
+              { header: '작업자', key: 'user_name', width: 20 },
+              { header: '총작업량', key: 'total', width: 15 },
+              { header: '검수진행', key: 'check_ing', width: 15 },
+              { header: '검수완료', key: 'check_complete', width: 15 },
+              { header: '검수완료율', key: 'check_avgComplete', width: 15 },
+            ];
+            file_name = 'statistics_check'
+          } else {
+            worksheet.columns = [ 
+              { header: '프로젝트', key: 'project_name', width: 25  },
+              { header: '총작업량', key: 'total', width: 20 },
+              { header: '라벨링진행', key: 'label_ing', width: 15 },
+              { header: '라벨링완료', key: 'label_complete', width: 15 },
+              { header: '라벨링완료률', key: 'label_avgComplete', width: 15 },
+              { header: '반려', key: 'label_reject', width: 15 },
+              { header: '반려율', key: 'label_avgReject', width: 15 },
+              { header: '검수진행', key: 'check_ing', width: 15 },
+              { header: '검수완료', key: 'check_complete', width: 15 },
+              { header: '검수완료율', key: 'check_avgComplete', width: 15 },
+            ];
+            file_name = 'statistics_project'
+          }
+          
+          // Header 정렬
+          worksheet.columns.forEach(function(key,index){
+            worksheet.getCell(1,index+1).alignment = { vertical: 'top', horizontal: 'center' }
+            
+            worksheet.getCell(1,index+1).fill = {
+              type: 'pattern',
+              pattern:'gray125',
+              fgColor:{argb:'EEEEEEEE'},
+              bgColor:{argb:'EEEEEEEE'}
+            };
+          })
+
+          // Set Data
+          const rows = this.statistics_list;
+          worksheet.addRows(rows);   
+        
+          // Data 정렬
+          this.statistics_list.forEach(function(key,index){
+            worksheet.columns.forEach(function(key,index2){
+              worksheet.getCell(index+2,index2+1).alignment = { vertical: 'top', horizontal: 'center' }
+            })
+          })
+
+          // 흰 배경을 만들기 위해 셀 병합
+          worksheet2.mergeCells('A1:R25');
+
+          // 이미지 등록
+          let imageId = workbook.addImage({
+              base64: base64Image,
+              extension: 'png',
+          });
+
+          // 병합했던 셀에 이미지 추가 (엑셀 파일 열면 위치 이동가능)
+          worksheet2.addImage(imageId, 'A1:R25');        
+         
+          // 가상의 파일 읽기
+          workbook.xlsx.readFile(`${file_name}_${moment().format('YYYYMMDDHHmmss')}.xlsx`);
+          
+          // 파일 다운로드
+          workbook.xlsx.writeBuffer().then(function (data) {
+              let blob = new Blob([data], {type: "application/vnd.ms-excel;charset=utf-8"});
+              saveAs(blob, `${file_name}_${moment().format('YYYYMMDDHHmmss')}.xlsx`);
+          });
+        },        
     }
   }
 </script>

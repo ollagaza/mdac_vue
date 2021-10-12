@@ -43,13 +43,12 @@
             </div>
           </div>
 
-          <!-- <div class=" ">
+          <div class=" ">
             <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('Y')">사용중</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('N')">사용정지</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('D')">삭제</div>
+              <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{btn_data_title}}</div>
+              <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="filexls()">Export to excel</div>
 
-              <div style="flex: 2"></div>
+              <!-- <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
                 <select class="text" v-model="list_count" style="width: 120px;" @change="fnStatisticsList()">
                   <option value="20" selected=true>20개씩 보기</option>
@@ -57,9 +56,9 @@
                   <option value="50">50개씩 보기</option>
                   <option value="100">100개씩 보기</option>
                 </select>
-              </div>
+              </div> -->
             </div>
-          </div> -->
+          </div>
 
           <div style="padding: 10px 0 0 0 ;">
             <div class="grid_m class header">
@@ -67,12 +66,12 @@
               <div>총작업량</div>
               <div>라벨링진행</div>
               <div>라벨링완료</div>
-              <div>라벨링반려</div>
+              <div>라벨링완료율</div>
+              <div>반려</div>
               <div>반려율</div>
-              <div>라벨링진행율</div>
               <div>검수진행</div>
               <div>검수완료</div>
-              <div>검수진행율</div>
+              <div>검수완료율</div>
             </div>
 
             <template v-if="statistics_list.length === 0">
@@ -88,9 +87,9 @@
                   <div>{{ pStatistics.total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
+                  <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}%</div>
-                  <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
                   <div>{{ pStatistics.check_avgComplete }}%</div>
@@ -146,6 +145,7 @@ export default {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
       chart_title: '',          // 챠트 제목
+      btn_data_title: '차트데이터보이기', // 버튼:차트데이터보이기
       search_seq: '3',          // 프로젝트
       project_seq: '',          // 프로젝트
       search_type: '',          // 조회기준
@@ -183,9 +183,9 @@ export default {
   methods: {
     // 클래스 리스트 조회
     fnStatisticsList() {
-      this.chart_title = `프로젝트 통계 ( ${this.start_date} ~ ${this.end_date} )`
+      this.chart_title = `프로젝트 통계 ( ${moment(this.start_date).format('YYYY-MM-DD')} ~ ${moment(this.end_date).format('YYYY-MM-DD')} )`
 
-      this.$log.debug('statistics_list_before',this.statistics_list)
+      // this.$log.debug('statistics_list_before',this.statistics_list)
       //body = req.query;
       this.showLoading(true);
       let project_seq = this.project_seq;
@@ -219,11 +219,22 @@ export default {
     dateFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
     },
-
+    viewTooltips() {
+      this.$refs.chartpage.viewTooltips()
+      if(this.$refs.chartpage.options.showAllTooltips) {
+        this.btn_data_title = "차트데이터보이기"
+      } else {
+        this.btn_data_title = "차트데이터숨기기"
+      }
+    },
+    filexls() {
+      this.$refs.chartpage.filexls()
+      return;
+    },
     init() { 
       // console.log('initaaa')
-      this.$log.debug('statistics_list_after',this.statistics_list)
-      EventBus.emit('statistics_list', null, this.statistics_list, null);
+      // this.$log.debug('statistics_list_after',this.statistics_list)
+      // EventBus.emit('statistics_list', null, this.statistics_list, null);
       this.chartData = []
       this.$refs.chartpage.init()
     }    
