@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     Menu1() {
-      this.$router.push({ name: 'statisticsworker' });
+      this.$router.push({ name: 'statisticsworker', params: { search_seq: 1 } });
     },
     Menu2() {
       this.$router.push({ name: 'statisticsproject' });

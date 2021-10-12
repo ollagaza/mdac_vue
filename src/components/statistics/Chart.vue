@@ -8,12 +8,10 @@
   export default { 
     name: 'BarChart',
     extends: Bar,
-    props: ['chartData','statistics_list','project_list','search_seq', 'project_seq','start_date','end_date'],
+    props: ['chartData','statistics_list','project_list', 'chart_title', 'search_seq', 'search_type', 'project_seq','start_date','end_date'],
     mixins: [BaseMixin],
     data () {
       return {   
-        aaa: [], 
-        abc: [],     
         labels: [],
         total_count: [],
         complete_count: [],
@@ -118,7 +116,7 @@
           },
           title: {
                 display: true,
-                text: '프로젝트 통계'
+                text: '통계',
             },
           legend: {
             display: true
@@ -179,13 +177,14 @@
     mounted () {
       //renderChart function renders the chart with the datacollection and options object.
       // this.renderChart(this.datacollection, this.options)
-      console.log(`statistics_start`)
-      console.log(this.statistics_list)
-      console.log(`statistics_end`)
       // this.init()
     },
     methods: {
         init() {
+            console.log(`statistics_start`)
+            console.log(this.statistics_list)
+            console.log(this.search_seq)
+            console.log(`statistics_end`)
             this.labels = []
             this.color_back = []
             this.color_fore = []
@@ -201,8 +200,9 @@
             const data = {
               search_seq: this.search_seq,
               project_seq: this.project_seq,
-              start_date: this.start_date,
-              end_date: this.start_date
+              search_type: this.search_type,
+              start_date: moment(this.start_date).format('YYYY-MM-DD'),
+              end_date: moment(this.end_date).format('YYYY-MM-DD')
             };            
             apistatistics.getStatistics(data)
             .then((result) => {
@@ -236,8 +236,13 @@
 
                 this.datacollection = { 
                   labels: this.labels, 
-                  datasets: datasets 
-                }                 
+                  datasets: datasets,
+                }
+                this.options.title = {
+                    display: true,
+                    text: this.chart_title,
+                }
+
                 this.render() 
 
             })  
@@ -248,8 +253,6 @@
               this.color_back.push(colors.back)
               this.color_fore.push(colors.fore)
             }
-            // console.log(`aaa===${this.abc.length}`)
-            //abc.forEach(element => console.log(`aaa===${element}`));
             datasets.push( 
             {
               label: '총작업량',

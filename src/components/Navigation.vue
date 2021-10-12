@@ -89,7 +89,7 @@ export default {
       this.$router.push({ name: 'datastatus' });
     },
     Menu2() {
-      this.$router.push({ name: 'statisticsworker' });
+      this.$router.push({ name: 'statisticsworker', params: { search_seq: 1 } });
     },
     Menu3() {
       this.$router.push({ name: 'member' });

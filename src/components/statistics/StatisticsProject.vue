@@ -89,11 +89,11 @@
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
-                  <div>{{ pStatistics.label_perReject }}%</div>
-                  <div>{{ pStatistics.label_perComplete }}%</div>
+                  <div>{{ pStatistics.label_avgReject }}%</div>
+                  <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
-                  <div>{{ pStatistics.check_perComplete }}%</div>
+                  <div>{{ pStatistics.check_avgComplete }}%</div>
                 </div>
               </template>
             </template>
@@ -102,11 +102,15 @@
               <ChartPage 
                 ref="chartpage" 
                 chartData="chartData" 
-                v-if="!chartLoading" 
                 v-bind:project_list="project_list" 
                 v-bind:statistics_list="statistics_list" 
-                v-bind:search_seq="search_seq"
+                v-bind:search_seq="3"
                 v-bind:project_seq="project_seq"
+                v-bind:chart_title="chart_title"
+                v-bind:search_type="search_type"
+                v-bind:start_date="start_date"
+                v-bind:end_date="end_date"
+                v-if="!chartLoading" 
               ></ChartPage>
             </template>
           </div>
@@ -141,6 +145,7 @@ export default {
     return {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
+      chart_title: '',          // 챠트 제목
       search_seq: '3',          // 프로젝트
       project_seq: '',          // 프로젝트
       search_type: '',          // 조회기준
@@ -178,15 +183,18 @@ export default {
   methods: {
     // 클래스 리스트 조회
     fnStatisticsList() {
+      this.chart_title = `프로젝트 통계 ( ${this.start_date} ~ ${this.end_date} )`
+
+      this.$log.debug('statistics_list_before',this.statistics_list)
       //body = req.query;
       this.showLoading(true);
       let project_seq = this.project_seq;
       const data = {
-        search_seq: 4,
+        search_seq: 3,
         project_seq: this.project_seq,
         search_type: this.search_type,
-        start_date: this.start_date,
-        end_date: this.start_date
+        start_date: moment(this.start_date).format('YYYY-MM-DD'),
+        end_date: moment(this.end_date).format('YYYY-MM-DD')
       };
       apistatistics.getStatistics(data) // 클래스 API 호출
         .then((result) => {
@@ -201,6 +209,7 @@ export default {
           this.init()
         });
       this.showLoading(false);
+
     },
     isUsed: function (state) {
       if(state == 2) return true;
@@ -212,9 +221,11 @@ export default {
     },
 
     init() { 
-      console.log('initaaa')
+      // console.log('initaaa')
+      this.$log.debug('statistics_list_after',this.statistics_list)
+      EventBus.emit('statistics_list', null, this.statistics_list, null);
       this.chartData = []
-     this.$refs.chartpage.init()
+      this.$refs.chartpage.init()
     }    
   },
 };
