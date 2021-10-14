@@ -82,17 +82,17 @@
 
             <template v-if="statistics_list.length > 0">
               <template v-for="(pStatistics, seq) in statistics_list">
-                <div v-if="search_seq === '1'" class="grid_m class_label body">
+                <div v-if="search_seq === '1'" class="grid_m class_label body" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.total }}</div>
-                  <div>{{ pStatistics.label_ing }}</div>
+                  <div>{{ pStatistics.total - pStatistics.label_complete - pStatistics.check_ing - pStatistics.check_complete }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}%</div>
                 </div>
-                <div v-if="search_seq === '2'" class="grid_m class_check body">
+                <div v-if="search_seq === '2'" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.total }}</div>
@@ -102,12 +102,34 @@
                 </div>
               </template>
             </template>
+            
+            <div v-if="search_seq === '1' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
+              <div>합계</div>
+              <div></div>
+              <div>{{sum_total}}</div>
+              <div>{{sum_label_ing}}</div>
+              <div>{{sum_label_complete}}</div>
+              <div></div>
+              <div>{{sum_label_reject}}</div>
+              <div></div>
+            </div>
+            
+            <div v-if="search_seq === '2' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
+              <div>합계</div>
+              <div></div>
+              <div>{{sum_total}}</div>
+              <div>{{sum_check_ing}}</div>
+              <div>{{sum_check_complete}}</div>
+              <div></div>
+            </div>
+
             <template>  
               <div style="height:20px;"></div>            
               <ChartPage 
                 ref="chartpage" 
                 chartData="chartData" 
                 v-if="!chartLoading" 
+                v-bind:class="chart_size" 
                 v-bind:project_list="project_list" 
                 v-bind:statistics_list="statistics_list" 
                 v-bind:chart_title="chart_title" 
@@ -131,12 +153,10 @@
 import apiproject from '../../api/ApiProject';
 import apistatistics from '../../api/ApiStatistics';
 import BaseMixin from '../Mixins/BaseMixin';
-import EventBus from '../../utils/eventbus';
 import Statistics_Left from './Statistics_Left';
 import { ko } from 'vuejs-datepicker/dist/locale';
 import moment from 'moment/moment';
 import Datepicker from 'vuejs-datepicker';
-import {Bar} from 'vue-chartjs'
 import ChartPage from './Chart.vue';
   import ExcelJS from 'exceljs';
   import * as FileSaver from 'file-saver';
@@ -159,18 +179,23 @@ export default {
       search_seq: this.$route.params.search_seq ? this.$route.params.search_seq: '1',            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: '',          // 프로젝트
       search_type: '',          // 조회기준
-      no:'',                    // 게시판 숫자
-      modeType: 'e',            // 수정/등록모드
       date_locale_ko: ko,
       start_date: moment().subtract(7, 'd').format('YYYY-MM-DD'),  // 시작일
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
+      chart_size: 'chartClass',
+      sum_total: 0,
+      sum_label_ing: 0,
+      sum_label_complete: 0,
+      sum_label_reject: 0,
+      sum_check_ing: 0,
+      sum_check_complete: 0,
     };
   },
   watch: {
     '$route': function(){
-      this.search_seq = this.$route.params.search_seq ? this.$route.params.search_seq: 1;
+      this.search_seq = this.$route.params.search_seq ? this.$route.params.search_seq: '1';
       this.btn_data_title = "차트데이터보이기"
       this.fnStatisticsList();    
     }
@@ -204,9 +229,9 @@ export default {
 
   },
   methods: {
-    // 클래스 리스트 조회
+    // 통계 조회
     fnStatisticsList() {
-      this.search_seq = String(this.$route.params.search_seq) ? String(this.$route.params.search_seq): 1;
+      this.search_seq = String(this.$route.params.search_seq) ? String(this.$route.params.search_seq): '1';
       // this.$log.debug(`search_seq`,this.search_seq)
       if(this.search_seq === '2') {
         this.chart_title = `검수자 통계 ( ${moment(this.start_date).format('YYYY-MM-DD')} ~ ${moment(this.end_date).format('YYYY-MM-DD')} )`
@@ -230,9 +255,22 @@ export default {
 
           // this.$log.debug(result);
           // this.$log.debug(`aaaaaaaaaaa===${result[0].length}`);
+          this.sum_total = 0
+          this.sum_label_ing = 0
+          this.sum_label_complete = 0
+          this.sum_label_reject = 0
+          this.sum_check_ing = 0
+          this.sum_check_complete = 0
           if (result.statistics_info.length > 0) {
             for (const key in result.statistics_info) {
+
+              this.sum_total = this.sum_total + result.statistics_info[key].total
+              this.sum_label_complete = this.sum_label_complete + result.statistics_info[key].label_complete
+              this.sum_label_reject = this.sum_label_reject + result.statistics_info[key].label_reject
+              this.sum_check_ing = this.sum_check_ing + result.statistics_info[key].check_ing
+              this.sum_check_complete = this.sum_check_complete + result.statistics_info[key].check_complete
             }
+            this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
           }
           this.statistics_list = result.statistics_info;
           this.init()
@@ -343,6 +381,9 @@ export default {
       //     saveAs(blob, `${file_name}.xlsx`);
       // });
     },
+    one_chart(chart_data) {
+      this.$refs.chartpage.one_chart(chart_data)
+    },
     init() { 
       this.chartData = []
       this.$refs.chartpage.init()
@@ -375,5 +416,10 @@ export default {
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
+}
+.chartClass{
+  /* padding-top: 30px;
+  height: 1500px;
+  width: 700px; */
 }
 </style>
