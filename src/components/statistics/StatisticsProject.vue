@@ -27,9 +27,8 @@
               </select>
 
               <select class="text" v-model="search_type" style="width: 130px;height: 36px;" @change="fnStatisticsList()">
-                <option value="" selected=true>조회기준(전체)</option>
-                <option value="LABEL">라벨링</option>
-                <option value="CHECK">검수</option>
+                <option value="NOW" selected=true>조회기준(현재)</option>
+                <option value="SUM">조회기준(누적)</option>
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
@@ -105,12 +104,12 @@
                   <div>{{ pStatistics.total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
-                  <div>{{ pStatistics.label_avgComplete }}%</div>
+                  <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
-                  <div>{{ pStatistics.label_avgReject }}%</div>
+                  <div>{{ pStatistics.label_avgReject }}</div>
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
-                  <div>{{ pStatistics.check_avgComplete }}%</div>
+                  <div>{{ pStatistics.check_avgComplete }}</div>
                 </div>
                 
                 <div class="grid_m class_check3 body" v-if="search_seq === '4'" v-on:click="one_chart(pStatistics)">
@@ -118,18 +117,18 @@
                   <div>{{ pStatistics.total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
-                  <div>{{ pStatistics.label_avgComplete }}%</div>
+                  <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
-                  <div>{{ pStatistics.label_avgReject }}%</div>
+                  <div>{{ pStatistics.label_avgReject }}</div>
                   <div>{{ pStatistics.check1_ing }}</div>
                   <div>{{ pStatistics.check1_complete }}</div>
-                  <div>{{ pStatistics.check1_avgComplete }}%</div>
+                  <div>{{ pStatistics.check1_avgComplete }}</div>
                   <div>{{ pStatistics.check2_ing }}</div>
                   <div>{{ pStatistics.check2_complete }}</div>
-                  <div>{{ pStatistics.check2_avgComplete }}%</div>
+                  <div>{{ pStatistics.check2_avgComplete }}</div>
                   <div>{{ pStatistics.check3_ing }}</div>
                   <div>{{ pStatistics.check3_complete }}</div>
-                  <div>{{ pStatistics.check3_avgComplete }}%</div>
+                  <div>{{ pStatistics.check3_avgComplete }}</div>
                 </div>
               </template>
             </template>
@@ -186,7 +185,7 @@ export default {
       btn_data_title: '차트데이터보이기', // 버튼:차트데이터보이기
       search_seq: this.$route.params.search_seq ? this.$route.params.search_seq: '3',            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: '',          // 프로젝트
-      search_type: '',          // 조회기준
+      search_type: 'NOW',          // 조회기준
       date_locale_ko: ko,
       start_date: moment().subtract(7, 'd').format('YYYY-MM-DD'),  // 시작일
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
@@ -249,8 +248,15 @@ export default {
           // this.$log.debug(`aaaaaaaaaaa===${result[0].length}`);
           if (result.statistics_info.length > 0) {
             for (const key in result.statistics_info) {
+              result.statistics_info[key].label_avgComplete = result.statistics_info[key].label_avgComplete + '%'
+              result.statistics_info[key].label_avgReject = result.statistics_info[key].label_avgReject + '%'
+              result.statistics_info[key].check_avgComplete = result.statistics_info[key].check_avgComplete + '%'
+              result.statistics_info[key].check1_avgComplete = result.statistics_info[key].check1_avgComplete + '%'
+              result.statistics_info[key].check2_avgComplete = result.statistics_info[key].check2_avgComplete + '%'
+              result.statistics_info[key].check3_avgComplete = result.statistics_info[key].check3_avgComplete + '%'
             }
-          }
+            // this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
+          }          
           this.statistics_list = result.statistics_info;
           this.init()
         });
