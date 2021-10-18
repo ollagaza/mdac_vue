@@ -86,7 +86,7 @@
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.total }}</div>
-                  <div>{{ pStatistics.total - pStatistics.label_complete - pStatistics.check_ing - pStatistics.check_complete }}</div>
+                  <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.label_reject }}</div>
@@ -265,12 +265,13 @@ export default {
             for (const key in result.statistics_info) {
 
               this.sum_total = this.sum_total + result.statistics_info[key].total
+              this.sum_label_ing = this.sum_label_ing + result.statistics_info[key].label_ing
               this.sum_label_complete = this.sum_label_complete + result.statistics_info[key].label_complete
               this.sum_label_reject = this.sum_label_reject + result.statistics_info[key].label_reject
               this.sum_check_ing = this.sum_check_ing + result.statistics_info[key].check_ing
               this.sum_check_complete = this.sum_check_complete + result.statistics_info[key].check_complete
             }
-            this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
+            // this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
           }
           this.statistics_list = result.statistics_info;
           this.init()
@@ -382,7 +383,7 @@ export default {
       // });
     },
     one_chart(chart_data) {
-      this.$refs.chartpage.one_chart(chart_data)
+      this.$refs.chartpage.init(chart_data)
     },
     init() { 
       this.chartData = []

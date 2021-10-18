@@ -22,51 +22,50 @@
             Dashboard
           </div>
           <template v-if="statistics_list.length > 0">
-            <div style="height: fit-content;display: flex; flex-direction: row;">
-              <template v-for="(pStatistics, index) in statistics_list">
-              <div style="width:48%;padding: 10px 0 0 0 ;">
-                <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                  <div>{{ pStatistics.project_name }}</div>
-                  <div style="flex: 1"></div>
-                  <div style="cursor:pointer;" v-on:click="go_project()">더보기 ></div>
+            <template v-for="(pStatistics, index) in statistics_list">
+              <div class="test testc" style="height: fit-content;display: flex; flex-direction: row;">
+                <div style="width:48%;padding: 10px 0 0 0 ;">
+                  <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
+                    <div>{{ pStatistics.project_name }}</div>
+                    <div style="flex: 1"></div>
+                    <div style="cursor:pointer;" v-on:click="go_project(`${pStatistics.project_name}`)">더보기 ></div>
+                  </div>
+                  <div class="grid_m dashboard header">
+                    <div>전체데이터{{ index%2 }}</div>
+                    <div class="grid_m project_value">{{ pStatistics.total }}</div>
+                    <div>반려데이터</div>
+                    <div class="grid_m project_value">{{ pStatistics.label_reject }}</div>
+                  </div>
+                  <div class="grid_m dashboard header">
+                    <div>라벨링완료</div>
+                    <div class="grid_m project_value">{{ pStatistics.label_complete }}</div>
+                    <div>검수완료</div>
+                    <div class="grid_m project_value">{{ pStatistics.check_complete }}</div>
+                  </div>
                 </div>
-                <div class="grid_m dashboard header">
-                  <div>전체데이터</div>
-                  <div class="grid_m project_value">{{ pStatistics.total }}</div>
-                  <div>반려데이터</div>
-                  <div class="grid_m project_value">{{ pStatistics.label_reject }}</div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div>라벨링완료</div>
-                  <div class="grid_m project_value">{{ pStatistics.label_complete }}</div>
-                  <div>검수완료</div>
-                  <div class="grid_m project_value">{{ pStatistics.check_complete }}</div>
-                </div>
+                <div v-if="index%2 === 0" style="flex: 1"></div>
+                <!-- <div style="width:48%;padding: 10px 0 0 0 ;">
+                  <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
+                    <div>ICT</div>
+                    <div style="flex: 1"></div>
+                    <div style="cursor:pointer;" v-on:click="go_project()">더보기 ></div>
+                  </div>
+                  <div class="grid_m dashboard header">
+                    <div class="item">전체데이터</div>
+                    <div class="grid_m project_value">2500</div>
+                    <div>반려데이터</div>
+                    <div class="grid_m project_value">2500</div>
+                  </div>
+                  <div class="grid_m dashboard header">
+                    <div>라벨링완료</div>
+                    <div class="grid_m project_value">2500</div>
+                    <div>검수완료</div>
+                    <div class="grid_m project_value">2500</div>
+                  </div>
+                </div> -->
               </div>
-              </template>
-
-              <div style="flex: 1"></div>
-              <div style="width:48%;padding: 10px 0 0 0 ;">
-                <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                  <div>ICT</div>
-                  <div style="flex: 1"></div>
-                  <div style="cursor:pointer;" v-on:click="go_project()">더보기 ></div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div class="item">전체데이터</div>
-                  <div class="grid_m project_value">2500</div>
-                  <div>반려데이터</div>
-                  <div class="grid_m project_value">2500</div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div>라벨링완료</div>
-                  <div class="grid_m project_value">2500</div>
-                  <div>검수완료</div>
-                  <div class="grid_m project_value">2500</div>
-                </div>
-              </div>
-            </div>
-            <div style="height: fit-content;display: flex; flex-direction: row;">
+            </template>
+            <!-- <div style="height: fit-content;display: flex; flex-direction: row;">
               <div style="width:48%;padding: 10px 0 0 0 ;">
                 <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                   <div>후두내시경</div>
@@ -107,7 +106,7 @@
                   <div class="grid_m project_value">2500</div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </template>
 
           <div style="flex: 2; padding-top: 20px;">
@@ -175,13 +174,12 @@ export default {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
       chart_title: '',          // 챠트 제목
-      btn_data_title: '차트데이터보이기', // 버튼:차트데이터보이기
-      search_seq: '3',            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
+      search_seq: '3',          // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: '',          // 프로젝트
       search_type: '',          // 조회기준
       date_locale_ko: ko,
-      start_date: moment().subtract(7, 'd').format('YYYY-MM-DD'),  // 시작일
-      end_date: moment().format('YYYY-MM-DD'),    // 종료일
+      start_date: moment().day(1).format('YYYY-MM-DD'),  // 시작일
+      end_date: moment().day(5).format('YYYY-MM-DD'),    // 종료일
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
       chart_size: 'chartClass',
@@ -221,8 +219,8 @@ export default {
       this.chartData = []
       this.$refs.chartpage.init()
     },
-    go_project() {
-      this.$router.push({ name: 'project' });
+    go_project(project_name) {
+      this.$router.push({ name: 'project', params: { keyword: project_name } });
     },
     go_member() {
       this.$router.push({ name: 'member' });
@@ -278,6 +276,16 @@ export default {
 
 .grid_m.dashboard {
   grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+
+.test {
+  display: grid;
+  
+}
+
+.test.testc {
+  grid-template-columns: 600px 600px;
 }
 
 .grid_m.project_value {

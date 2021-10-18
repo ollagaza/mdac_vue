@@ -144,7 +144,7 @@ export default {
       project_list: '',             // 프로젝트 데이터 리스트
       status: '',                   // 사용여부
       search_type: 'project_name',  // 검색조건
-      keyword: '',                  // 검색어
+      keyword: this.$route.params.keyword ? this.$route.params.keyword: '', // 검색어
       no:'',                        // 게시판 숫자
       paging:'',                    // 페이징 데이터
       first_page:'',                // 페이징-시작페이지
@@ -174,6 +174,11 @@ export default {
       // },
     };
   },
+  watch: {
+    '$route': function(){
+      this.keyword = this.$route.params.keyword ? this.$route.params.keyword: '';
+    }
+  },  
   computed: {
     cpage_navigation() {
       const null_navigation = {};
