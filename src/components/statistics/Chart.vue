@@ -310,7 +310,7 @@
 
             if(statistics_info)
             {
-              console.log('aaaaaaaaaaaaaa')
+              // console.log('aaaaaaaaaaaaaa')
               if(this.search_seq === '3' || this.search_seq === '4') {
                 this.labels.push(statistics_info.project_name)
               } else {
@@ -318,8 +318,8 @@
               }
               this.total_count.push(statistics_info.total)
               this.label_complete_count.push(statistics_info.label_complete)
-              // this.label_ing_count.push(statistics_info.label_ing)
-              this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
+              this.label_ing_count.push(statistics_info.label_ing)
+              // this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
               this.label_reject_count.push(statistics_info.label_reject)
 
               if(this.search_seq === '4') {
@@ -353,8 +353,8 @@
                     }
                     this.total_count.push(result.statistics_info[key].total)
                     this.label_complete_count.push(result.statistics_info[key].label_complete)
-                    // this.label_ing_count.push(result.statistics_info[key].label_ing)
-                    this.label_ing_count.push(result.statistics_info[key].total - result.statistics_info[key].label_complete - result.statistics_info[key].check_ing - result.statistics_info[key].check_complete)
+                    this.label_ing_count.push(result.statistics_info[key].label_ing)
+                    // this.label_ing_count.push(result.statistics_info[key].total - result.statistics_info[key].label_complete - result.statistics_info[key].check_ing - result.statistics_info[key].check_complete)
                     this.label_reject_count.push(result.statistics_info[key].label_reject)
                     if(this.search_seq === '4') {
                       this.check_ing_count.push(result.statistics_info[key].check1_ing)
@@ -366,7 +366,6 @@
                     }else {
                       this.check_ing_count.push(result.statistics_info[key].check_ing)
                       this.check_complete_count.push(result.statistics_info[key].check_complete)
-
                     }
                     
                     // console.log(`search_seq===${this.search_seq}`)
@@ -988,7 +987,7 @@
               { header: '검수완료율', key: 'check_avgComplete', width: 15 },
             ];
             file_name = 'statistics_check'
-          } else {
+          } else if(this.search_seq === '3') {
             worksheet.columns = [ 
               { header: '프로젝트', key: 'project_name', width: 25  },
               { header: '총작업량', key: 'total', width: 20 },
@@ -1000,6 +999,26 @@
               { header: '검수진행', key: 'check_ing', width: 15 },
               { header: '검수완료', key: 'check_complete', width: 15 },
               { header: '검수완료율', key: 'check_avgComplete', width: 15 },
+            ];
+            file_name = 'statistics_project'
+          } else {
+            worksheet.columns = [ 
+              { header: '프로젝트', key: 'project_name', width: 25  },
+              { header: '총작업량', key: 'total', width: 20 },
+              { header: '라벨링진행', key: 'label_ing', width: 15 },
+              { header: '라벨링완료', key: 'label_complete', width: 15 },
+              { header: '라벨링완료률', key: 'label_avgComplete', width: 15 },
+              { header: '반려', key: 'label_reject', width: 15 },
+              { header: '반려율', key: 'label_avgReject', width: 15 },
+              { header: '검수진행1', key: 'check1_ing', width: 15 },
+              { header: '검수완료1', key: 'check1_complete', width: 15 },
+              { header: '검수완료율1', key: 'check1_avgComplete', width: 15 },
+              { header: '검수진행2', key: 'check2_ing', width: 15 },
+              { header: '검수완료2', key: 'check2_complete', width: 15 },
+              { header: '검수완료율2', key: 'check2_avgComplete', width: 15 },
+              { header: '검수진행3', key: 'check3_ing', width: 15 },
+              { header: '검수완료3', key: 'check3_complete', width: 15 },
+              { header: '검수완료율3', key: 'check3_avgComplete', width: 15 },
             ];
             file_name = 'statistics_project'
           }

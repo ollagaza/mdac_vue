@@ -22,8 +22,8 @@
             Dashboard
           </div>
           <template v-if="statistics_list.length > 0">
-            <template v-for="(pStatistics, index) in statistics_list">
               <div class="test testc" style="height: fit-content;display: flex; flex-direction: row;">
+              <template v-for="(pStatistics, index) in statistics_list">
                 <div style="width:48%;padding: 10px 0 0 0 ;">
                   <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                     <div>{{ pStatistics.project_name }}</div>
@@ -31,7 +31,7 @@
                     <div style="cursor:pointer;" v-on:click="go_project(`${pStatistics.project_name}`)">더보기 ></div>
                   </div>
                   <div class="grid_m dashboard header">
-                    <div>전체데이터{{ index%2 }}</div>
+                    <div>전체데이터</div>
                     <div class="grid_m project_value">{{ pStatistics.total }}</div>
                     <div>반려데이터</div>
                     <div class="grid_m project_value">{{ pStatistics.label_reject }}</div>
@@ -43,73 +43,12 @@
                     <div class="grid_m project_value">{{ pStatistics.check_complete }}</div>
                   </div>
                 </div>
-                <div v-if="index%2 === 0" style="flex: 1"></div>
-                <!-- <div style="width:48%;padding: 10px 0 0 0 ;">
-                  <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                    <div>ICT</div>
-                    <div style="flex: 1"></div>
-                    <div style="cursor:pointer;" v-on:click="go_project()">더보기 ></div>
-                  </div>
-                  <div class="grid_m dashboard header">
-                    <div class="item">전체데이터</div>
-                    <div class="grid_m project_value">2500</div>
-                    <div>반려데이터</div>
-                    <div class="grid_m project_value">2500</div>
-                  </div>
-                  <div class="grid_m dashboard header">
-                    <div>라벨링완료</div>
-                    <div class="grid_m project_value">2500</div>
-                    <div>검수완료</div>
-                    <div class="grid_m project_value">2500</div>
-                  </div>
-                </div> -->
+                <div style="flex: 1"></div>
+              </template>
               </div>
-            </template>
-            <!-- <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div style="width:48%;padding: 10px 0 0 0 ;">
-                <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                  <div>후두내시경</div>
-                  <div style="flex: 1"></div>
-                  <div style="cursor:pointer;" v-on:click="go_project()">더보기 ></div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div>전체데이터</div>
-                  <div class="grid_m project_value">2500</div>
-                  <div>반려데이터</div>
-                  <div class="grid_m project_value">2500</div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div>라벨링완료</div>
-                  <div class="grid_m project_value">2500</div>
-                  <div>검수완료</div>
-                  <div class="grid_m project_value">2500</div>
-                </div>
-              </div>
-
-              <div style="flex: 1"></div>
-              <div style="width:48%;padding: 10px 0 0 0 ;">
-                <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                  <div>xxxxx</div>
-                  <div style="flex: 1"></div>
-                  <div style="cursor:pointer;" v-on:click="go_project()">더보기 ></div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div class="item">전체데이터</div>
-                  <div class="grid_m project_value">2500</div>
-                  <div>반려데이터</div>
-                  <div class="grid_m project_value">2500</div>
-                </div>
-                <div class="grid_m dashboard header">
-                  <div>라벨링완료</div>
-                  <div class="grid_m project_value">2500</div>
-                  <div>검수완료</div>
-                  <div class="grid_m project_value">2500</div>
-                </div>
-              </div>
-            </div> -->
           </template>
 
-          <div style="flex: 2; padding-top: 20px;">
+          <div v-if="member_count.length > 0" style="flex: 2; padding-top: 20px;">
             <div style="padding: 20px 0 0 0 ;">
               <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                 <div>작업자현황</div>
@@ -118,15 +57,15 @@
               </div>
               <div class="grid_m dashboard header">
                 <div>총작업자</div>
-                <div class="grid_m worker_value">2500</div>
+                <div class="grid_m worker_value">{{ member_count[0].total }}</div>
                 <div>미할당</div>
-                <div class="grid_m worker_value">2500</div>
+                <div class="grid_m worker_value">{{ member_count[0].not_work }}</div>
               </div>
               <div class="grid_m dashboard header">
                 <div>라벨러</div>
-                <div class="grid_m worker_value">2500</div>
+                <div class="grid_m worker_value">{{ member_count[0].labeler }}</div>
                 <div>검수자</div>
-                <div class="grid_m worker_value">2500</div>
+                <div class="grid_m worker_value">{{ member_count[0].checker }}</div>
               </div>
             </div>
           </div>
@@ -159,6 +98,7 @@ import { mapActions, mapGetters } from 'vuex';
 
 import ChartPage from '../components/statistics/Chart.vue';
 import apistatistics from '../api/ApiStatistics';
+import apiuser from '../api/ApiUser';
 import { ko } from 'vuejs-datepicker/dist/locale';
 import BaseMixin from '../components/Mixins/BaseMixin';
 import moment from 'moment/moment';
@@ -173,6 +113,7 @@ export default {
     return {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
+      member_count: '',         // 멤버 카운팅 정보
       chart_title: '',          // 챠트 제목
       search_seq: '3',          // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: '',          // 프로젝트
@@ -198,10 +139,10 @@ export default {
       //body = req.query;
       this.showLoading(true);
       let project_seq = this.project_seq;
-      const data = {
+      let data = {
         search_seq: 3,
       };
-      apistatistics.getStatistics(data) // 클래스 API 호출
+      apistatistics.getStatistics(data) // 통계 API 호출
         .then((result) => {
 
           // this.$log.debug(result);
@@ -212,6 +153,22 @@ export default {
           }
           this.statistics_list = result.statistics_info;
           this.init()
+        });
+      this.showLoading(false);
+      
+      data = {
+        project_seq: ''
+      };
+      apiuser.getUserCount(data) // 클래스 API 호출
+        .then((result) => {
+
+          // this.$log.debug(result);
+          // this.$log.debug(`aaaaaaaaaaa===${result[0].length}`);
+          if (result.member_count.length > 0) {
+            for (const key in result.member_count) {
+            }
+          }
+          this.member_count = result.member_count;
         });
       this.showLoading(false);
     },
@@ -281,6 +238,7 @@ export default {
 
 .test {
   display: grid;
+  flex-wrap: wrap;
   
 }
 

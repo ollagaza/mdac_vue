@@ -108,4 +108,8 @@ export default {
       params,
     },
   }),
+  getUserCount: () => request({
+    url: '/users/membercount',
+    method: 'post',
+  }),
 }
