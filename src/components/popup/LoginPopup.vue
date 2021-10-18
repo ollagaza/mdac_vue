@@ -659,10 +659,10 @@ export default {
       this.closePopup();
     },
     routeLogin() {
-      if (this.$route.name === 'payment') {
-        this.closePopup();
-        return;
-      }
+      // if (this.$route.name === 'payment') {
+      //   this.closePopup();
+      //   return;
+      // }
       this.$router.push({ name: 'dashboard' });
       this.closePopup();
     },
