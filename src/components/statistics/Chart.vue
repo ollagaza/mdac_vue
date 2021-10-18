@@ -53,6 +53,7 @@
     
     data () {
       return {   
+        statistcs_info: [],
         labels: [],
         total_count: [],
         complete_count: [],
@@ -240,7 +241,7 @@
       // this.init()
     },
     methods: {
-        init() {
+        init(statistics_info) {
             this.$log.debug(`statistics_start`)
             this.$log.debug(this.c_statistics_list2)
             this.$log.debug(`statistics_end`)
@@ -307,58 +308,86 @@
               }
             }             
 
-            const data = {
-              search_seq: this.search_seq,
-              project_seq: this.project_seq,
-              search_type: this.search_type,
-              start_date: this.start_date ? moment(this.start_date).format('YYYY-MM-DD') : '',
-              end_date: this.end_date ? moment(this.end_date).format('YYYY-MM-DD') : '',
-            };                       
-            apistatistics.getStatistics(data)
-            .then((result) => {
-              // console.log(result.statistics_info)
-              // this.statistics_list = result.statistics_info
-              for (const key in result.statistics_info) {
-                  if(this.search_seq === '3' || this.search_seq === '4') {
-                    this.labels.push(result.statistics_info[key].project_name)
-                  } else {
-                    this.labels.push(`${result.statistics_info[key].project_name} / ${result.statistics_info[key].user_name}`)
-                  }
-                  this.total_count.push(result.statistics_info[key].total)
-                  this.label_complete_count.push(result.statistics_info[key].label_complete)
-                  // this.label_ing_count.push(result.statistics_info[key].label_ing)
-                  this.label_ing_count.push(result.statistics_info[key].total - result.statistics_info[key].label_complete - result.statistics_info[key].check_ing - result.statistics_info[key].check_complete)
-                  this.label_reject_count.push(result.statistics_info[key].label_reject)
-                  if(this.search_seq === '4') {
-                    this.check_ing_count.push(result.statistics_info[key].check1_ing)
-                    this.check_complete_count.push(result.statistics_info[key].check1_complete)
-                    this.check2_ing_count.push(result.statistics_info[key].check2_ing)
-                    this.check2_complete_count.push(result.statistics_info[key].check2_complete)
-                    this.check3_ing_count.push(result.statistics_info[key].check3_ing)
-                    this.check3_complete_count.push(result.statistics_info[key].check3_complete)
-                  }else {
-                    this.check_ing_count.push(result.statistics_info[key].check_ing)
-                    this.check_complete_count.push(result.statistics_info[key].check_complete)
+            if(statistics_info)
+            {
+              console.log('aaaaaaaaaaaaaa')
+              if(this.search_seq === '3' || this.search_seq === '4') {
+                this.labels.push(statistics_info.project_name)
+              } else {
+                this.labels.push(`${statistics_info.project_name} / ${statistics_info.user_name}`)
+              }
+              this.total_count.push(statistics_info.total)
+              this.label_complete_count.push(statistics_info.label_complete)
+              // this.label_ing_count.push(statistics_info.label_ing)
+              this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
+              this.label_reject_count.push(statistics_info.label_reject)
 
-                  }
-                  
-                  // console.log(`search_seq===${this.search_seq}`)
-                  // console.log(`check2_complete===${result.statistics_info[key].check2_complete}`)
-                  // console.log(`check_complete_count===${result.statistics_info[key].check_complete}`)
-                  // datasets.push({ 
-                  //     label: result[0][key].project_name, 
-                  //     borderWidth: 2, 
-                  //     borderColor: colors.back, 
-                  //     backgroundColor: colors.back, 
-                  //     pointBorderColor: colors.fore, 
-                  //     pointBackgroundColor: colors.fore, 
-                  //     fill: false, 
-                  //     data: [result[0][key].total,result[0][key].total,result[0][key].total ]
-                  // }) ;
-              } 
-              this.render() 
-            })  
-        
+              if(this.search_seq === '4') {
+                this.check_ing_count.push(statistics_info.check1_ing)
+                this.check_complete_count.push(statistics_info.check1_complete)
+                this.check2_ing_count.push(statistics_info.check2_ing)
+                this.check2_complete_count.push(statistics_info.check2_complete)
+                this.check3_ing_count.push(statistics_info.check3_ing)
+                this.check3_complete_count.push(statistics_info.check3_complete)
+              }else {
+                this.check_ing_count.push(statistics_info.check_ing)
+                this.check_complete_count.push(statistics_info.check_complete)
+              }
+            } else {
+              const data = {
+                search_seq: this.search_seq,
+                project_seq: this.project_seq,
+                search_type: this.search_type,
+                start_date: this.start_date ? moment(this.start_date).format('YYYY-MM-DD') : '',
+                end_date: this.end_date ? moment(this.end_date).format('YYYY-MM-DD') : '',
+              };                       
+              apistatistics.getStatistics(data)
+              .then((result) => {
+                // console.log(result.statistics_info)
+                // this.statistics_list = result.statistics_info
+                for (const key in result.statistics_info) {
+                    if(this.search_seq === '3' || this.search_seq === '4') {
+                      this.labels.push(result.statistics_info[key].project_name)
+                    } else {
+                      this.labels.push(`${result.statistics_info[key].project_name} / ${result.statistics_info[key].user_name}`)
+                    }
+                    this.total_count.push(result.statistics_info[key].total)
+                    this.label_complete_count.push(result.statistics_info[key].label_complete)
+                    // this.label_ing_count.push(result.statistics_info[key].label_ing)
+                    this.label_ing_count.push(result.statistics_info[key].total - result.statistics_info[key].label_complete - result.statistics_info[key].check_ing - result.statistics_info[key].check_complete)
+                    this.label_reject_count.push(result.statistics_info[key].label_reject)
+                    if(this.search_seq === '4') {
+                      this.check_ing_count.push(result.statistics_info[key].check1_ing)
+                      this.check_complete_count.push(result.statistics_info[key].check1_complete)
+                      this.check2_ing_count.push(result.statistics_info[key].check2_ing)
+                      this.check2_complete_count.push(result.statistics_info[key].check2_complete)
+                      this.check3_ing_count.push(result.statistics_info[key].check3_ing)
+                      this.check3_complete_count.push(result.statistics_info[key].check3_complete)
+                    }else {
+                      this.check_ing_count.push(result.statistics_info[key].check_ing)
+                      this.check_complete_count.push(result.statistics_info[key].check_complete)
+
+                    }
+                    
+                    // console.log(`search_seq===${this.search_seq}`)
+                    // console.log(`check2_complete===${result.statistics_info[key].check2_complete}`)
+                    // console.log(`check_complete_count===${result.statistics_info[key].check_complete}`)
+                    // datasets.push({ 
+                    //     label: result[0][key].project_name, 
+                    //     borderWidth: 2, 
+                    //     borderColor: colors.back, 
+                    //     backgroundColor: colors.back, 
+                    //     pointBorderColor: colors.fore, 
+                    //     pointBackgroundColor: colors.fore, 
+                    //     fill: false, 
+                    //     data: [result[0][key].total,result[0][key].total,result[0][key].total ]
+                    // }) ;
+                } 
+                this.render() 
+              })  
+          
+            }
+
             for(let i = 0 ; i < 12 ; i++) {
       
               let colors = this.colorSets[i] 
@@ -607,307 +636,312 @@
                 barPercentage: 0.8
               })
             }
+
+            // 1건 지정해서 조회할때는 여기에서 랜더링..
+            if(statistics_info) {              
+                this.render() 
+            }
         }, 
-        one_chart(statistics_info) {
+//         one_chart(statistics_info) {
 
-// console.log(`statistics_start`)
-            // console.log(this.statistics_list)
-            // console.log(`statistics_end`)
-            this.labels = []
-            this.color_back = []
-            this.color_fore = []
-            this.total_count = []
-            this.label_complete_count = []
-            this.label_ing_count = []
-            this.label_reject_count = []
-            this.check_ing_count = []
-            this.check_complete_count = []
-            this.check2_ing_count = []
-            this.check2_complete_count = []
-            this.check3_ing_count = []
-            this.check3_complete_count = []
-            // console.log(`project_seq===${this.project_seq}`)
-            //let data = this.chartData.chartData 
-            let datasets = [] 
+// // console.log(`statistics_start`)
+//             // console.log(this.statistics_list)
+//             // console.log(`statistics_end`)
+//             this.labels = []
+//             this.color_back = []
+//             this.color_fore = []
+//             this.total_count = []
+//             this.label_complete_count = []
+//             this.label_ing_count = []
+//             this.label_reject_count = []
+//             this.check_ing_count = []
+//             this.check_complete_count = []
+//             this.check2_ing_count = []
+//             this.check2_complete_count = []
+//             this.check3_ing_count = []
+//             this.check3_complete_count = []
+//             // console.log(`project_seq===${this.project_seq}`)
+//             //let data = this.chartData.chartData 
+//             let datasets = [] 
             
-            this.datacollection = { 
-              labels: this.labels, 
-              datasets: datasets,
-            }
+//             this.datacollection = { 
+//               labels: this.labels, 
+//               datasets: datasets,
+//             }
 
-            if(this.search_seq === '3' || this.search_seq === '4') {
-              this.labels.push(statistics_info.project_name)
-            } else {
-              this.labels.push(`${statistics_info.project_name} / ${statistics_info.user_name}`)
-            }
-            this.total_count.push(statistics_info.total)
-            this.label_complete_count.push(statistics_info.label_complete)
-            // this.label_ing_count.push(statistics_info.label_ing)
-            this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
-            this.label_reject_count.push(statistics_info.label_reject)
+//             if(this.search_seq === '3' || this.search_seq === '4') {
+//               this.labels.push(statistics_info.project_name)
+//             } else {
+//               this.labels.push(`${statistics_info.project_name} / ${statistics_info.user_name}`)
+//             }
+//             this.total_count.push(statistics_info.total)
+//             this.label_complete_count.push(statistics_info.label_complete)
+//             // this.label_ing_count.push(statistics_info.label_ing)
+//             this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
+//             this.label_reject_count.push(statistics_info.label_reject)
 
-            if(this.search_seq === '4') {
-              this.check_ing_count.push(statistics_info.check1_ing)
-              this.check_complete_count.push(statistics_info.check1_complete)
-              this.check2_ing_count.push(statistics_info.check2_ing)
-              this.check2_complete_count.push(statistics_info.check2_complete)
-              this.check3_ing_count.push(statistics_info.check3_ing)
-              this.check3_complete_count.push(statistics_info.check3_complete)
-            }else {
-              this.check_ing_count.push(statistics_info.check_ing)
-              this.check_complete_count.push(statistics_info.check_complete)
-            }
+//             if(this.search_seq === '4') {
+//               this.check_ing_count.push(statistics_info.check1_ing)
+//               this.check_complete_count.push(statistics_info.check1_complete)
+//               this.check2_ing_count.push(statistics_info.check2_ing)
+//               this.check2_complete_count.push(statistics_info.check2_complete)
+//               this.check3_ing_count.push(statistics_info.check3_ing)
+//               this.check3_complete_count.push(statistics_info.check3_complete)
+//             }else {
+//               this.check_ing_count.push(statistics_info.check_ing)
+//               this.check_complete_count.push(statistics_info.check_complete)
+//             }
 
-            for(let i = 0 ; i < 12 ; i++) {
-              let colors = this.colorSets[i] 
-              this.color_back.push(colors.back)
-              this.color_fore.push(colors.fore)
-            }
+//             for(let i = 0 ; i < 12 ; i++) {
+//               let colors = this.colorSets[i] 
+//               this.color_back.push(colors.back)
+//               this.color_fore.push(colors.fore)
+//             }
 
-            if(this.search_seq === '1') {
-              datasets.push( 
-              {
-                label: '총작업량',
-                backgroundColor: this.color_back[0],
-                pointBackgroundColor: this.color_back[0],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[0],
-                //Data to be represented on y-axis
-                data: this.total_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '라벨링진행',
-                backgroundColor: this.color_back[1],
-                pointBackgroundColor: this.color_back[1],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[1],
-                //Data to be represented on y-axis
-                data: this.label_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '라벨링완료',
-                backgroundColor: this.color_back[2],
-                pointBackgroundColor: this.color_back[2],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[2],
-                //Data to be represented on y-axis
-                data: this.label_complete_count,
-                barPercentage: 0.8
+//             if(this.search_seq === '1') {
+//               datasets.push( 
+//               {
+//                 label: '총작업량',
+//                 backgroundColor: this.color_back[0],
+//                 pointBackgroundColor: this.color_back[0],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[0],
+//                 //Data to be represented on y-axis
+//                 data: this.total_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '라벨링진행',
+//                 backgroundColor: this.color_back[1],
+//                 pointBackgroundColor: this.color_back[1],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[1],
+//                 //Data to be represented on y-axis
+//                 data: this.label_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '라벨링완료',
+//                 backgroundColor: this.color_back[2],
+//                 pointBackgroundColor: this.color_back[2],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[2],
+//                 //Data to be represented on y-axis
+//                 data: this.label_complete_count,
+//                 barPercentage: 0.8
                 
-              },
-              {
-                label: '반려',
-                backgroundColor: this.color_back[3],
-                pointBackgroundColor: this.color_back[3],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[3],
-                //Data to be represented on y-axis
-                data: this.label_reject_count,
-                barPercentage: 0.8
-              })
-            } else if(this.search_seq === '2') {
-              datasets.push( 
-              {
-                label: '총작업량',
-                backgroundColor: this.color_back[0],
-                pointBackgroundColor: this.color_back[0],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[0],
-                //Data to be represented on y-axis
-                data: this.total_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수진행',
-                backgroundColor: this.color_back[1],
-                pointBackgroundColor: this.color_back[1],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[1],
-                //Data to be represented on y-axis
-                data: this.check_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수완료',
-                backgroundColor: this.color_back[2],
-                pointBackgroundColor: this.color_back[2],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[2],
-                //Data to be represented on y-axis
-                data: this.check_complete_count,
-                barPercentage: 0.8
-              })
-            } else if(this.search_seq === '3') {
-              datasets.push( 
-              {
-                label: '총작업량',
-                backgroundColor: this.color_back[0],
-                pointBackgroundColor: this.color_back[0],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[0],
-                //Data to be represented on y-axis
-                data: this.total_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '라벨링진행',
-                backgroundColor: this.color_back[1],
-                pointBackgroundColor: this.color_back[1],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[1],
-                //Data to be represented on y-axis
-                data: this.label_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '라벨링완료',
-                backgroundColor: this.color_back[2],
-                pointBackgroundColor: this.color_back[2],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[2],
-                //Data to be represented on y-axis
-                data: this.label_complete_count,
-                barPercentage: 0.8
+//               },
+//               {
+//                 label: '반려',
+//                 backgroundColor: this.color_back[3],
+//                 pointBackgroundColor: this.color_back[3],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[3],
+//                 //Data to be represented on y-axis
+//                 data: this.label_reject_count,
+//                 barPercentage: 0.8
+//               })
+//             } else if(this.search_seq === '2') {
+//               datasets.push( 
+//               {
+//                 label: '총작업량',
+//                 backgroundColor: this.color_back[0],
+//                 pointBackgroundColor: this.color_back[0],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[0],
+//                 //Data to be represented on y-axis
+//                 data: this.total_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수진행',
+//                 backgroundColor: this.color_back[1],
+//                 pointBackgroundColor: this.color_back[1],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[1],
+//                 //Data to be represented on y-axis
+//                 data: this.check_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수완료',
+//                 backgroundColor: this.color_back[2],
+//                 pointBackgroundColor: this.color_back[2],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[2],
+//                 //Data to be represented on y-axis
+//                 data: this.check_complete_count,
+//                 barPercentage: 0.8
+//               })
+//             } else if(this.search_seq === '3') {
+//               datasets.push( 
+//               {
+//                 label: '총작업량',
+//                 backgroundColor: this.color_back[0],
+//                 pointBackgroundColor: this.color_back[0],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[0],
+//                 //Data to be represented on y-axis
+//                 data: this.total_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '라벨링진행',
+//                 backgroundColor: this.color_back[1],
+//                 pointBackgroundColor: this.color_back[1],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[1],
+//                 //Data to be represented on y-axis
+//                 data: this.label_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '라벨링완료',
+//                 backgroundColor: this.color_back[2],
+//                 pointBackgroundColor: this.color_back[2],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[2],
+//                 //Data to be represented on y-axis
+//                 data: this.label_complete_count,
+//                 barPercentage: 0.8
                 
-              },
-              {
-                label: '반려',
-                backgroundColor: this.color_back[3],
-                pointBackgroundColor: this.color_back[3],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[3],
-                //Data to be represented on y-axis
-                data: this.label_reject_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수진행',
-                backgroundColor: this.color_back[4],
-                pointBackgroundColor: this.color_back[4],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[4],
-                //Data to be represented on y-axis
-                data: this.check_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수완료',
-                backgroundColor: this.color_back[5],
-                pointBackgroundColor: this.color_back[5],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[5],
-                //Data to be represented on y-axis
-                data: this.check_complete_count,
-                barPercentage: 0.8
-              })
-            } else {
-              datasets.push( 
-              {
-                label: '총작업량',
-                backgroundColor: this.color_back[0],
-                pointBackgroundColor: this.color_back[0],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[0],
-                //Data to be represented on y-axis
-                data: this.total_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '라벨링진행',
-                backgroundColor: this.color_back[1],
-                pointBackgroundColor: this.color_back[1],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[1],
-                //Data to be represented on y-axis
-                data: this.label_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '라벨링완료',
-                backgroundColor: this.color_back[2],
-                pointBackgroundColor: this.color_back[2],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[2],
-                //Data to be represented on y-axis
-                data: this.label_complete_count,
-                barPercentage: 0.8
+//               },
+//               {
+//                 label: '반려',
+//                 backgroundColor: this.color_back[3],
+//                 pointBackgroundColor: this.color_back[3],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[3],
+//                 //Data to be represented on y-axis
+//                 data: this.label_reject_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수진행',
+//                 backgroundColor: this.color_back[4],
+//                 pointBackgroundColor: this.color_back[4],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[4],
+//                 //Data to be represented on y-axis
+//                 data: this.check_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수완료',
+//                 backgroundColor: this.color_back[5],
+//                 pointBackgroundColor: this.color_back[5],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[5],
+//                 //Data to be represented on y-axis
+//                 data: this.check_complete_count,
+//                 barPercentage: 0.8
+//               })
+//             } else {
+//               datasets.push( 
+//               {
+//                 label: '총작업량',
+//                 backgroundColor: this.color_back[0],
+//                 pointBackgroundColor: this.color_back[0],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[0],
+//                 //Data to be represented on y-axis
+//                 data: this.total_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '라벨링진행',
+//                 backgroundColor: this.color_back[1],
+//                 pointBackgroundColor: this.color_back[1],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[1],
+//                 //Data to be represented on y-axis
+//                 data: this.label_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '라벨링완료',
+//                 backgroundColor: this.color_back[2],
+//                 pointBackgroundColor: this.color_back[2],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[2],
+//                 //Data to be represented on y-axis
+//                 data: this.label_complete_count,
+//                 barPercentage: 0.8
                 
-              },
-              {
-                label: '반려',
-                backgroundColor: this.color_back[3],
-                pointBackgroundColor: this.color_back[3],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[3],
-                //Data to be represented on y-axis
-                data: this.label_reject_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수진행1',
-                backgroundColor: this.color_back[4],
-                pointBackgroundColor: this.color_back[4],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[4],
-                //Data to be represented on y-axis
-                data: this.check_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수완료1',
-                backgroundColor: this.color_back[5],
-                pointBackgroundColor: this.color_back[5],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[5],
-                //Data to be represented on y-axis
-                data: this.check_complete_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수진행2',
-                backgroundColor: this.color_back[6],
-                pointBackgroundColor: this.color_back[6],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[6],
-                //Data to be represented on y-axis
-                data: this.check2_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수완료2',
-                backgroundColor: this.color_back[7],
-                pointBackgroundColor: this.color_back[7],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[7],
-                //Data to be represented on y-axis
-                data: this.check2_complete_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수진행3',
-                backgroundColor: this.color_back[8],
-                pointBackgroundColor: this.color_back[8],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[8],
-                //Data to be represented on y-axis
-                data: this.check3_ing_count,
-                barPercentage: 0.8
-              },
-              {
-                label: '검수완료3',
-                backgroundColor: this.color_back[9],
-                pointBackgroundColor: this.color_back[9],
-                borderWidth: 1,
-                pointBorderColor: this.color_fore[9],
-                //Data to be represented on y-axis
-                data: this.check3_complete_count,
-                barPercentage: 0.8
-              })
-            }
-            this.render()         
-        },
+//               },
+//               {
+//                 label: '반려',
+//                 backgroundColor: this.color_back[3],
+//                 pointBackgroundColor: this.color_back[3],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[3],
+//                 //Data to be represented on y-axis
+//                 data: this.label_reject_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수진행1',
+//                 backgroundColor: this.color_back[4],
+//                 pointBackgroundColor: this.color_back[4],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[4],
+//                 //Data to be represented on y-axis
+//                 data: this.check_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수완료1',
+//                 backgroundColor: this.color_back[5],
+//                 pointBackgroundColor: this.color_back[5],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[5],
+//                 //Data to be represented on y-axis
+//                 data: this.check_complete_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수진행2',
+//                 backgroundColor: this.color_back[6],
+//                 pointBackgroundColor: this.color_back[6],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[6],
+//                 //Data to be represented on y-axis
+//                 data: this.check2_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수완료2',
+//                 backgroundColor: this.color_back[7],
+//                 pointBackgroundColor: this.color_back[7],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[7],
+//                 //Data to be represented on y-axis
+//                 data: this.check2_complete_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수진행3',
+//                 backgroundColor: this.color_back[8],
+//                 pointBackgroundColor: this.color_back[8],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[8],
+//                 //Data to be represented on y-axis
+//                 data: this.check3_ing_count,
+//                 barPercentage: 0.8
+//               },
+//               {
+//                 label: '검수완료3',
+//                 backgroundColor: this.color_back[9],
+//                 pointBackgroundColor: this.color_back[9],
+//                 borderWidth: 1,
+//                 pointBorderColor: this.color_fore[9],
+//                 //Data to be represented on y-axis
+//                 data: this.check3_complete_count,
+//                 barPercentage: 0.8
+//               })
+//             }
+//             this.render()         
+//         },
         
         render() { 
             this.renderChart(this.datacollection, this.options) 

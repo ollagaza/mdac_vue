@@ -103,7 +103,7 @@
                 <div class="grid_m class_check1 body" v-if="search_seq === '3'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.total }}</div>
-                  <div>{{ pStatistics.total - pStatistics.label_complete - pStatistics.check_ing - pStatistics.check_complete }}</div>
+                  <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.label_reject }}</div>
@@ -116,7 +116,7 @@
                 <div class="grid_m class_check3 body" v-if="search_seq === '4'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.total }}</div>
-                  <div>{{ pStatistics.total - pStatistics.label_complete - pStatistics.check_ing - pStatistics.check_complete }}</div>
+                  <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}%</div>
                   <div>{{ pStatistics.label_reject }}</div>
@@ -273,7 +273,7 @@ export default {
       return;
     },
     one_chart(chart_data) {
-      this.$refs.chartpage.one_chart(chart_data)
+      this.$refs.chartpage.init(chart_data)
     },
     init() { 
       // console.log('initaaa')
