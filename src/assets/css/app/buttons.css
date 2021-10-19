@@ -787,11 +787,11 @@ input:checked + .toggle .toggle__handler{
   align-items: center;
   transition: .3s;
   background-position: 0 0;
-  background-color: rgba(22, 58, 71, 0.637);
+  background-color: #1aabea;
   background-repeat: no-repeat;
   overflow: hidden;
   border-radius: 12px;
-  border: 1px solid rgba(12, 35, 43, 0.637);
+  border: 1px solid #1aabea;
   font-size: 13px;
   color: #fff;
 }
