@@ -245,8 +245,6 @@ export default {
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      // this.$log.debug(`this.is_used===${this.is_used}`)
-      // this.$log.debug(`this.page===${this.page}`)
       if(this.cur_page === 'undefined') {
         this.cur_page = 1;
       }

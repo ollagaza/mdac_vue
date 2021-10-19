@@ -213,7 +213,6 @@ export default {
       let status = this.status;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      //this.$log.debug(`this.cur_page===${this.cur_page}`)
       if(this.cur_page === 'undefined') {
         this.cur_page = 1;
       }
@@ -353,8 +352,6 @@ export default {
 
     // 프로젝트 상세 보기
     fnProjectDetail(seq) {
-      //console.log(`seq===${seq}`)
-      //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';

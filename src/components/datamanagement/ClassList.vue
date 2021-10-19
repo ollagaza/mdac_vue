@@ -212,8 +212,6 @@ export default {
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      // this.$log.debug(`this.is_used===${this.is_used}`)
-      // this.$log.debug(`this.page===${this.page}`)
       if(this.cur_page === 'undefined') {
         this.cur_page = 1;
       }
@@ -232,7 +230,6 @@ export default {
       apiproject.getClassInfo(data) // 클래스 API 호출
         .then((result) => {
 
-          //this.$log.debug(result);
           if (result.class_info.length > 0) {
             for (const key in result.class_info) {
               const reg_date = result.class_info[key].reg_date;

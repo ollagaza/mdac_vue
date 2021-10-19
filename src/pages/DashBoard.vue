@@ -28,7 +28,7 @@
                   <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                     <div>{{ pStatistics.project_name }}</div>
                     <div style="flex: 1"></div>
-                    <div style="cursor:pointer;" v-on:click="go_project(`${pStatistics.project_name}`)">더보기 ></div>
+                    <div style="cursor:pointer;" v-on:click="projectGo(`${pStatistics.project_name}`)">더보기 ></div>
                   </div>
                   <div class="grid_m dashboard header">
                     <div>전체데이터</div>
@@ -53,7 +53,7 @@
               <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                 <div>작업자현황</div>
                 <div style="flex: 1"></div>
-                <div style="cursor:pointer;" v-on:click="go_member()">더보기 ></div>
+                <div style="cursor:pointer;" v-on:click="memberGo()">더보기 ></div>
               </div>
               <div class="grid_m dashboard header">
                 <div>총작업자</div>
@@ -131,13 +131,14 @@ export default {
 
   },
   methods: {
-// 통계 조회
-    fnStatisticsList() {
+    // Dashboard 내용 가져오기
+    dashboard_search() {
       this.chart_title = `Weekly 통계 ( ${moment(this.start_date).format('YYYY-MM-DD')} ~ ${moment(this.end_date).format('YYYY-MM-DD')} )`
 
-      // this.$log.debug('statistics_list_before',this.statistics_list)
       //body = req.query;
       this.showLoading(true);
+      
+      // 프로젝트
       let project_seq = this.project_seq;
       let data = {
         search_seq: 3,
@@ -145,64 +146,52 @@ export default {
       apistatistics.getStatistics(data) // 통계 API 호출
         .then((result) => {
 
-          // this.$log.debug(result);
-          // this.$log.debug(`aaaaaaaaaaa===${result[0].length}`);
           if (result.statistics_info.length > 0) {
             for (const key in result.statistics_info) {
             }
           }
-          this.statistics_list = result.statistics_info;
-          this.init()
+          this.statistics_list = result.statistics_info; // 프로젝트 현황
+          this.init() // 챠트 호출
         });
-      this.showLoading(false);
-      
+
+      // 작업자 현황
       data = {
         project_seq: ''
       };
-      apiuser.getUserCount(data) // 클래스 API 호출
+      apiuser.getUserCount(data)
         .then((result) => {
 
-          // this.$log.debug(result);
-          // this.$log.debug(`aaaaaaaaaaa===${result[0].length}`);
           if (result.member_count.length > 0) {
             for (const key in result.member_count) {
             }
           }
           this.member_count = result.member_count;
         });
-      this.showLoading(false);
+
+        this.showLoading(false);
     },
     init() { 
       this.chartData = []
       this.$refs.chartpage.init()
     },
-    go_project(project_name) {
+    // 프로젝트관리로 이동
+    projectGo(project_name) {
       this.$router.push({ name: 'project', params: { keyword: project_name } });
     },
-    go_member() {
+    // 멤버관리로 이동
+    memberGo() {
       this.$router.push({ name: 'member' });
     },
-},
-  beforeCreate() { 
-    // const isLoggedIn = this.$store.getters['is_logged'];
-    // if(!isLoggedIn) {
-    //  this.$router.push({ name: 'index' });
-    // }        
-    // console.log(`Logged1 :: ${isLoggedIn}`);
   },
   mounted() {
-
-    this.$log.debug(`Logged_Dashboard :: ${this.is_logged}`);
+    // this.$log.debug(`Logged_Dashboard :: ${this.is_logged}`);
+    // 로그인 되어 있지 않으면 index로 이동
     if (!this.is_logged) {
       this.$router.push({ name: 'index' });
     }
     
-    this.fnStatisticsList();   
-  },
-  destroyed() {
-
-    // const isLoggedIn = this.$store.getters['is_logged'];
-    // console.log(`Logged2 :: ${isLoggedIn}`);
+    // Dashboard 내용 가져오기
+    this.dashboard_search();   
   },
 };
 </script>
