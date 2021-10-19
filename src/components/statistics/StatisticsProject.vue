@@ -34,7 +34,7 @@
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
                 <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
               </div>
-              <div> ~ </div>
+              <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
                 <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
               </div>
@@ -44,23 +44,14 @@
 
           <div class=" ">
             <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{btn_data_title}}</div>
-              <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="filexls()">Export to excel</div>
-
-              <!-- <div style="flex: 2"></div>
-              <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="list_count" style="width: 120px;" @change="fnStatisticsList()">
-                  <option value="20" selected=true>20개씩 보기</option>
-                  <option value="30">30개씩 보기</option>
-                  <option value="50">50개씩 보기</option>
-                  <option value="100">100개씩 보기</option>
-                </select>
-              </div> -->
+              <div style="flex: 2"></div>
+              <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{tooltips_title}}</div>
+              <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="export_file()">Export to excel</div>
             </div>
           </div>
 
           <div style="padding: 10px 0 0 0 ;">
-            <div v-if="search_seq === '3'" class="grid_m class_check1 header">
+            <div v-if="search_seq === '3'" class="grid_m class_check3 header">
               <div>프로젝트</div>
               <div>총작업량</div>
               <div>라벨링진행</div>
@@ -72,7 +63,7 @@
               <div>검수완료</div>
               <div>검수완료율</div>
             </div>
-            <div style="font-size: 10px" v-if="search_seq === '4'" class="grid_m class_check3 header">
+            <div style="font-size: 10px" v-if="search_seq === '4'" class="grid_m class_check4 header">
               <div>프로젝트</div>
               <div>총작업량</div>
               <div>라벨링진행</div>
@@ -92,14 +83,14 @@
             </div>
 
             <template v-if="statistics_list.length === 0">
-              <div class="grid_m nodata" v-bind:class="{class_check1: search_seq === '3', class_check3: search_seq === '4'}">
+              <div class="grid_m nodata" v-bind:class="{class_check3: search_seq === '3', class_check4: search_seq === '4'}">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="statistics_list.length > 0">
               <template v-for="(pStatistics, index) in statistics_list">
-                <div class="grid_m class_check1 body" v-if="search_seq === '3'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check3 body" v-if="search_seq === '3'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
@@ -112,7 +103,7 @@
                   <div>{{ pStatistics.check_avgComplete }}</div>
                 </div>
                 
-                <div class="grid_m class_check3 body" v-if="search_seq === '4'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check4 body" v-if="search_seq === '4'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
@@ -138,6 +129,7 @@
                 ref="chartpage" 
                 chartData="chartData" 
                 v-bind:class="chart_size" 
+                v-bind:tooltips_flag="tooltips_flag"
                 v-bind:project_list="project_list" 
                 v-bind:statistics_list="statistics_list" 
                 v-bind:search_seq="search_seq"
@@ -181,7 +173,8 @@ export default {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
       chart_title: '',          // 챠트 제목
-      btn_data_title: '차트데이터보이기', // 버튼:차트데이터보이기
+      tooltips_title: '차트데이터보이기', // 버튼:차트데이터보이기
+      tooltips_flag: 'N',               // 버튼:차트데이터보이기
       search_seq: this.$route.params.search_seq ? this.$route.params.search_seq: '3',            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: this.$route.params.project_seq ? this.$route.params.project_seq: '',          // 프로젝트
       search_type: 'NOW',          // 조회기준
@@ -196,7 +189,8 @@ export default {
   watch: {
     '$route': function(){
       this.search_seq = this.$route.params.search_seq ? this.$route.params.search_seq: '3';
-      this.btn_data_title = "차트데이터보이기"
+      this.tooltips_title = '차트데이터보이기'
+      this.tooltips_flag = 'N'
       this.fnStatisticsList();    
     }
   },  
@@ -214,6 +208,7 @@ export default {
     const data = {
         status:''
     }
+    // 프로젝트정보 셋팅
     apiproject.getProjectInfo(data)
       .then((result) => {
         this.project_list = result.project_info;
@@ -243,16 +238,14 @@ export default {
       apistatistics.getStatistics(data) // 클래스 API 호출
         .then((result) => {
 
-          // this.$log.debug(result);
-          // this.$log.debug(`aaaaaaaaaaa===${result[0].length}`);
           if (result.statistics_info.length > 0) {
             for (const key in result.statistics_info) {
-              result.statistics_info[key].label_avgComplete = result.statistics_info[key].label_avgComplete + '%'
-              result.statistics_info[key].label_avgReject = result.statistics_info[key].label_avgReject + '%'
-              result.statistics_info[key].check_avgComplete = result.statistics_info[key].check_avgComplete + '%'
-              result.statistics_info[key].check1_avgComplete = result.statistics_info[key].check1_avgComplete + '%'
-              result.statistics_info[key].check2_avgComplete = result.statistics_info[key].check2_avgComplete + '%'
-              result.statistics_info[key].check3_avgComplete = result.statistics_info[key].check3_avgComplete + '%'
+              result.statistics_info[key].label_avgComplete = result.statistics_info[key].label_avgComplete + '%'   // 라벨링완료율
+              result.statistics_info[key].label_avgReject = result.statistics_info[key].label_avgReject + '%'       // 반려율
+              result.statistics_info[key].check_avgComplete = result.statistics_info[key].check_avgComplete + '%'   // 검수완료율
+              result.statistics_info[key].check1_avgComplete = result.statistics_info[key].check1_avgComplete + '%' // 검수1완료율
+              result.statistics_info[key].check2_avgComplete = result.statistics_info[key].check2_avgComplete + '%' // 검수2완료율
+              result.statistics_info[key].check3_avgComplete = result.statistics_info[key].check3_avgComplete + '%' // 검수3완료율
             }
             // this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
           }          
@@ -265,24 +258,29 @@ export default {
     dateFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
     },
+    // Data 툴팁 보이기/안보이기
     viewTooltips() {
       this.$refs.chartpage.viewTooltips()
       if(!this.$refs.chartpage.options.showAllTooltips) {
-        this.btn_data_title = "차트데이터보이기"
+        this.tooltips_title = '차트데이터보이기'
+        this.tooltips_flag = 'N'
       } else {
-        this.btn_data_title = "차트데이터숨기기"
+        this.tooltips_title = '차트데이터숨기기'
+        this.tooltips_flag = 'Y'
       }
     },
-    filexls() {
+    // 엑셀파일 export
+    export_file() {
       this.$refs.chartpage.filexls()
       return;
     },
+    // 1개 데이터 선택시 chart 호출
     one_chart(chart_data) {
       this.$refs.chartpage.init(chart_data)
     },
+    // 전체 데이터 chart 호출
     init() { 
-      // console.log('initaaa')
-      this.$log.debug('statistics_list_after',this.statistics_list)
+      // this.$log.debug('statistics_list_after',this.statistics_list)
       // EventBus.emit('statistics_list', null, this.statistics_list, null);
       this.chartData = []
       this.$refs.chartpage.init()
@@ -307,10 +305,10 @@ export default {
   padding: 0 10px;
   border: 1px solid #888;
 }
-.grid_m.class_check1 {
+.grid_m.class_check3 {
   grid-template-columns: 280px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
 }
-.grid_m.class_check3 {
+.grid_m.class_check4 {
   grid-template-columns: 100px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
 }
 .grid_m.nodata {
