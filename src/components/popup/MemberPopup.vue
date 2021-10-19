@@ -154,7 +154,7 @@ export default {
       }
 
       if (this.password !== this.password_confirm){
-        this.password_error = '비밀번호가 같지 않습니다.';
+        this.password_error = '비밀번호가 일치하지 않습니다.';
         return false;
       } else {
         const regexp_eng = /[a-zA-Z]/;
