@@ -32,12 +32,20 @@
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
+                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
               </div>
               <div> ~ </div>
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
+                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
               </div>
+
+              <select class="text" v-model="worker" style="width: 140px;height: 36px;margin-left:10px;" @change="fnStatisticsList()">
+                <option value="" selected=true>작업자(전체)</option>
+                  <template v-for="(member) in member_list">
+                    <option v-bind:value="member.seq" v-bind:class="{ colorRed: member.is_used != 'Y' }">{{member.user_name}}({{ member.is_used_str }})</option>
+                  </template>
+              </select>
+
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnStatisticsList()">조회</div>
             </div>
           </div>
@@ -137,6 +145,7 @@
                 v-bind:search_type="search_type"
                 v-bind:start_date="start_date"
                 v-bind:end_date="end_date"
+                v-bind:worker="worker"
               ></ChartPage>
             </template>
           </div>          
@@ -151,14 +160,14 @@
 <script>
 import apiproject from '../../api/ApiProject';
 import apistatistics from '../../api/ApiStatistics';
+import apiuser from '../../api/ApiUser';
 import BaseMixin from '../Mixins/BaseMixin';
 import Statistics_Left from './Statistics_Left';
 import { ko } from 'vuejs-datepicker/dist/locale';
 import moment from 'moment/moment';
 import Datepicker from 'vuejs-datepicker';
 import ChartPage from './Chart.vue';
-  import ExcelJS from 'exceljs';
-  import * as FileSaver from 'file-saver';
+
 export default {
   name: 'StatisticsWorker',
   components: {
@@ -171,13 +180,15 @@ export default {
     return {
       datalist: '',
       project_list: [],         // 프로젝트 리스트
+      member_list: [],          // 멤버 리스트
       statistics_list: '',      // 통계 데이터 리스트
       chart_title: '',          // 챠트 제목
-      worker_title: '라벨링',         // 테이블 제목
+      worker_title: '라벨링',    // 통계 제목
       btn_data_title: '차트데이터보이기', // 버튼:차트데이터보이기
-      search_seq: this.$route.params.search_seq ? this.$route.params.search_seq: '1',            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
+      search_seq: this.$route.params.search_seq ? this.$route.params.search_seq: '1',   // 조회종류(1:라벨러/2:검수자/3:프로젝트)
       project_seq: '',          // 프로젝트
-      search_type: 'NOW',          // 조회기준
+      search_type: 'NOW',       // 조회기준
+      worker: this.$route.params.worker ? this.$route.params.worker: '',               // 작업자
       date_locale_ko: ko,
       start_date: moment().subtract(7, 'd').format('YYYY-MM-DD'),  // 시작일
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
@@ -213,13 +224,36 @@ export default {
   },
   beforeMount() {
 
-    const data = {
+    let data = {
         status:''
     }
     apiproject.getProjectInfo(data)
       .then((result) => {
         this.project_list = result.project_info;
       });
+    
+      data = {
+        list_count:'',
+        // is_used: 'Y' // 사용중인 멤버만
+      };
+      // 회원정보조회 API 호출
+      apiuser.getUserInfos(data)
+        .then((result) => {
+          if (result.member_info.length > 0) {
+              //this.paging = 10;
+              //this.no = 1;
+            for (const key in result.member_info) {
+              if (result.member_info[key].is_used == 'Y') {
+                result.member_info[key].is_used_str = '사용중';
+              } else {
+                result.member_info[key].is_used_str = "정지중";
+              }
+            }
+            // this.page_navigation = { cur_page: 4, list_count: 9, total_count: 100, first_page: 11, page_count: 10 };
+          }          
+          this.member_list = result.member_info;
+        });
+
   },
   mounted() {
     this.search_seq = this.$route.params.search_seq ? this.$route.params.search_seq: 1;
@@ -231,6 +265,7 @@ export default {
     // 통계 조회
     fnStatisticsList() {
       this.search_seq = String(this.$route.params.search_seq) ? String(this.$route.params.search_seq): '1';
+      // this.worker = this.$route.params.worker ? this.$route.params.worker: '';
       // this.$log.debug(`search_seq`,this.search_seq)
       if(this.search_seq === '2') {
         this.chart_title = `검수자 통계 ( ${moment(this.start_date).format('YYYY-MM-DD')} ~ ${moment(this.end_date).format('YYYY-MM-DD')} )`
@@ -247,7 +282,8 @@ export default {
         project_seq: this.project_seq,
         search_type: this.search_type,
         start_date: moment(this.start_date).format('YYYY-MM-DD'),
-        end_date: moment(this.end_date).format('YYYY-MM-DD')
+        end_date: moment(this.end_date).format('YYYY-MM-DD'),
+        worker: this.worker,
       };
       apistatistics.getStatistics(data) // 클래스 API 호출
         .then((result) => {
@@ -271,6 +307,7 @@ export default {
               this.sum_check_complete = this.sum_check_complete + result.statistics_info[key].check_complete
               result.statistics_info[key].label_avgComplete = result.statistics_info[key].label_avgComplete + '%'
               result.statistics_info[key].label_avgReject = result.statistics_info[key].label_avgReject + '%'
+              result.statistics_info[key].check_avgComplete = result.statistics_info[key].check_avgComplete + '%'
             }
             // this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
           }
@@ -423,5 +460,8 @@ export default {
   /* padding-top: 30px;
   height: 1500px;
   width: 700px; */
+}
+.colorRed {
+  color: red;
 }
 </style>

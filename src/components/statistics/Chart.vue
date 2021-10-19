@@ -47,7 +47,7 @@
   export default { 
     name: 'BarChart',
     extends: Bar, // 세로: HorizontalBar
-    props: ['chartData','statistics_list','statistics_list2','project_list', 'chart_title', 'search_seq', 'search_type', 'project_seq','start_date','end_date'],
+    props: ['chartData','statistics_list','project_list', 'chart_title', 'search_seq', 'search_type', 'project_seq','start_date','end_date','worker'],
     mixins: [BaseMixin],
 
     
@@ -224,14 +224,7 @@
         } else {
           return "[]";
         }
-      },        
-      c_statistics_list2() {
-        if (this.statistics_list) {
-          return this.statistics_list;
-        } else {
-          return "[]";
-        }
-      },        
+      },               
     },
     watch: {
     },  
@@ -243,7 +236,7 @@
     methods: {
         init(statistics_info) {
             this.$log.debug(`statistics_start`)
-            this.$log.debug(this.c_statistics_list2)
+            this.$log.debug(this.c_statistics_list)
             this.$log.debug(`statistics_end`)
             this.labels = []
             this.color_back = []
@@ -340,6 +333,7 @@
                 search_type: this.search_type,
                 start_date: this.start_date ? moment(this.start_date).format('YYYY-MM-DD') : '',
                 end_date: this.end_date ? moment(this.end_date).format('YYYY-MM-DD') : '',
+                worker: this.worker,
               };                       
               apistatistics.getStatistics(data)
               .then((result) => {

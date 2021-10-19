@@ -140,7 +140,6 @@
                 v-bind:class="chart_size" 
                 v-bind:project_list="project_list" 
                 v-bind:statistics_list="statistics_list" 
-                v-bind:statistics_list2="statistics_list2" 
                 v-bind:search_seq="search_seq"
                 v-bind:project_seq="project_seq"
                 v-bind:chart_title="chart_title"
@@ -168,6 +167,7 @@ import { ko } from 'vuejs-datepicker/dist/locale';
 import moment from 'moment/moment';
 import Datepicker from 'vuejs-datepicker';
 import ChartPage from './Chart.vue';
+
 export default {
   name: 'StatisticsProject',
   components: {
@@ -180,11 +180,10 @@ export default {
     return {
       project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
-      statistics_list2: '',      // 통계 데이터 리스트
       chart_title: '',          // 챠트 제목
       btn_data_title: '차트데이터보이기', // 버튼:차트데이터보이기
       search_seq: this.$route.params.search_seq ? this.$route.params.search_seq: '3',            // 조회종류(1:라벨러/2:검수자/3:프로젝트)
-      project_seq: '',          // 프로젝트
+      project_seq: this.$route.params.project_seq ? this.$route.params.project_seq: '',          // 프로젝트
       search_type: 'NOW',          // 조회기준
       date_locale_ko: ko,
       start_date: moment().subtract(7, 'd').format('YYYY-MM-DD'),  // 시작일
@@ -284,7 +283,6 @@ export default {
     init() { 
       // console.log('initaaa')
       this.$log.debug('statistics_list_after',this.statistics_list)
-      this.statistics_list2 = this.statistics_list
       // EventBus.emit('statistics_list', null, this.statistics_list, null);
       this.chartData = []
       this.$refs.chartpage.init()
