@@ -47,7 +47,7 @@
   export default { 
     name: 'BarChart',
     extends: Bar, // 세로: HorizontalBar
-    props: ['chartData','statistics_list','project_list', 'chart_title', 'search_seq', 'search_type', 'project_seq','start_date','end_date','worker'],
+    props: ['chartData','statistics_list','project_list', 'chart_title', 'tooltips_flag', 'search_seq', 'search_type', 'project_seq','start_date','end_date','worker'],
     mixins: [BaseMixin],
 
     
@@ -301,9 +301,14 @@
               }
             }             
 
+            if(this.tooltips_flag === 'Y') {
+              this.options.showAllTooltips = true
+            } else {
+              this.options.showAllTooltips = false
+            }           
+                          
             if(statistics_info)
             {
-              // console.log('aaaaaaaaaaaaaa')
               if(this.search_seq === '3' || this.search_seq === '4') {
                 this.labels.push(statistics_info.project_name)
               } else {
@@ -337,7 +342,6 @@
               };                       
               apistatistics.getStatistics(data)
               .then((result) => {
-                // console.log(result.statistics_info)
                 // this.statistics_list = result.statistics_info
                 for (const key in result.statistics_info) {
                     if(this.search_seq === '3' || this.search_seq === '4') {
@@ -362,9 +366,6 @@
                       this.check_complete_count.push(result.statistics_info[key].check_complete)
                     }
                     
-                    // console.log(`search_seq===${this.search_seq}`)
-                    // console.log(`check2_complete===${result.statistics_info[key].check2_complete}`)
-                    // console.log(`check_complete_count===${result.statistics_info[key].check_complete}`)
                     // datasets.push({ 
                     //     label: result[0][key].project_name, 
                     //     borderWidth: 2, 
@@ -631,9 +632,10 @@
             }
 
             // 1건 지정해서 조회할때는 여기에서 랜더링..
-            if(statistics_info) {              
-                this.render() 
+            if(statistics_info) {  
+              this.render() 
             }
+            
         }, 
 //         one_chart(statistics_info) {
 
@@ -935,19 +937,20 @@
 //             }
 //             this.render()         
 //         },
-        
+        //챠트 그리기..
         render() { 
             this.renderChart(this.datacollection, this.options) 
         },
-
+        // Data 툴팁 보이기/안보이기 처리
         viewTooltips() {
           if(this.options.showAllTooltips) {
             this.options.showAllTooltips = false;
           } else {
             this.options.showAllTooltips = true;
           }
-          this.render()
+          // this.render()
         },
+        // 엑셀파일 export
         filexls() {
           // let base64Image = document.getElementById("datalist").toDataURL(1.0);
           let file_name = 'statistics_label'
@@ -1027,6 +1030,13 @@
               fgColor:{argb:'EEEEEEEE'},
               bgColor:{argb:'EEEEEEEE'}
             };
+            worksheet.getCell(1,index+1).border = { // thin, thick, double
+              top: {style:'thin', color: {argb:'black'}},
+              left: {style:'thin', color: {argb:'black'}},
+              bottom: {style:'thin', color: {argb:'black'}},
+              right: {style:'thin', color: {argb:'black'}}
+            };
+            worksheet.getRow(1).font = { bold: true };
           })
 
           // Set Data
@@ -1037,7 +1047,13 @@
           this.statistics_list.forEach(function(key,index){
             worksheet.columns.forEach(function(key,index2){
               worksheet.getCell(index+2,index2+1).alignment = { vertical: 'top', horizontal: 'center' }
-            })
+              worksheet.getCell(index+2,index2+1).border = { // thin, thick, double
+                top: {style:'thin', color: {argb:'black'}},
+                left: {style:'thin', color: {argb:'black'}},
+                bottom: {style:'thin', color: {argb:'black'}},
+                right: {style:'thin', color: {argb:'black'}}
+              };
+})
           })
 
           // 흰 배경을 만들기 위해 셀 병합
