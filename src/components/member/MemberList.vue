@@ -92,7 +92,7 @@
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.phone }}</div>
                   <div v-on:click="fnMemberDetail(member.seq)"><div :class="{ 'process_progress' : member.is_used === 'Y', 'process_stop' : member.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnMemberList(1)">{{ member.is_used_str }}</div></div>
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.reg_date_dt }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnMemberDetail('')">통계</div></div>
+                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(member.seq)">통계</div></div>
                   <div v-on:click="getSelected"><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnMemberDetail('')">이력</div></div>
                 </div>
               </template>
@@ -438,6 +438,10 @@ export default {
         }
         console.log(user_ids);
     },
+    // 통계로 이동
+    statisticsGo(member_seq) {
+      this.$router.push({ name: 'statisticsworker', params: { search_seq: '1', worker: member_seq }});
+    }
   },
 };
 </script>

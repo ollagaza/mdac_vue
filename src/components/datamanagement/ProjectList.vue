@@ -82,7 +82,7 @@
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.checker_str }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)"><div :class="{ 'process_progress' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnProjectList(1)">{{ project.status_str }}</div></div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.reg_date_dt }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnProjectDetail('')">통계</div></div>
+                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(project.seq)">통계</div></div>
                 </div>
               </template>
             </template>
@@ -391,6 +391,10 @@ export default {
         }
         console.log(user_ids)
     },
+    // 통계로 이동
+    statisticsGo(project_seq) {
+      this.$router.push({ name: 'statisticsproject', params: { search_seq: '4', project_seq: project_seq }});
+    }
   },
 };
 </script>
