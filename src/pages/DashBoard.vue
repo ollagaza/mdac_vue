@@ -22,13 +22,13 @@
             Dashboard
           </div>
           <template v-if="statistics_list.length > 0">
-              <div class="test testc" style="height: fit-content;display: flex; flex-direction: row;">
+              <div class="dashboard" style="height: fit-content;display: flex; flex-direction: row;">
               <template v-for="(pStatistics, index) in statistics_list">
-                <div style="width:48%;padding: 10px 0 0 0 ;">
+                <div class="dashboard_border" style="width:49%;padding: 5px 0 0 0 ;margin-top:10px;">
                   <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                    <div>{{ pStatistics.project_name }}</div>
+                    <div style="padding: 5px 5px 5px 10px;">{{ pStatistics.project_name }}</div>
                     <div style="flex: 1"></div>
-                    <div style="cursor:pointer;" v-on:click="projectGo(`${pStatistics.project_name}`)">더보기 ></div>
+                    <div style="padding: 5px 10px 5px 5px;cursor:pointer;font-weight:300; font-size: 9pt;" v-on:click="projectGo(`${pStatistics.project_name}`)">더보기 ></div>
                   </div>
                   <div class="grid_m dashboard header">
                     <div>전체데이터</div>
@@ -48,14 +48,14 @@
               </div>
           </template>
 
-          <div v-if="member_count.length > 0" style="flex: 2; padding-top: 20px;">
-            <div style="padding: 20px 0 0 0 ;">
-              <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                <div>작업자현황</div>
+          <div v-if="member_count.length > 0" style="flex: 2; margin-top:10px;" class="dashboard_border">
+            <div>
+              <div style="padding: 5px 0 0 0 ;font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
+                <div style="padding: 5px 5px 5px 10px;">작업자현황</div>
                 <div style="flex: 1"></div>
-                <div style="cursor:pointer;" v-on:click="memberGo()">더보기 ></div>
+                <div style="padding: 5px 10px 5px 5px;cursor:pointer;font-weight:300; font-size: 9pt;" v-on:click="memberGo()">더보기 ></div>
               </div>
-              <div class="grid_m dashboard header">
+              <div class="grid_m dashboard header" style="border:1px;">
                 <div>총작업자</div>
                 <div class="grid_m worker_value">{{ member_count[0].total }}</div>
                 <div>미할당</div>
@@ -69,7 +69,7 @@
               </div>
             </div>
           </div>
-
+          <div style="flex: 2; margin:20px 0 10px 0;" class="dashboard_border">
           <template>  
             <div style="height:20px;"></div>            
             <ChartPage 
@@ -86,7 +86,8 @@
               v-bind:end_date="end_date"
               v-if="!chartLoading" 
             ></ChartPage>
-          </template>          
+          </template>    
+          </div>      
         </div>
       </div>
     </div>
@@ -224,16 +225,15 @@ export default {
   grid-template-columns: 1fr 1fr 1fr 1fr;
 }
 
-
-.test {
+.dashboard {
   display: grid;
   flex-wrap: wrap;
   
 }
 
-.test.testc {
+/* .test.testc {
   grid-template-columns: 600px 600px;
-}
+} */
 
 .grid_m.project_value {
   background-color: #fff;
@@ -242,5 +242,10 @@ export default {
 .grid_m.worker_value {
   background-color: #fff;
   grid-auto-columns: minmax(300px, auto);
+}
+.dashboard_border {
+  /* border: 1px outset gray; */
+  border-radius: 2px;
+  box-shadow: 3px 3px 3px 3px lightgray;
 }
 </style>

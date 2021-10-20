@@ -262,6 +262,7 @@
             this.options.title = {
                 display: true,
                 text: this.chart_title,
+                fontSize: 14,
             }
             this.options.responsive = true,
             this.options.legend = { // Label 타이틀 안내
@@ -948,7 +949,7 @@
           } else {
             this.options.showAllTooltips = true;
           }
-          // this.render()
+          this.render()
         },
         // 엑셀파일 export
         filexls() {
