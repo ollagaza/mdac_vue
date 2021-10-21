@@ -55,7 +55,7 @@
       return {   
         statistcs_info: [],
         labels: [],
-        total_count: [],
+        label_total_count: [],
         complete_count: [],
         ing_count: [],
         reject_count: [],
@@ -241,14 +241,20 @@
             this.labels = []
             this.color_back = []
             this.color_fore = []
-            this.total_count = []
+            this.label_total_count = []
             this.label_complete_count = []
             this.label_ing_count = []
             this.label_reject_count = []
+            this.check_total_count = []
             this.check_ing_count = []
             this.check_complete_count = []
+            this.check1_total_count = []
+            this.check1_ing_count = []
+            this.check1_complete_count = []
+            this.check2_total_count = []
             this.check2_ing_count = []
             this.check2_complete_count = []
+            this.check3_total_count = []
             this.check3_ing_count = []
             this.check3_complete_count = []
             // console.log(`project_seq===${this.project_seq}`)
@@ -312,20 +318,24 @@
             {
               if(this.search_seq === '3' || this.search_seq === '4') {
                 this.labels.push(statistics_info.project_name)
+                this.check_total_count.push(statistics_info.check_total)
               } else {
                 this.labels.push(`${statistics_info.project_name} / ${statistics_info.user_name}`)
               }
-              this.total_count.push(statistics_info.total)
+              this.label_total_count.push(statistics_info.label_total)
               this.label_complete_count.push(statistics_info.label_complete)
               this.label_ing_count.push(statistics_info.label_ing)
               // this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
               this.label_reject_count.push(statistics_info.label_reject)
 
               if(this.search_seq === '4') {
-                this.check_ing_count.push(statistics_info.check1_ing)
-                this.check_complete_count.push(statistics_info.check1_complete)
+                this.check1_total_count.push(statistics_info.check1_total)
+                this.check1_ing_count.push(statistics_info.check1_ing)
+                this.check1_complete_count.push(statistics_info.check1_complete)
+                this.check2_total_count.push(statistics_info.check2_total)
                 this.check2_ing_count.push(statistics_info.check2_ing)
                 this.check2_complete_count.push(statistics_info.check2_complete)
+                this.check3_total_count.push(statistics_info.check3_total)
                 this.check3_ing_count.push(statistics_info.check3_ing)
                 this.check3_complete_count.push(statistics_info.check3_complete)
               }else {
@@ -347,19 +357,23 @@
                 for (const key in result.statistics_info) {
                     if(this.search_seq === '3' || this.search_seq === '4') {
                       this.labels.push(result.statistics_info[key].project_name)
+                      this.check_total_count.push(result.statistics_info[key].check_total)
                     } else {
                       this.labels.push(`${result.statistics_info[key].project_name} / ${result.statistics_info[key].user_name}`)
                     }
-                    this.total_count.push(result.statistics_info[key].total)
+                    this.label_total_count.push(result.statistics_info[key].label_total)
                     this.label_complete_count.push(result.statistics_info[key].label_complete)
                     this.label_ing_count.push(result.statistics_info[key].label_ing)
                     // this.label_ing_count.push(result.statistics_info[key].total - result.statistics_info[key].label_complete - result.statistics_info[key].check_ing - result.statistics_info[key].check_complete)
                     this.label_reject_count.push(result.statistics_info[key].label_reject)
                     if(this.search_seq === '4') {
-                      this.check_ing_count.push(result.statistics_info[key].check1_ing)
-                      this.check_complete_count.push(result.statistics_info[key].check1_complete)
+                      this.check1_total_count.push(result.statistics_info[key].check1_total)
+                      this.check1_ing_count.push(result.statistics_info[key].check1_ing)
+                      this.check1_complete_count.push(result.statistics_info[key].check1_complete)
+                      this.check2_total_count.push(result.statistics_info[key].check2_total)
                       this.check2_ing_count.push(result.statistics_info[key].check2_ing)
                       this.check2_complete_count.push(result.statistics_info[key].check2_complete)
+                      this.check3_total_count.push(result.statistics_info[key].check3_total)
                       this.check3_ing_count.push(result.statistics_info[key].check3_ing)
                       this.check3_complete_count.push(result.statistics_info[key].check3_complete)
                     }else {
@@ -398,7 +412,7 @@
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[0],
                 //Data to be represented on y-axis
-                data: this.total_count,
+                data: this.label_total_count,
                 barPercentage: 0.8
               },
               {
@@ -441,7 +455,7 @@
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[0],
                 //Data to be represented on y-axis
-                data: this.total_count,
+                data: this.label_total_count,
                 barPercentage: 0.8
               },
               {
@@ -473,7 +487,7 @@
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[0],
                 //Data to be represented on y-axis
-                data: this.total_count,
+                data: this.label_total_count,
                 barPercentage: 0.8
               },
               {
@@ -508,21 +522,31 @@
                 barPercentage: 0.8
               },
               {
-                label: '검수진행',
+                label: '총검수량',
                 backgroundColor: this.color_back[4],
                 pointBackgroundColor: this.color_back[4],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[4],
+                //Data to be represented on y-axis
+                data: this.check_total_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수진행',
+                backgroundColor: this.color_back[5],
+                pointBackgroundColor: this.color_back[5],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[5],
                 //Data to be represented on y-axis
                 data: this.check_ing_count,
                 barPercentage: 0.8
               },
               {
                 label: '검수완료',
-                backgroundColor: this.color_back[5],
-                pointBackgroundColor: this.color_back[5],
+                backgroundColor: this.color_back[6],
+                pointBackgroundColor: this.color_back[6],
                 borderWidth: 1,
-                pointBorderColor: this.color_fore[5],
+                pointBorderColor: this.color_fore[6],
                 //Data to be represented on y-axis
                 data: this.check_complete_count,
                 barPercentage: 0.8
@@ -536,7 +560,7 @@
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[0],
                 //Data to be represented on y-axis
-                data: this.total_count,
+                data: this.label_total_count,
                 barPercentage: 0.8
               },
               {
@@ -571,61 +595,91 @@
                 barPercentage: 0.8
               },
               {
-                label: '검수진행1',
+                label: '검수1전체',
                 backgroundColor: this.color_back[4],
                 pointBackgroundColor: this.color_back[4],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[4],
                 //Data to be represented on y-axis
-                data: this.check_ing_count,
+                data: this.check1_total_count,
                 barPercentage: 0.8
               },
               {
-                label: '검수완료1',
+                label: '검수1진행',
                 backgroundColor: this.color_back[5],
                 pointBackgroundColor: this.color_back[5],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[5],
                 //Data to be represented on y-axis
-                data: this.check_complete_count,
+                data: this.check1_ing_count,
                 barPercentage: 0.8
               },
               {
-                label: '검수진행2',
+                label: '검수1완료',
                 backgroundColor: this.color_back[6],
                 pointBackgroundColor: this.color_back[6],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[6],
                 //Data to be represented on y-axis
-                data: this.check2_ing_count,
+                data: this.check1_complete_count,
                 barPercentage: 0.8
               },
               {
-                label: '검수완료2',
+                label: '검수2전체',
                 backgroundColor: this.color_back[7],
                 pointBackgroundColor: this.color_back[7],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[7],
                 //Data to be represented on y-axis
-                data: this.check2_complete_count,
+                data: this.check2_total_count,
                 barPercentage: 0.8
               },
               {
-                label: '검수진행3',
+                label: '검수2진행',
                 backgroundColor: this.color_back[8],
                 pointBackgroundColor: this.color_back[8],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[8],
                 //Data to be represented on y-axis
-                data: this.check3_ing_count,
+                data: this.check2_ing_count,
                 barPercentage: 0.8
               },
               {
-                label: '검수완료3',
+                label: '검수2완료',
                 backgroundColor: this.color_back[9],
                 pointBackgroundColor: this.color_back[9],
                 borderWidth: 1,
                 pointBorderColor: this.color_fore[9],
+                //Data to be represented on y-axis
+                data: this.check2_complete_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수3전체',
+                backgroundColor: this.color_back[10],
+                pointBackgroundColor: this.color_back[10],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[10],
+                //Data to be represented on y-axis
+                data: this.check3_total_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수3진행',
+                backgroundColor: this.color_back[11],
+                pointBackgroundColor: this.color_back[11],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[11],
+                //Data to be represented on y-axis
+                data: this.check3_ing_count,
+                barPercentage: 0.8
+              },
+              {
+                label: '검수3완료',
+                backgroundColor: this.color_back[12],
+                pointBackgroundColor: this.color_back[12],
+                borderWidth: 1,
+                pointBorderColor: this.color_fore[12],
                 //Data to be represented on y-axis
                 data: this.check3_complete_count,
                 barPercentage: 0.8
@@ -968,7 +1022,7 @@
             worksheet.columns = [ 
               { header: '프로젝트', key: 'project_name', width: 25  },
               { header: '작업자', key: 'user_name', width: 20 },
-              { header: '총작업량', key: 'total', width: 15 },
+              { header: '총작업량', key: 'label_total', width: 15 },
               { header: '라벨링진행', key: 'label_ing', width: 15 },
               { header: '라벨링완료', key: 'label_complete', width: 15 },
               { header: '라벨링완료율', key: 'label_avgComplete', width: 15 },
@@ -979,7 +1033,7 @@
             worksheet.columns = [ 
               { header: '프로젝트', key: 'project_name', width: 25  },
               { header: '작업자', key: 'user_name', width: 20 },
-              { header: '총작업량', key: 'total', width: 15 },
+              { header: '총작업량', key: 'label_total', width: 15 },
               { header: '검수진행', key: 'check_ing', width: 15 },
               { header: '검수완료', key: 'check_complete', width: 15 },
               { header: '검수완료율', key: 'check_avgComplete', width: 15 },
@@ -988,7 +1042,7 @@
           } else if(this.search_seq === '3') {
             worksheet.columns = [ 
               { header: '프로젝트', key: 'project_name', width: 25  },
-              { header: '총작업량', key: 'total', width: 20 },
+              { header: '총작업량', key: 'label_total', width: 20 },
               { header: '라벨링진행', key: 'label_ing', width: 15 },
               { header: '라벨링완료', key: 'label_complete', width: 15 },
               { header: '라벨링완료률', key: 'label_avgComplete', width: 15 },
@@ -1002,7 +1056,7 @@
           } else {
             worksheet.columns = [ 
               { header: '프로젝트', key: 'project_name', width: 25  },
-              { header: '총작업량', key: 'total', width: 20 },
+              { header: '총작업량', key: 'label_total', width: 20 },
               { header: '라벨링진행', key: 'label_ing', width: 15 },
               { header: '라벨링완료', key: 'label_complete', width: 15 },
               { header: '라벨링완료률', key: 'label_avgComplete', width: 15 },
