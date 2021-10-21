@@ -44,9 +44,9 @@ export default {
   // }),
 
   getUserInfos: data => request({
-   url: '/users/userinfo',
-   method: 'post',
-   data,
+    url: '/users/userinfo',
+    method: 'post',
+    data,
   }),
 
   getUserInfo: () => request({
@@ -107,5 +107,9 @@ export default {
     data: {
       params,
     },
+  }),
+  getUserCount: () => request({
+    url: '/users/membercount',
+    method: 'post',
   }),
 }

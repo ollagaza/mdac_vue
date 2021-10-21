@@ -245,8 +245,6 @@ export default {
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      // this.$log.debug(`this.is_used===${this.is_used}`)
-      // this.$log.debug(`this.page===${this.page}`)
       if(this.cur_page === 'undefined') {
         this.cur_page = 1;
       }
@@ -336,17 +334,17 @@ export default {
       let szTitle = '';
       switch(itype) {
         case 'Y' :
-          confirm_msg = '선택 분류를 사용중으로 변경 하시겠습니까?';
+          confirm_msg = '선택 분류를 사용중으로 변경하시겠습니까?';
           close_msg = '사용중으로 변경되었습니다.';
           szTitle = '사용중';
           break;
         case 'N' :
-          confirm_msg = '선택 분류를 사용정지 시겠습니까?';
+          confirm_msg = '선택 분류를 사용정지로 변경하시겠습니까?';
           close_msg = '사용정지 시켰습니다.';
           szTitle = '사용정지';
           break;
         case 'D' :
-          confirm_msg = '선택 분류를 삭제 하시겠습니까?';
+          confirm_msg = '선택 분류를 삭제하시겠습니까?';
           close_msg = '삭제했습니다.';
           szTitle = '분류삭제';
           break;

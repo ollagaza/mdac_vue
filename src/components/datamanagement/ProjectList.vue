@@ -82,7 +82,7 @@
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.checker_str }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)"><div :class="{ 'process_progress' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnProjectList(1)">{{ project.status_str }}</div></div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.reg_date_dt }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnProjectDetail('')">통계</div></div>
+                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(project.seq)">통계</div></div>
                 </div>
               </template>
             </template>
@@ -144,7 +144,7 @@ export default {
       project_list: '',             // 프로젝트 데이터 리스트
       status: '',                   // 사용여부
       search_type: 'project_name',  // 검색조건
-      keyword: '',                  // 검색어
+      keyword: this.$route.params.keyword ? this.$route.params.keyword: '', // 검색어
       no:'',                        // 게시판 숫자
       paging:'',                    // 페이징 데이터
       first_page:'',                // 페이징-시작페이지
@@ -174,6 +174,11 @@ export default {
       // },
     };
   },
+  watch: {
+    '$route': function(){
+      this.keyword = this.$route.params.keyword ? this.$route.params.keyword: '';
+    }
+  },  
   computed: {
     cpage_navigation() {
       const null_navigation = {};
@@ -208,7 +213,6 @@ export default {
       let status = this.status;
       let search_type = this.search_type;
       let keyword = this.keyword;
-      //this.$log.debug(`this.cur_page===${this.cur_page}`)
       if(this.cur_page === 'undefined') {
         this.cur_page = 1;
       }
@@ -348,8 +352,6 @@ export default {
 
     // 프로젝트 상세 보기
     fnProjectDetail(seq) {
-      //console.log(`seq===${seq}`)
-      //console.log(`modeType===${this.modeType}`)
       if(seq === '')
       {
         this.modeType = 'c';
@@ -386,6 +388,10 @@ export default {
         }
         console.log(user_ids)
     },
+    // 통계로 이동
+    statisticsGo(project_seq) {
+      this.$router.push({ name: 'statisticsproject', params: { search_seq: '4', project_seq: project_seq }});
+    }
   },
 };
 </script>

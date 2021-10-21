@@ -89,7 +89,7 @@ export default {
       this.$router.push({ name: 'datastatus' });
     },
     Menu2() {
-      this.$router.push({ name: 'statisticsworker' });
+      this.$router.push({ name: 'statisticsworker', params: { search_seq: 1 } });
     },
     Menu3() {
       this.$router.push({ name: 'member' });
@@ -99,12 +99,19 @@ export default {
     },
     logout() {
       this.LogOut()
+       .then(() => {
+          this.$router.push({ name: 'index' });
+        })
+        .catch((error) => {
+          this.$router.push({ name: 'index' });
+          this.$log.error(error);
+        })
+
       // this.$store.dispatch('LogOut')
       // this.$log.debug(`logout`);
       // this.$store.getters['is_logged']
       // this.$log.debug(`logout_Logged_Navigation :: ${this.is_logged}`)
       this.$log.debug(`logout_Logged_Navigation :: ${this.is_logged}`)
-      this.$router.push({ name: 'index' });
       // this.$router.go();
     },
     login() {
