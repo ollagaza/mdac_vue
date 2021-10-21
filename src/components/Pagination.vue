@@ -2,7 +2,7 @@
 
   <div class="paging_wrapper">
     <div class="paging" v-if="has_page">
-      <template v-if="page_info.pageCount > 10">
+      <template v-if="page_info.pageCount > page_info.page_count">
         <div class="move first" v-on:click="movePage(FIRST)"></div>
         <div class="move prev" v-on:click="movePage(PREV)"></div>
       </template>
@@ -13,7 +13,7 @@
           v-bind:class="{ on: page === page_info.cur_page }"
         >{{ page }}</div>
       </template>
-      <template v-if="page_info.pageCount > 10">
+      <template v-if="page_info.pageCount > page_info.page_count">
         <div class="move next" v-on:click="movePage(NEXT)"></div>
         <div class="move last" v-on:click="movePage(LAST)"></div>
       </template>
@@ -75,7 +75,7 @@ export default {
 
       if (this.pageNationObj) {
         this.page_info = this.pageNationObj;
-        this.$log.debug('this.pageNationObj', this.pageNationObj);
+        // this.$log.debug('this.pageNationObj', this.pageNationObj);
       } else {
         this.page_info.cur_page = this.pageNo;
         this.page_info.list_count = this.pageRows;
@@ -83,7 +83,7 @@ export default {
         this.page_info.first_page = this.first_page;
         this.page_info.last_page = this.last_page;
         this.page_info.page_count = this.pageColumns;
-        this.$log.debug('this.pageNo', this.pageNo);
+        // this.$log.debug('this.pageNo', this.pageNo);
       }
       this.page_info.pageCount = Math.ceil(this.page_info.total_count / this.page_info.list_count);
       // this.$log.debug('this.page_info.pageCount',this.page_info.total_count, this.page_info.list_count, this.page_info.pageCount);
@@ -126,33 +126,33 @@ export default {
 
 .move.first {
   margin-right: 6px;
-  background-image: url(/img/first_arrow.png);
+  background-image: url(/img/datamanager/page/page_first_btn.png);
 }
 .move.prev {
-  background-image: url(/img/pre_arrow.png);
+  background-image: url(/img/datamanager/page/page_prev_btn.png);
 }
 .move.next {
   margin-left: 20px;
-  background-image: url(/img/next_arrow.png);
+  background-image: url(/img/datamanager/page/page_next_btn.png);
 }
 .move.last {
   margin-left: 6px;
-  background-image: url(/img/end_arrow.png);
+  background-image: url(/img/datamanager/page/page_end_btn.png);
 }
 
 .move.first:hover {
   margin-right: 6px;
-  background-image: url(/img/first_arrow.png);
+  background-image: url(/img/datamanager/page/page_first_active_btn.png);
 }
 .move.prev:hover {
-  background-image: url(/img/pre_arrow.png);
+  background-image: url(/img/datamanager/page/page_prev_active_btn.png);
 }
 .move.next:hover {
   margin-left: 20px;
-  background-image: url(/img/next_arrow.png);
+  background-image: url(/img/datamanager/page/page_next_active_btn.png);
 }
 .move.last:hover {
-  background-image: url(/img/end_arrow.png);
+  background-image: url(/img/datamanager/page/page_end_active_btn.png);
 }
 .paging_wrapper {
   display: flex;

@@ -35,24 +35,24 @@
             </div>
             <div class="grid_m datalist header" style="align-content: center; justify-content: center;">
               <div>분류</div>
-              <div>라벨링<span style="font-size: 10px">(전체/대기/진행/완료/반려)</span></div>
-              <div>검수1<span style="font-size: 10px">(전체/대기/진행/완료/반려)</span></div>
-              <div>검수2<span style="font-size: 10px">(전체/대기/진행/완료/반려)</span></div>
-              <div>검수3<span style="font-size: 10px">(전체/대기/진행/완료/반려)</span></div>
+              <div>라벨링<span style="font-size: 10px">[할당](전체/진행/완료)</span></div>
+              <div>검수1<span style="font-size: 10px">(전체/진행/완료/반려)</span></div>
+              <div>검수2<span style="font-size: 10px">(전체/진행/완료/반려)</span></div>
+              <div>검수3<span style="font-size: 10px">(전체/진행/완료/반려)</span></div>
               <div>완료</div>
               <div>최종업로드일</div>
             </div>
             <template v-for="item, index in c_viewList">
               <div class="grid_m datalist body" v-on:click="onListClick(item.seq)">
-                <div>{{item.fullname}}</div>
-                <div>10/20/30/40/50</div>
-                <div>10/20/30/40/50</div>
-                <div>10/20/30/40/50</div>
-                <div>10/20/30/40/50</div>
+                <div style="justify-self: left;">{{item.fullname}} / {{item.seq}}</div>
+                <div class="item" v-html="getDivSumData(item.seq, 'A')"></div>
+                <div class="item" v-html="getDivSumData(item.seq, 'B')"></div>
+                <div class="item" v-html="getDivSumData(item.seq, 'C')"></div>
+                <div class="item" v-html="getDivSumData(item.seq, 'D')"></div>
                 <div>
-                  100
+                  {{getDivSumData(item.seq, 'E')}}
                 </div>
-                <div>10 명</div>
+                <div>{{getMaxRegdate(item.seq)}}</div>
               </div>
             </template>
           </div>
@@ -92,6 +92,12 @@ export default {
       }
       return [];
     },
+    c_list_sum() {
+      if (this.list_sum && this.list_sum.length > 0) {
+        return this.list_sum;
+      }
+      return [];
+    }
   },
   data() {
     return {
@@ -99,6 +105,8 @@ export default {
       list_div: [],
       list_max: [],
       list_view: [],
+      list_sum: [],
+      list_sum_max: [],
       list: [],
       is_used: 'A',
       sel_div: {},
@@ -116,6 +124,7 @@ export default {
       this.list_div = list;
       this.list_max = this.list_div.filter(item => item.depth === maxDepth);
       this.list_view = this.list_max;
+      this.load_data();
     },
     onSeldata(division, sel_div) {
       this.$log.debug(division, sel_div);
@@ -125,7 +134,7 @@ export default {
     async searchClick() {
       // await this.getDivision(this.pro_seq);
       this.list_view = this.list_max;
-      this.$log.debug(this.list_view);
+      // this.$log.debug(this.list_view);
       if (this.sel_div.seq && this.sel_div.seq !== -1) {
         this.list_view = this.list_view.filter(item => item.seq === this.sel_div.seq);
       } else if (this.division && parseInt(this.division) !== -1) {
@@ -134,6 +143,47 @@ export default {
       if (this.is_used !== 'A') {
         this.list_view = this.list_view.filter(item => item.is_used === this.is_used);
       }
+      this.load_data();
+    },
+    getDivSumData(seq, group) {
+      let data = '0 / 0 / 0 / 0';
+      if (group === 'A') {
+        data = '0 / 0 / 0 ';
+      }
+      if (group === 'E') {
+        data = '0';
+      }
+      if (this.c_list_sum && this.c_list_sum.length > 0) {
+        const sumdata = this.c_list_sum.filter(item => item.division_seq === seq);
+        if (sumdata && sumdata.length > 0) {
+          if (group === 'A') {
+            return `[${sumdata[0].label_cnt_sum}] ${sumdata[0].sumdataA}`;
+          }
+          if (group === 'B') {
+            return sumdata[0].sumdataB;
+          }
+          if (group === 'C') {
+            return sumdata[0].sumdataC;
+          }
+          if (group === 'D') {
+            data = sumdata[0].sumdataD;
+          }
+          if (group === 'E') {
+            data = sumdata[0].E2;
+          }
+        }
+      }
+      return data;
+    },
+    getMaxRegdate(seq) {
+      if (this.list_sum_max && this.list_sum_max.length > 0) {
+        const sumdatamax = this.list_sum_max.filter(item => item.division_seq === seq)
+        // this.$log.debug(sumdatamax);
+        if (sumdatamax && sumdatamax.length) {
+          return sumdatamax[0].job_date.replaceAll('-', '.').substr(0, 10);
+        }
+      }
+      return '';
     },
     onListClick(seq) {
       // alert(this.pro_seq + ' / ' + seq);
@@ -142,6 +192,46 @@ export default {
       query.pro_seq = this.pro_seq;
       const params = {};
       this.$router.push({ name: 'datadetail', params, query });
+    },
+    async load_data() {
+      this.$log.debug('load_data');
+      const data = { list_view: this.list_view };
+      await ApiStatus.getDivSum(data)
+        .then((result) => {
+          this.$log.debug('result', result);
+          const list = [];
+          const max = [];
+          for (const item of result.list) {
+            const sublist = item;
+            sublist.A0 = item.A0 ? item.A0 : 0;
+            sublist.A1 = item.A1 ? item.A1 : 0;
+            sublist.A2 = item.A2 ? item.A2 : 0;
+            sublist.A = item.A1 + item.A2;
+            sublist.B1 = item.B1 ? item.B1 : 0;
+            sublist.B2 = item.B2 ? item.B2 : 0;
+            sublist.B5 = item.B5 ? item.B5 : 0;
+            sublist.B = item.B1 + item.B2 + item.B5;
+            sublist.C1 = item.C1 ? item.C1 : 0;
+            sublist.C2 = item.C2 ? item.C2 : 0;
+            sublist.C5 = item.C5 ? item.C5 : 0;
+            sublist.C = item.C1 + item.C2 + item.C5;
+            sublist.D1 = item.D1 ? item.D1 : 0;
+            sublist.D2 = item.D2 ? item.D2 : 0;
+            sublist.D5 = item.D5 ? item.D5 : 0;
+            sublist.D = item.D1 + item.D2 + item.D5;
+            sublist.E2 = item.E2 ? item.E2 : 0;
+            sublist.labler_co = item.labler_co ? item.labler_co : 0;
+            sublist.sumdataA = `${sublist.A} / <span class="ing">${sublist.A1}</span> / ${sublist.A2}`;
+            sublist.sumdataB = `${sublist.B} / <span class="ing">${sublist.B1}</span> / ${sublist.B2} / ${sublist.B5}`;
+            sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
+            sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;
+            sublist.label_cnt_sum = item.label_cnt_sum;
+            list.push(sublist);
+          }
+          this.list_sum = list;
+          this.list_sum_max = result.max;
+          this.$log.debug(this.list_sum);
+        });
     }
   },
 };
@@ -149,7 +239,10 @@ export default {
 
 <style scoped>
 .grid_m.datalist {
-  grid-template-columns: 100px 190px 190px 190px 190px 50px  90px;
+  grid-template-columns: 180px 170px 170px 170px 170px 50px  90px;
+}
+.item >>> .ing{
+  color: #1AABEA;
 }
 </style>
 
