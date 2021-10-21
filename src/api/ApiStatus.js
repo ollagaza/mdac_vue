@@ -18,10 +18,44 @@ export default {
     url: '/datastatus/getworker',
     method: 'post',
   }),
-  getJobList: (pro_seq, div_seq, data) => request({
-    url: `/datastatus/getjob/${pro_seq}/${div_seq}`,
+  getFileList: (pro_seq, div_seq, data) => request({
+    url: `/datastatus/getfilelist/${pro_seq}/${div_seq}`,
     data,
     method: 'post',
+  }),
+  getViewList: (pro_seq, div_seq, data) => request({
+    url: `/datastatus/getviewlist/${pro_seq}/${div_seq}`,
+    data,
+    method: 'post',
+  }),
+  getClassList: (pro_seq) => request({
+    url: `/datastatus/getclasslist/${pro_seq}`,
+    method: 'post',
+  }),
+  getDivSum: (data) => request({
+    url: '/datastatus/getdivsum',
+    data,
+    method: 'post',
+  }),
+  setWorkIn: (pro_seq, div_seq, data) => request({
+    url: `/datastatus/setworkin/${pro_seq}/${div_seq}`,
+    data,
+    method: 'post',
+  }),
+  delWork: (pro_seq, div_seq, data) => request({
+    url: `/datastatus/delwork/${pro_seq}/${div_seq}`,
+    data,
+    method: 'post',
+  }),
+  getHis: (seq, data) => request({
+    url: `/datastatus/getHis/${seq}`,
+    data,
+    method: 'post',
+  }),
+  resultDown: (seq, params) => request({
+    url: `/datastatus/resultdown/${seq}`,
+    params,
+    method: 'get',
   }),
   getStatusClass: seq => request({
     url: `/datastatus/statusclass/${seq}`,
