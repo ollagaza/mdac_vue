@@ -26,9 +26,11 @@
                   </template>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 130px;height: 36px;" @change="fnStatisticsList()">
-                <option value="NOW" selected=true>조회기준(현재)</option>
-                <option value="SUM">조회기준(누적)</option>
+              <select class="text" v-model="search_type" style="width: 200px;height: 36px;" @change="fnStatisticsList()">
+                <option value="NOW" selected=true>조회기준(기간:라벨링)</option>
+                <option value="NOWC" selected=true>조회기준(기간:라벨링+반려)</option>
+                <option value="SUM" selected=true>조회기준(누적:라벨링)</option>
+                <option value="SUMC" selected=true>조회기준(누적:라벨링+반려)</option>
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
@@ -52,8 +54,8 @@
 
           <div class=" ">
             <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div class="btn" v-bind:class="{ deepgreen: search_seq === '1' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="workerGo('1')">라벨러</div>
-              <div class="btn" v-bind:class="{ deepgreen: search_seq === '2' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="workerGo('2')">검수자</div>
+              <div class="btn" v-bind:class="{ deepgreen: search_seq === '1' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('1')">라벨러</div>
+              <div class="btn" v-bind:class="{ deepgreen: search_seq === '2' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('2')">검수자</div>
               <div style="flex: 2"></div>
               <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{tooltips_title}}</div>
               <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="export_file()">Export to excel</div>
@@ -83,7 +85,7 @@
                 <div v-if="search_seq === '1'" class="grid_m class_label body" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
-                  <div>{{ pStatistics.total }}</div>
+                  <div>{{ pStatistics.label_total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}</div>
@@ -93,7 +95,7 @@
                 <div v-if="search_seq === '2'" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
-                  <div>{{ pStatistics.total }}</div>
+                  <div>{{ pStatistics.label_total }}</div>
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
                   <div>{{ pStatistics.check_avgComplete }}</div>
@@ -104,7 +106,7 @@
             <div v-if="search_seq === '1' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
               <div>합계</div>
               <div></div>
-              <div>{{sum_total}}</div>
+              <div>{{sum_label_total}}</div>
               <div>{{sum_label_ing}}</div>
               <div>{{sum_label_complete}}</div>
               <div></div>
@@ -115,7 +117,7 @@
             <div v-if="search_seq === '2' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
               <div>합계</div>
               <div></div>
-              <div>{{sum_total}}</div>
+              <div>{{sum_label_total}}</div>
               <div>{{sum_check_ing}}</div>
               <div>{{sum_check_complete}}</div>
               <div></div>
@@ -127,7 +129,6 @@
                 ref="chartpage" 
                 chartData="chartData" 
                 v-if="!chartLoading" 
-                v-bind:class="chart_size" 
                 v-bind:tooltips_flag="tooltips_flag"
                 v-bind:project_list="project_list" 
                 v-bind:statistics_list="statistics_list" 
@@ -187,8 +188,7 @@ export default {
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
-      chart_size: 'chartClass',
-      sum_total: 0,
+      sum_label_total: 0,
       sum_label_ing: 0,
       sum_label_complete: 0,
       sum_label_reject: 0,
@@ -280,7 +280,7 @@ export default {
       apistatistics.getStatistics(data) // 클래스 API 호출
         .then((result) => {
           // 합계 변수 Start
-          this.sum_total = 0
+          this.sum_label_total = 0
           this.sum_label_ing = 0
           this.sum_label_complete = 0
           this.sum_label_reject = 0
@@ -292,7 +292,7 @@ export default {
           if (result.statistics_info.length > 0) {
             for (const key in result.statistics_info) {
 
-              this.sum_total = this.sum_total + result.statistics_info[key].total                                 // 전체작업량
+              this.sum_label_total = this.sum_label_total + result.statistics_info[key].label_total                                 // 전체작업량
               this.sum_label_ing = this.sum_label_ing + result.statistics_info[key].label_ing                     // 라벨링진행중
               this.sum_label_complete = this.sum_label_complete + result.statistics_info[key].label_complete      // 라벨링완료
               this.sum_label_reject = this.sum_label_reject + result.statistics_info[key].label_reject            // 반려
@@ -319,7 +319,7 @@ export default {
       return moment(date).format('YYYY-MM-DD');
     },
 
-    workerGo(search_seq) {
+    statisticsGo(search_seq) {
       // this.$router.push({ name: 'statisticsworker' });
       this.$router.push({ name: 'statisticsworker', params: { search_seq: search_seq }});
     },
@@ -454,11 +454,6 @@ export default {
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
-}
-.chartClass{
-  /* padding-top: 30px;
-  height: 1500px;
-  width: 700px; */
 }
 .colorRed {
   color: red;

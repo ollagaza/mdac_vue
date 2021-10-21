@@ -26,9 +26,11 @@
                   </template>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 130px;height: 36px;" @change="fnStatisticsList()">
-                <option value="NOW" selected=true>조회기준(현재)</option>
-                <option value="SUM">조회기준(누적)</option>
+              <select class="text" v-model="search_type" style="width: 220px;height: 36px;" @change="fnStatisticsList()">
+                <option value="NOW" selected=true>조회기준(기간:라벨링)</option>
+                <option value="NOWC" selected=true>조회기준(기간:라벨링+반려)</option>
+                <option value="SUM" selected=true>조회기준(누적:라벨링)</option>
+                <option value="SUMC" selected=true>조회기준(누적:라벨링+반려)</option>
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
@@ -44,6 +46,8 @@
 
           <div class=" ">
             <div style="height: fit-content;display: flex; flex-direction: row;">
+              <div class="btn" v-bind:class="{ deepgreen: search_seq === '3' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('3')">통합검수</div>
+              <div class="btn" v-bind:class="{ deepgreen: search_seq === '4' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('4')">별도검수</div>
               <div style="flex: 2"></div>
               <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{tooltips_title}}</div>
               <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="export_file()">Export to excel</div>
@@ -59,6 +63,7 @@
               <div>라벨링완료율</div>
               <div>반려</div>
               <div>반려율</div>
+              <div>총검수량</div>
               <div>검수진행</div>
               <div>검수완료</div>
               <div>검수완료율</div>
@@ -71,15 +76,12 @@
               <div>라벨링완료율</div>
               <div>반려</div>
               <div>반려율</div>
-              <div>검수진행1</div>
-              <div>검수완료1</div>
-              <div>검수완료율1</div>
-              <div>검수진행2</div>
-              <div>검수완료2</div>
-              <div>검수완료율2</div>
-              <div>검수진행3</div>
-              <div>검수완료3</div>
-              <div>검수완료율3</div>
+              <div>검수1(전체/진행/완료)</div>
+              <div>검수1완료율</div>
+              <div>검수2(전체/진행/완료)</div>
+              <div>검수2완료율</div>
+              <div>검수3(전체/진행/완료)</div>
+              <div>검수3완료율</div>
             </div>
 
             <template v-if="statistics_list.length === 0">
@@ -92,12 +94,13 @@
               <template v-for="(pStatistics, index) in statistics_list">
                 <div class="grid_m class_check3 body" v-if="search_seq === '3'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
-                  <div>{{ pStatistics.total }}</div>
+                  <div>{{ pStatistics.label_total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}</div>
+                  <div>{{ pStatistics.check_total }}</div>
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
                   <div>{{ pStatistics.check_avgComplete }}</div>
@@ -105,20 +108,17 @@
                 
                 <div class="grid_m class_check4 body" v-if="search_seq === '4'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
-                  <div>{{ pStatistics.total }}</div>
+                  <div>{{ pStatistics.label_total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}</div>
-                  <div>{{ pStatistics.check1_ing }}</div>
-                  <div>{{ pStatistics.check1_complete }}</div>
+                  <div>{{ pStatistics.check1_total }}/{{ pStatistics.check1_ing }}/{{ pStatistics.check1_complete }}</div>
                   <div>{{ pStatistics.check1_avgComplete }}</div>
-                  <div>{{ pStatistics.check2_ing }}</div>
-                  <div>{{ pStatistics.check2_complete }}</div>
+                  <div>{{ pStatistics.check2_total }}/{{ pStatistics.check2_ing }}/{{ pStatistics.check2_complete }}</div>
                   <div>{{ pStatistics.check2_avgComplete }}</div>
-                  <div>{{ pStatistics.check3_ing }}</div>
-                  <div>{{ pStatistics.check3_complete }}</div>
+                  <div>{{ pStatistics.check3_total }}/{{ pStatistics.check3_ing }}/{{ pStatistics.check3_complete }}</div>
                   <div>{{ pStatistics.check3_avgComplete }}</div>
                 </div>
               </template>
@@ -128,7 +128,6 @@
               <ChartPage 
                 ref="chartpage" 
                 chartData="chartData" 
-                v-bind:class="chart_size" 
                 v-bind:tooltips_flag="tooltips_flag"
                 v-bind:project_list="project_list" 
                 v-bind:statistics_list="statistics_list" 
@@ -183,7 +182,6 @@ export default {
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
-      chart_size: 'chartClass',
     };
   },
   watch: {
@@ -258,6 +256,11 @@ export default {
     dateFormatter(date) {
       return moment(date).format('YYYY-MM-DD');
     },
+
+    statisticsGo(search_seq) {
+      // this.$router.push({ name: 'statisticsworker' });
+      this.$router.push({ name: 'statisticsproject', params: { search_seq: search_seq }});
+    },
     // Data 툴팁 보이기/안보이기
     viewTooltips() {
       this.$refs.chartpage.viewTooltips()
@@ -306,17 +309,12 @@ export default {
   border: 1px solid #888;
 }
 .grid_m.class_check3 {
-  grid-template-columns: 280px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
+  grid-template-columns: 200px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
 }
 .grid_m.class_check4 {
-  grid-template-columns: 100px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px 60px;
+  grid-template-columns: 100px 60px 60px 60px 60px 60px 60px 120px 60px 120px 60px 120px 60px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
-}
-.chartClass{
-  /* padding-top: 30px;
-  height: 1500px;
-  width: 700px; */
 }
 </style>
