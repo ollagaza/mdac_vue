@@ -44,6 +44,25 @@ const StatusToStr = (code) => {
   return str;
 };
 
+const log_typeToStr = (code) => {
+  let str = '로그인';
+  switch (code) {
+    case '1009':
+      str = '로그아웃';
+      break;
+    case '1002':
+      str = '정보수정';
+      break;
+    case '1001':
+      str = '등록';
+      break;
+    default:
+      str = '로그인';
+      break;
+  }
+  return str;
+};
 export default {
   StatusToStr,
+  log_typeToStr,
 }

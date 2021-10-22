@@ -112,4 +112,9 @@ export default {
     url: '/users/membercount',
     method: 'post',
   }),
+  getUserHistory: (member_seq, data) => request({
+    url: `/users/history/${member_seq}`,
+    data,
+    method: 'post',
+  }),
 }
