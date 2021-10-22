@@ -150,7 +150,7 @@
             yAxes: [{
               ticks: {
                 beginAtZero: true,
-                stepSize: 2,    // y축 간격 
+                stepSize: 5,    // y축 간격 
                 // suggestedMin: 0, // y축 최소 값 
                 // suggestedMax: 20,// y축 최대값
                 // min: 0,

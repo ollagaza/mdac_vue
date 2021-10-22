@@ -27,10 +27,10 @@
               </select>
 
               <select class="text" v-model="search_type" style="width: 200px;height: 36px;" @change="fnStatisticsList()">
-                <option value="NOW" selected=true>조회기준(기간:라벨링)</option>
-                <option value="NOWC" selected=true>조회기준(기간:라벨링+반려)</option>
-                <option value="SUM" selected=true>조회기준(누적:라벨링)</option>
-                <option value="SUMC" selected=true>조회기준(누적:라벨링+반려)</option>
+                <option value="NOW" selected=true>조회기준(기간:반려미적용)</option>
+                <option value="NOWC" selected=true>조회기준(기간:반려적용)</option>
+                <option value="SUM" selected=true>조회기준(누적:반려미적용)</option>
+                <option value="SUMC" selected=true>조회기준(누적:반려적용)</option>
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
