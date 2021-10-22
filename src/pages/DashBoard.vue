@@ -22,9 +22,9 @@
             Dashboard
           </div>
           
-          <div v-if="statistics_list.length > 0" class="dashboard" style="height: fit-content;display: flex; flex-direction: row;">
+          <div v-if="statistics_list.length > 0" class="dashboard" style="height: fit-content;display: flex; flex-direction: row;justify-content:space-between;">
           <template v-for="(pStatistics, index) in statistics_list">
-            <div class="dashboard_border" style="width:49%;padding: 5px 0 0 0 ;margin-top:10px;">
+            <div class="dashboard_border" style="width:49%;padding: 5px 0 0 0;margin-top:10px;">
               <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                 <div style="font-weight: 540;padding: 5px 5px 5px 10px;">{{ pStatistics.project_name }}</div>
                 <div style="flex: 1"></div>
@@ -43,7 +43,6 @@
                 <div class="grid_m project_value">{{ pStatistics.check_complete }}</div>
               </div>
             </div>
-            <div style="flex: 1"></div>
           </template>
           </div>
 
@@ -76,7 +75,6 @@
             <ChartPage 
               ref="chartpage" 
               chartData="chartData" 
-              v-bind:project_list="project_list" 
               v-bind:statistics_list="statistics_list" 
               v-bind:search_seq="search_seq"
               v-bind:project_seq="project_seq"
@@ -84,6 +82,7 @@
               v-bind:search_type="search_type"
               v-bind:start_date="start_date"
               v-bind:end_date="end_date"
+              v-bind:status="status"
               v-if="!chartLoading" 
             ></ChartPage>
           </template>    
@@ -112,7 +111,6 @@ export default {
   mixins: [BaseMixin],
   data() {
     return {
-      project_list: [],         // 프로젝트 리스트
       statistics_list: '',      // 통계 데이터 리스트
       member_count: '',         // 멤버 카운팅 정보
       chart_title: '',          // 챠트 제목
@@ -122,13 +120,13 @@ export default {
       date_locale_ko: ko,
       start_date: moment().day(1).format('YYYY-MM-DD'),  // 시작일
       end_date: moment().day(5).format('YYYY-MM-DD'),    // 종료일
+      status: '1',              // 프로젝트 진행상태(1:진행/2:중지/3:완료)
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
 };
   },
   computed: {
     ...mapGetters(['is_logged']),
-
   },
   methods: {
     // Dashboard 내용 가져오기
