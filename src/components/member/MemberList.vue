@@ -93,7 +93,7 @@
                   <div v-on:click="fnMemberDetail(member.seq)"><div :class="{ 'process_progress' : member.is_used === 'Y', 'process_stop' : member.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnMemberList(1)">{{ member.is_used_str }}</div></div>
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.reg_date_dt }}</div>
                   <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(member.seq)">통계</div></div>
-                  <div v-on:click="getSelected"><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnMemberDetail('')">이력</div></div>
+                  <div v-on:click="getSelected"><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click.stop="onHisClick(member.seq)">이력</div></div>
                 </div>
               </template>
             </template>
@@ -123,12 +123,14 @@
       </div>
     </div>
 
-
     <MemberPopup ref="memberpopup"
              v-bind:modeType="modeType"
              v-on:callMemberList="fnMemberList"
     ></MemberPopup>
     <Member_used_pop ref="used_pop"></Member_used_pop>
+
+    <ViewHisPopup ref="viewhis"></ViewHisPopup>
+
   </div>
 </template>
 
@@ -141,6 +143,7 @@ import EventBus from '../../utils/eventbus';
 import Member_used_pop from './Member_used_pop';
 import Member_Left from './Member_Left';
 import Pagination from '../../components/Pagination';
+import ViewHisPopup from '../../components/popup/ViewHisPopup';
 
 export default {
   name: 'MemberList',
@@ -149,6 +152,7 @@ export default {
     Member_used_pop,
     Member_Left,
     Pagination,
+    ViewHisPopup,
   },
   // props: ['page_navigation'],
   mixins: [BaseMixin],
@@ -441,7 +445,20 @@ export default {
     // 통계로 이동
     statisticsGo(member_seq) {
       this.$router.push({ name: 'statisticsworker', params: { search_seq: '1', worker: member_seq }});
-    }
+    },
+    onHisClick(seq) {
+      let option = {
+        seq: seq,
+      }
+      this.$refs.viewhis.openHisPopup(option);
+      // this.$log.debug(seq);
+      // const option = {};
+      // option.seq = seq;
+      // option.file_type = 'i';
+      // option.isResult = 'o';// o 오리지널 r-결과
+      // this.$log.debug(option);
+      // this.$emit('onHisClick', option);
+    },
   },
 };
 </script>

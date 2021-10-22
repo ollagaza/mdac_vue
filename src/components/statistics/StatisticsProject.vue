@@ -114,11 +114,11 @@
                   <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}</div>
-                  <div>{{ pStatistics.check1_total }}/{{ pStatistics.check1_ing }}/{{ pStatistics.check1_complete }}</div>
+                  <div>{{ pStatistics.check1_total }} / {{ pStatistics.check1_ing }} / {{ pStatistics.check1_complete }}</div>
                   <div>{{ pStatistics.check1_avgComplete }}</div>
-                  <div>{{ pStatistics.check2_total }}/{{ pStatistics.check2_ing }}/{{ pStatistics.check2_complete }}</div>
+                  <div>{{ pStatistics.check2_total }} / {{ pStatistics.check2_ing }} / {{ pStatistics.check2_complete }}</div>
                   <div>{{ pStatistics.check2_avgComplete }}</div>
-                  <div>{{ pStatistics.check3_total }}/{{ pStatistics.check3_ing }}/{{ pStatistics.check3_complete }}</div>
+                  <div>{{ pStatistics.check3_total }} / {{ pStatistics.check3_ing }} / {{ pStatistics.check3_complete }}</div>
                   <div>{{ pStatistics.check3_avgComplete }}</div>
                 </div>
               </template>

@@ -47,7 +47,7 @@
   export default { 
     name: 'BarChart',
     extends: Bar, // 세로: HorizontalBar
-    props: ['chartData','statistics_list','project_list', 'chart_title', 'tooltips_flag', 'search_seq', 'search_type', 'project_seq','start_date','end_date','worker'],
+    props: ['chartData','statistics_list','project_list', 'chart_title', 'tooltips_flag', 'search_seq', 'search_type', 'project_seq','start_date','end_date','worker','status'],
     mixins: [BaseMixin],
 
     
@@ -129,6 +129,13 @@
         },
         //Chart.js options that controls the appearance of the chart
         options: {
+          layout: {
+            padding: {
+              left: 5,
+              right: 5,
+              bottom: 5
+            }
+          },
           showAllTooltips: true,
           tooltips: {
             enabled: true,
@@ -161,7 +168,11 @@
             xAxes: [ {
               gridLines: {
                 display: true
-              }
+              },
+              ticks: { 
+                // fontColor : 'rgba(12, 13, 13, 1)', 
+                fontSize : 10, // 가로축 글자 사이즈
+              },
             }],
             
           },
@@ -282,6 +293,7 @@
               //   console.log(legend)
               // }
             }
+            // this.options.scales.yAxes[0].ticks.fontSize = 40 ; // y축 Label 사이즈
             this.options.scaleShowLabelBackdrop = true,
             this.options.showAllTooltips = false
             this.options.tooltips = {
@@ -350,6 +362,7 @@
                 start_date: this.start_date ? moment(this.start_date).format('YYYY-MM-DD') : '',
                 end_date: this.end_date ? moment(this.end_date).format('YYYY-MM-DD') : '',
                 worker: this.worker,
+                status: this.status,
               };                       
               apistatistics.getStatistics(data)
               .then((result) => {
@@ -561,7 +574,8 @@
                 pointBorderColor: this.color_fore[0],
                 //Data to be represented on y-axis
                 data: this.label_total_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '라벨링진행',
@@ -571,7 +585,8 @@
                 pointBorderColor: this.color_fore[1],
                 //Data to be represented on y-axis
                 data: this.label_ing_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '라벨링완료',
@@ -581,7 +596,8 @@
                 pointBorderColor: this.color_fore[2],
                 //Data to be represented on y-axis
                 data: this.label_complete_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
                 
               },
               {
@@ -592,7 +608,8 @@
                 pointBorderColor: this.color_fore[3],
                 //Data to be represented on y-axis
                 data: this.label_reject_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수1전체',
@@ -602,7 +619,8 @@
                 pointBorderColor: this.color_fore[4],
                 //Data to be represented on y-axis
                 data: this.check1_total_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수1진행',
@@ -612,7 +630,8 @@
                 pointBorderColor: this.color_fore[5],
                 //Data to be represented on y-axis
                 data: this.check1_ing_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수1완료',
@@ -622,7 +641,8 @@
                 pointBorderColor: this.color_fore[6],
                 //Data to be represented on y-axis
                 data: this.check1_complete_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수2전체',
@@ -632,7 +652,8 @@
                 pointBorderColor: this.color_fore[7],
                 //Data to be represented on y-axis
                 data: this.check2_total_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수2진행',
@@ -642,7 +663,8 @@
                 pointBorderColor: this.color_fore[8],
                 //Data to be represented on y-axis
                 data: this.check2_ing_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수2완료',
@@ -652,7 +674,8 @@
                 pointBorderColor: this.color_fore[9],
                 //Data to be represented on y-axis
                 data: this.check2_complete_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수3전체',
@@ -662,7 +685,8 @@
                 pointBorderColor: this.color_fore[10],
                 //Data to be represented on y-axis
                 data: this.check3_total_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수3진행',
@@ -672,7 +696,8 @@
                 pointBorderColor: this.color_fore[11],
                 //Data to be represented on y-axis
                 data: this.check3_ing_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               },
               {
                 label: '검수3완료',
@@ -682,7 +707,8 @@
                 pointBorderColor: this.color_fore[12],
                 //Data to be represented on y-axis
                 data: this.check3_complete_count,
-                barPercentage: 0.8
+                barPercentage: 0.8,
+                categoryPercentage: 1
               })
             }
 

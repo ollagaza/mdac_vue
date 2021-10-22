@@ -105,21 +105,21 @@
             
             <div v-if="search_seq === '1' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
               <div>합계</div>
+              <div>{{ sum_worker_total }} 명</div>
+              <div>{{ sum_label_total }}</div>
+              <div>{{ sum_label_ing }}</div>
+              <div>{{ sum_label_complete }}</div>
               <div></div>
-              <div>{{sum_label_total}}</div>
-              <div>{{sum_label_ing}}</div>
-              <div>{{sum_label_complete}}</div>
-              <div></div>
-              <div>{{sum_label_reject}}</div>
+              <div>{{ sum_label_reject }}</div>
               <div></div>
             </div>
             
             <div v-if="search_seq === '2' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
               <div>합계</div>
-              <div></div>
-              <div>{{sum_label_total}}</div>
-              <div>{{sum_check_ing}}</div>
-              <div>{{sum_check_complete}}</div>
+              <div>{{ sum_worker_total }} 명</div>
+              <div>{{ sum_label_total }}</div>
+              <div>{{ sum_check_ing }}</div>
+              <div>{{ sum_check_complete }}</div>
               <div></div>
             </div>
 
@@ -280,6 +280,7 @@ export default {
       apistatistics.getStatistics(data) // 클래스 API 호출
         .then((result) => {
           // 합계 변수 Start
+          this.sum_worker_total = 0
           this.sum_label_total = 0
           this.sum_label_ing = 0
           this.sum_label_complete = 0
@@ -304,7 +305,8 @@ export default {
             }
             // this.sum_label_ing = this.sum_total - this.sum_label_complete - this.sum_check_ing - this.sum_check_complete
           }
-          this.statistics_list = result.statistics_info;
+          this.sum_worker_total = result.statistics_info.length
+          this.statistics_list = result.statistics_info
           this.init()
         });
 
