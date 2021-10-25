@@ -27,10 +27,10 @@
               </select>
 
               <select class="text" v-model="search_type" style="width: 220px;height: 36px;" @change="fnStatisticsList()">
-                <option value="NOW" selected=true>조회기준(기간:라벨링)</option>
-                <option value="NOWC" selected=true>조회기준(기간:라벨링+반려)</option>
-                <option value="SUM" selected=true>조회기준(누적:라벨링)</option>
-                <option value="SUMC" selected=true>조회기준(누적:라벨링+반려)</option>
+                <option value="NOW" selected=true>조회기준(기간:반려미적용)</option>
+                <option value="NOWC" selected=true>조회기준(기간:반려적용)</option>
+                <option value="SUM" selected=true>조회기준(누적:반려미적용)</option>
+                <option value="SUMC" selected=true>조회기준(누적:반려적용)</option>
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
@@ -114,11 +114,11 @@
                   <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}</div>
-                  <div>{{ pStatistics.check1_total }}/{{ pStatistics.check1_ing }}/{{ pStatistics.check1_complete }}</div>
+                  <div>{{ pStatistics.check1_total }} / {{ pStatistics.check1_ing }} / {{ pStatistics.check1_complete }}</div>
                   <div>{{ pStatistics.check1_avgComplete }}</div>
-                  <div>{{ pStatistics.check2_total }}/{{ pStatistics.check2_ing }}/{{ pStatistics.check2_complete }}</div>
+                  <div>{{ pStatistics.check2_total }} / {{ pStatistics.check2_ing }} / {{ pStatistics.check2_complete }}</div>
                   <div>{{ pStatistics.check2_avgComplete }}</div>
-                  <div>{{ pStatistics.check3_total }}/{{ pStatistics.check3_ing }}/{{ pStatistics.check3_complete }}</div>
+                  <div>{{ pStatistics.check3_total }} / {{ pStatistics.check3_ing }} / {{ pStatistics.check3_complete }}</div>
                   <div>{{ pStatistics.check3_avgComplete }}</div>
                 </div>
               </template>

@@ -91,9 +91,9 @@
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.email }}</div>
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.phone }}</div>
                   <div v-on:click="fnMemberDetail(member.seq)"><div :class="{ 'process_progress' : member.is_used === 'Y', 'process_stop' : member.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnMemberList(1)">{{ member.is_used_str }}</div></div>
-                  <div v-on:click="fnMemberDetail(member.seq)">{{ member.reg_date_dt }}</div>
+                  <div v-on:click="fnMemberDetail(member.seq)">{{ getDateToStr(member.reg_date) }}</div>
                   <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(member.seq)">통계</div></div>
-                  <div v-on:click="getSelected"><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="fnMemberDetail('')">이력</div></div>
+                  <div v-on:click="getSelected"><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click.stop="onHisClick(member.seq)">이력</div></div>
                 </div>
               </template>
             </template>
@@ -123,12 +123,14 @@
       </div>
     </div>
 
-
     <MemberPopup ref="memberpopup"
              v-bind:modeType="modeType"
              v-on:callMemberList="fnMemberList"
     ></MemberPopup>
     <Member_used_pop ref="used_pop"></Member_used_pop>
+
+    <ViewHisMemPopup ref="viewhis"></ViewHisMemPopup>
+
   </div>
 </template>
 
@@ -141,6 +143,8 @@ import EventBus from '../../utils/eventbus';
 import Member_used_pop from './Member_used_pop';
 import Member_Left from './Member_Left';
 import Pagination from '../../components/Pagination';
+import ViewHisMemPopup from '../../components/popup/ViewHisMemPopup';
+import util from '../../utils/util';
 
 export default {
   name: 'MemberList',
@@ -149,6 +153,7 @@ export default {
     Member_used_pop,
     Member_Left,
     Pagination,
+    ViewHisMemPopup,
   },
   // props: ['page_navigation'],
   mixins: [BaseMixin],
@@ -249,10 +254,11 @@ export default {
               //this.paging = 10;
               //this.no = 1;
             for (const key in result.member_info) {
-              const reg_date = result.member_info[key].reg_date;
-              if (reg_date) {
-                result.member_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
-              }
+              // util 함수로 대체..
+              // const reg_date = result.member_info[key].reg_date;
+              // if (reg_date) {
+              //   result.member_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
+              // }
               if (result.member_info[key].is_used == 'Y') {
                 result.member_info[key].is_used = 'Y';
                 result.member_info[key].is_used_str = '사용중';
@@ -441,7 +447,23 @@ export default {
     // 통계로 이동
     statisticsGo(member_seq) {
       this.$router.push({ name: 'statisticsworker', params: { search_seq: '1', worker: member_seq }});
-    }
+    },
+    onHisClick(member_seq) {
+      let option = {
+        member_seq: member_seq,
+      }
+      this.$refs.viewhis.openHisPopup(option);
+      // this.$log.debug(seq);
+      // const option = {};
+      // option.seq = seq;
+      // option.file_type = 'i';
+      // option.isResult = 'o';// o 오리지널 r-결과
+      // this.$log.debug(option);
+      // this.$emit('onHisClick', option);
+    },
+    getDateToStr(date) {
+      return util.getDateToStr(date);
+    },
   },
 };
 </script>
