@@ -60,6 +60,7 @@ import ApiStatus from '../../api/ApiStatus';
 import util from '../../utils/util';
 import util_name from '../../utils/util_name';
 import os from 'os';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'HisPopup',
@@ -79,6 +80,7 @@ export default {
   beforeDestroy() {
   },
   computed: {
+    ...mapGetters(['logged_info', 'current_domain']),
     c_his_list() {
       if (this.his_list && this.his_list.length > 0) {
         return this.his_list;
@@ -108,9 +110,9 @@ export default {
         const data = { file_type };
         this.$log.debug(data);
         const file_name = 'filename';
-        const hostname = location.host;
-        const protocol = (window.location.protocol).replace(/:$/, '');
-        const url = `${protocol}://${hostname}/apid1/d1/datastatus/resultdown/${this.seq}?file_type=${file_type}`;
+        // const hostname = location.host;
+        // const protocol = (window.location.protocol).replace(/:$/, '');
+        const url = `${this.current_domain}/apid1/d1/datastatus/resultdown/${this.seq}?file_type=${file_type}`;
         util.downloadFile(document, file_name, url);
         return;
       }
