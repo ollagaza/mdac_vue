@@ -6,7 +6,7 @@
       <div style="width: 100px" class="btn navy" v-on:click="onList">목록</div>
     </div>
     <div style="height: 300px;">
-      <div>파일명 :  / 파일사이즈 : / 시간 : </div>
+<!--      <div>파일명 :  / 파일사이즈 : / 시간 : </div>-->
       <div style="height:100%; background-color: black; display: flex; flex-direction: row; justify-content: center;">
         <video controls style="height: 280px;">
           <source v-bind:src="c_video_url" type="video/mp4">
