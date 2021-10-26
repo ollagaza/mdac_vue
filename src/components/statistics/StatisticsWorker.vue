@@ -328,7 +328,6 @@ export default {
     // Data 툴팁 보이기/안보이기
     viewTooltips() {
       this.$refs.chartpage.viewTooltips()
-      // this.$log.debug('aaaaaaaaa',this.$refs.chartpage.options.showAllTooltips)
       if(!this.$refs.chartpage.options.showAllTooltips) {
         this.tooltips_title = '차트데이터보이기'
         this.tooltips_flag = 'N'

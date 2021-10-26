@@ -6,6 +6,7 @@
   import BaseMixin from "../Mixins/BaseMixin";
   import ExcelJS from 'exceljs';
   import * as FileSaver from 'file-saver';
+  import util from '../../utils/util';
  
   Chart.pluginService.register({
     beforeRender: function(chart) {
@@ -330,29 +331,29 @@
             {
               if(this.search_seq === '3' || this.search_seq === '4') {
                 this.labels.push(statistics_info.project_name)
-                this.check_total_count.push(statistics_info.check_total)
+                this.check_total_count.push(this.getZeroToUndefined(statistics_info.check_total))
               } else {
                 this.labels.push(`${statistics_info.project_name} / ${statistics_info.user_name}`)
               }
-              this.label_total_count.push(statistics_info.label_total)
-              this.label_complete_count.push(statistics_info.label_complete)
-              this.label_ing_count.push(statistics_info.label_ing)
+              this.label_total_count.push(this.getZeroToUndefined(statistics_info.label_total))
+              this.label_complete_count.push(this.getZeroToUndefined(statistics_info.label_complete))
+              this.label_ing_count.push(this.getZeroToUndefined(statistics_info.label_ing))
               // this.label_ing_count.push(statistics_info.total - statistics_info.label_complete - statistics_info.check_ing - statistics_info.check_complete)
               this.label_reject_count.push(statistics_info.label_reject)
 
               if(this.search_seq === '4') {
-                this.check1_total_count.push(statistics_info.check1_total)
-                this.check1_ing_count.push(statistics_info.check1_ing)
-                this.check1_complete_count.push(statistics_info.check1_complete)
-                this.check2_total_count.push(statistics_info.check2_total)
-                this.check2_ing_count.push(statistics_info.check2_ing)
-                this.check2_complete_count.push(statistics_info.check2_complete)
-                this.check3_total_count.push(statistics_info.check3_total)
-                this.check3_ing_count.push(statistics_info.check3_ing)
-                this.check3_complete_count.push(statistics_info.check3_complete)
+                this.check1_total_count.push(this.getZeroToUndefined(statistics_info.check1_total))
+                this.check1_ing_count.push(this.getZeroToUndefined(statistics_info.check1_ing))
+                this.check1_complete_count.push(this.getZeroToUndefined(statistics_info.check1_complete))
+                this.check2_total_count.push(this.getZeroToUndefined(statistics_info.check2_total))
+                this.check2_ing_count.push(this.getZeroToUndefined(statistics_info.check2_ing))
+                this.check2_complete_count.push(this.getZeroToUndefined(statistics_info.check2_complete))
+                this.check3_total_count.push(this.getZeroToUndefined(statistics_info.check3_total))
+                this.check3_ing_count.push(this.getZeroToUndefined(statistics_info.check3_ing))
+                this.check3_complete_count.push(this.getZeroToUndefined(statistics_info.check3_complete))
               }else {
-                this.check_ing_count.push(statistics_info.check_ing)
-                this.check_complete_count.push(statistics_info.check_complete)
+                this.check_ing_count.push(this.getZeroToUndefined(statistics_info.check_ing))
+                this.check_complete_count.push(this.getZeroToUndefined(statistics_info.check_complete))
               }
             } else {
               const data = {
@@ -370,28 +371,28 @@
                 for (const key in result.statistics_info) {
                     if(this.search_seq === '3' || this.search_seq === '4') {
                       this.labels.push(result.statistics_info[key].project_name)
-                      this.check_total_count.push(result.statistics_info[key].check_total)
+                      this.check_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check_total))
                     } else {
                       this.labels.push(`${result.statistics_info[key].project_name} / ${result.statistics_info[key].user_name}`)
                     }
-                    this.label_total_count.push(result.statistics_info[key].label_total)
-                    this.label_complete_count.push(result.statistics_info[key].label_complete)
-                    this.label_ing_count.push(result.statistics_info[key].label_ing)
+                    this.label_total_count.push(this.getZeroToUndefined(result.statistics_info[key].label_total))
+                    this.label_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].label_complete))
+                    this.label_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].label_ing))
                     // this.label_ing_count.push(result.statistics_info[key].total - result.statistics_info[key].label_complete - result.statistics_info[key].check_ing - result.statistics_info[key].check_complete)
-                    this.label_reject_count.push(result.statistics_info[key].label_reject)
+                    this.label_reject_count.push(this.getZeroToUndefined(result.statistics_info[key].label_reject))
                     if(this.search_seq === '4') {
-                      this.check1_total_count.push(result.statistics_info[key].check1_total)
-                      this.check1_ing_count.push(result.statistics_info[key].check1_ing)
-                      this.check1_complete_count.push(result.statistics_info[key].check1_complete)
-                      this.check2_total_count.push(result.statistics_info[key].check2_total)
-                      this.check2_ing_count.push(result.statistics_info[key].check2_ing)
-                      this.check2_complete_count.push(result.statistics_info[key].check2_complete)
-                      this.check3_total_count.push(result.statistics_info[key].check3_total)
-                      this.check3_ing_count.push(result.statistics_info[key].check3_ing)
-                      this.check3_complete_count.push(result.statistics_info[key].check3_complete)
+                      this.check1_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check1_total))
+                      this.check1_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].check1_ing))
+                      this.check1_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].check1_complete))
+                      this.check2_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check2_total))
+                      this.check2_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].check2_ing))
+                      this.check2_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].check2_complete))
+                      this.check3_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check3_total))
+                      this.check3_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].check3_ing))
+                      this.check3_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].check3_complete))
                     }else {
-                      this.check_ing_count.push(result.statistics_info[key].check_ing)
-                      this.check_complete_count.push(result.statistics_info[key].check_complete)
+                      this.check_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].check_ing))
+                      this.check_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].check_complete))
                     }
                     
                     // datasets.push({ 
@@ -1134,7 +1135,7 @@
                 bottom: {style:'thin', color: {argb:'black'}},
                 right: {style:'thin', color: {argb:'black'}}
               };
-})
+            })
           })
 
           // 흰 배경을 만들기 위해 셀 병합
@@ -1157,7 +1158,11 @@
               let blob = new Blob([data], {type: "application/vnd.ms-excel;charset=utf-8"});
               saveAs(blob, `${file_name}_${moment().format('YYYYMMDDHHmmss')}.xlsx`);
           });
-        },        
+        },  
+        // 0일 경우 undefined 셋팅 - tooltip 안나오게
+        getZeroToUndefined(data) {
+          return util.getZeroToUndefined(data);
+        },      
     }
   }
 </script>

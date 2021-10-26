@@ -13,10 +13,4 @@ export default {
     method: 'post',
     data,
   }),
-  // Test 통계
-  getTest: data => request({
-    url: '/statistics/test',
-    method: 'post',
-    data,
-  }),
 }

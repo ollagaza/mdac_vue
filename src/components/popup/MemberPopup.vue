@@ -180,7 +180,7 @@ export default {
       return this.user_name && this.user_name.length > 1;
     },
     c_member_seq() {
-      console.log(this.logged_info)
+      // console.log(this.logged_info)
       if(this.logged_info) {
         return this.logged_info.seq;
       }
@@ -265,7 +265,7 @@ export default {
       this.onNext();
     },
     onVerify() {
-      this.$log.debug(this.isCreateMode());
+      // this.$log.debug(this.isCreateMode());
       //console.log(`c_is_verify_user_id===${this.c_is_verify_user_id}`)
       if (!this.c_is_verify_user_id) {
         this.$refs.user_id.focus();
@@ -306,7 +306,7 @@ export default {
       this.onNext();
     },
     async onNext() {
-      this.$log.debug('on Next');
+      // this.$log.debug('on Next');
       //const bday = this.dateFormatter(this.birth_day);
       const member_info = {
         user_id: this.user_id,
@@ -319,7 +319,7 @@ export default {
         reason: this.reason,
         mod_member_seq: this.c_member_seq,
       };
-      this.$log.debug(member_info);
+      // this.$log.debug(member_info);
       let result = '';
       if (this.isCreateMode()) {
         await apiuser.createUser(member_info)
@@ -339,7 +339,7 @@ export default {
           });
       } else {
         //alert(this.seq);
-        this.$log.debug('else');
+        // this.$log.debug('else');
         result = await apiuser.updateUser(this.seq, member_info);
         if (result.error === 0){
           this.onSuccess('정보가 수정되었습니다.');
@@ -366,7 +366,7 @@ export default {
     },
     async openPopupBySeq(seq) {
       this.seq = seq;
-      console.log(`modeType(MemberPopup)===${this.modeType}`)
+      // console.log(`modeType(MemberPopup)===${this.modeType}`)
       //if (this.modeType === 'e') {
  
       const data = { 
