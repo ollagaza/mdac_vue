@@ -157,7 +157,7 @@ export default {
         const sumdata = this.c_list_sum.filter(item => item.division_seq === seq);
         if (sumdata && sumdata.length > 0) {
           if (group === 'A') {
-            return `[${sumdata[0].label_cnt_sum}] ${sumdata[0].sumdataA}`;
+            return sumdata[0].sumdataA;
           }
           if (group === 'B') {
             return sumdata[0].sumdataB;
@@ -221,7 +221,8 @@ export default {
             sublist.D = item.D1 + item.D2 + item.D5;
             sublist.E2 = item.E2 ? item.E2 : 0;
             sublist.labler_co = item.labler_co ? item.labler_co : 0;
-            sublist.sumdataA = `${sublist.A} / <span class="ing">${sublist.A1}</span> / ${sublist.A2}`;
+            const A1 = item.label_cnt_sum - sublist.A2;
+            sublist.sumdataA = `${item.label_cnt_sum} / <span class="ing">${A1}</span> / ${sublist.A2}`;
             sublist.sumdataB = `${sublist.B} / <span class="ing">${sublist.B1}</span> / ${sublist.B2} / ${sublist.B5}`;
             sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;

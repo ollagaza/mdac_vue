@@ -440,6 +440,9 @@ export default {
     },
     a1_Pass(work_status_send, status) {
       let pass = true;
+      if (!status){
+        status = 'A0';
+      }
       if (work_status_send === 'A1') {
         const swork = status.substr(1, 1);
         if (parseInt(swork, 10) === 5) {
@@ -452,6 +455,9 @@ export default {
     },
     e2_Pass(work_status_send, status) {
       this.$log.debug(work_status_send, status);
+      if (!status) {
+        status = 'A0';
+      }
       if (work_status_send === 'E2' && status.substr(1, 1) === '2') {
         return true;
       }
@@ -518,7 +524,6 @@ export default {
           });
           let oblist = {};
           if (job_item && job_item.length > 0 && job_item[0].sublist && job_item[0].sublist.length > 0) {
-            this.$log.debug('substr', job_item[0].sublist[0]);
             // 반려시...
             if (this.work_status_send === 'Z5') {
               const iStatus = reject_per.indexOf(job_item[0].sublist[0].status);
@@ -554,7 +559,7 @@ export default {
             const irf_pair_key = parseInt(a_seq[1], 10);
             const view_item = this.list_file_view.filter(item => item.job_seq === ijobseq);
             const rf_item = view_item[0].sublist.filter(item => item.rf_seq === irfseq);
-            this.$log.debug('rf_item', rf_item);
+            // this.$log.debug('rf_item', rf_item);
             if (rf_item[0].reject_act === 'R') {
               EventBus.emit('alertPopupOpen', null, `이미 재할당 받은 작업에 입력 할수 없습니다. `, null);
               return;
@@ -722,12 +727,12 @@ export default {
                 jlist.class_seq = item.class_seq;
                 jlist.class_name = this.getClassName(item.class_seq);
               }
-              // if (old_rf_file_name === item.rf_file_name) {
-              //   item.rf_file_name = '';
-              // } 파일이 다를수있다.
               old_rf_file_name = item.rf_file_name;
               item.view_seq = view_seq;
               item.rf_file = 0; // 등록된 파일여부 확인..
+              if (!item.status) {
+                item.status = 'A0';
+              }
               if (item.rf_file_name) {
                 jlist.rf_file = 1;
               }
@@ -739,7 +744,7 @@ export default {
             }
             this.page_navigation = result.page_navigation;
           }
-          this.$log.debug(this.list_file_view);
+          // this.$log.debug(this.list_file_view);
         });
     },
     async getJobList() {
@@ -781,6 +786,9 @@ export default {
             sublist.job_seq = item.job_seq;
             sublist.class_seq = item.class_seq;
             sublist.class_name = this.getClassName(item.class_seq);
+            if (!item.status) {
+              item.status = 'A0';
+            }
             sublist.status = item.status;
             sublist.user_name = item.user_name;
             sublist.label_cnt = item.label_cnt;

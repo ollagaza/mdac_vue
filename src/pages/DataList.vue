@@ -5,18 +5,22 @@
         <Datalist_Left v-bind:menu_id="1"></Datalist_Left>
         <div style="flex: 2; padding-top: 40px;">
           <div style="padding: 0 0 0 0 ;">
-            <div style="display: flex;  flex-direction: row; width: 100%; height:40px;">
+            <div style="display: flex;  flex-direction: row; width: 100%; height:20px;">
               <div style="flex: 2">
               </div>
-              <div class="btn navy" style="right: 0; width:100px; height: 36px;">프로젝트 등록</div>
+              <div style="font-size: 9px">
+                반려에서 재할당된 작업 갯수 포함
+              </div>
+<!--              <div class="btn navy" style="right: 0; width:100px; height: 36px;">프로젝트 등록</div>-->
             </div>
             <div class="grid_m datalist header" style="align-content: center; justify-content: center;">
               <div>프로젝트</div>
-              <div>라벨링<span style="font-size: 10px" title="할당 - 비디오타입에서 라벨러에게 할당한 갯수 카운트합과 이미지타입에서 할당된 갯수합" class="item">[할당](전체/<span class="ing">진행</span>/완료)</span></div>
+              <div>라벨링<span style="font-size: 10px" title="할당 - 비디오타입에서 라벨러에게 할당한 갯수 카운트합과 이미지타입에서 할당된 갯수합" class="item">(전체/<span class="ing">진행</span>/완료)</span></div>
               <div>라벨러</div>
               <div>검수1<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div>
               <div>검수2<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div>
               <div>검수3<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div>
+              <div>완료</div>
               <div>상태</div>
             </div>
             <template v-for="item, index in c_list">
@@ -27,6 +31,7 @@
                 <div class="item" v-html="item.sumdataB"></div>
                 <div class="item" v-html="item.sumdataC"></div>
                 <div class="item" v-html="item.sumdataD"></div>
+                <div class="item" v-html="item.sumdataE"></div>
                 <div>
                   <div class="project_work" v-if="item.status === '1'">진행</div>
                   <div class="project_stop" v-if="item.status === '2'">중지</div>
@@ -93,10 +98,12 @@ export default {
             sublist.E2 = item.E2 ? item.E2 : 0;
             sublist.labler_co = item.labler_co ? item.labler_co : 0;
             item.label_cnt_sum = item.label_cnt_sum ? item.label_cnt_sum : 0;
-            sublist.sumdataA = `[${item.label_cnt_sum}] ${sublist.A} / <span class="ing">${sublist.A1}</span> / ${sublist.A2}`;
+            const A1 = item.label_cnt_sum - sublist.A2;
+            sublist.sumdataA = `${item.label_cnt_sum} / <span class="ing">${A1}</span> / ${sublist.A2}`;
             sublist.sumdataB = `${sublist.B} / <span class="ing">${sublist.B1}</span> / ${sublist.B2} / ${sublist.B5}`;
             sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;
+            sublist.sumdataE = `${sublist.E2}`;
             sublist.label_cnt_sum = item.label_cnt_sum;
             list.push(sublist);
             this.$log.debug(list);
@@ -118,7 +125,7 @@ export default {
 
 <style scoped>
 .grid_m.datalist {
-  grid-template-columns: 100px 200px 50px 200px 200px 200px 50px;
+  grid-template-columns: 100px 150px 50px 180px 180px 180px 110px 50px;
 }
 .project_work {
   border-radius: 12px;

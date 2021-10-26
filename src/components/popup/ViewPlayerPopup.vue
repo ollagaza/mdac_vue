@@ -25,6 +25,8 @@
 </template>
 <script>
 
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'ViewPopup',
   components: {},
@@ -58,6 +60,7 @@ export default {
     window.removeEventListener('resize', this.onWindowResize);
   },
   computed: {
+    ...mapGetters(['logged_info', 'current_domain']),
     c_left() {
       return `${this.bodyX}px`;
     },
@@ -347,12 +350,14 @@ export default {
       this.is_open = false;
     },
     openVPPopup(option, size = null, pos = null) {
-      this.$log.debug(option);
+      this.$log.debug(option, this.current_domain);
+      // const host_name = window.location.hostname;
+      // const protocol = (window.location.protocol).replace(/:$/, '');
       if (option.file_type === 'i') {
-        this.media_url = `http://localhost:3600/apid1/d1/datastatus/getimg/${option.seq}/o`;
+        this.media_url = `${this.current_domain}/apid1/d1/datastatus/getimg/${option.seq}/o`;
       }
       if (option.file_type === 'v') {
-        this.video_url = `http://localhost:3600/apid1/d1/datastatus/getvideo/${option.seq}/o`;
+        this.video_url = `${this.current_domain}/apid1/d1/datastatus/getvideo/${option.seq}/o`;
       }
       this.addEventListener();
       this.file_seq = option.seq;
