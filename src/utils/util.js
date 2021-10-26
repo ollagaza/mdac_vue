@@ -329,6 +329,13 @@ const getMemberStatusStr = (status) => {
   return result;
 };
 
+const getZeroToUndefined = (data) => {
+  if (data === 0) {
+    return undefined;
+  }
+  return data;
+};
+
 export default {
   getLanguage,
   replaceByTemplate,
@@ -355,4 +362,5 @@ export default {
   getDateToStr,
   getMemberStatusStr,
   getDateTimeToStr,
+  getZeroToUndefined,
 };
