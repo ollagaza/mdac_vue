@@ -59,7 +59,6 @@ export default {
   computed: {
     ...mapGetters(['logged_info', 'is_logged']),
     c_usrname() {
-      //console.log(this.logged_info)
       if(this.logged_info) {
         //this.$log.debug(this.logged_info);
         return this.logged_info.user_name;
@@ -107,8 +106,6 @@ export default {
           this.$log.error(error);
         })
 
-      // this.$store.dispatch('LogOut')
-      // this.$log.debug(`logout`);
       // this.$store.getters['is_logged']
       // this.$log.debug(`logout_Logged_Navigation :: ${this.is_logged}`)
       this.$log.debug(`logout_Logged_Navigation :: ${this.is_logged}`)

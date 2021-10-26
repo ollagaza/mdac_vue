@@ -279,7 +279,7 @@ export default {
       const params = { user_id: this.login.user_id, password: this.login.password };
       this.Login(params)
         .then((result) => {
-          this.$log.debug(result);
+          // this.$log.debug(result);
           if (result.error) {
             this.error_message = '아이디, 비밀번호를 확인해 주세요...';
             this.is_loading = false;
@@ -312,7 +312,7 @@ export default {
     getUserData(member_seq) {
       api_user.getUserData(member_seq)
         .then((result) => {
-          this.$log.debug('getUserData', result);
+          // this.$log.debug('getUserData', result);
           if (result.user_data) {
             this.$store.commit('setUserStoredData', result.user_data);
           }
@@ -378,7 +378,7 @@ export default {
       };
       api_user.findUserId(params)
         .then((result) => {
-          this.$log.error(result);
+          // this.$log.error(result);
           if (!result || result.error !== 0 || !result.is_find) {
             this.error_message = this.c_lang.S_0006;
             this.is_loading = false;
