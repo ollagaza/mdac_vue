@@ -196,7 +196,7 @@ export default {
       this.onNext();
     },
     onVerify() {
-      this.$log.debug(this.isCreateMode());
+      // this.$log.debug(this.isCreateMode());
       if (!this.c_is_verify_project_name) {
         this.$refs.project_name.focus();
         this.onError("프로젝트명을 입력해주세요.");
@@ -205,7 +205,7 @@ export default {
       this.onNext();
     },
     async onNext() {
-      this.$log.debug("on Next");
+      // this.$log.debug("on Next");
       //const bday = this.dateFormatter(this.birth_day);
       const project_info = {
         project_name: this.project_name,
@@ -215,8 +215,7 @@ export default {
         reason: this.reason,
         reg_member_seq: this.c_member_seq,
       };
-      console.log(`dsfdfdsfdfs===${this.c_member_seq}`);
-      this.$log.debug(project_info);
+      // this.$log.debug(project_info);
       let result = "";
       if (this.isCreateMode()) {
         await apiproject
@@ -237,7 +236,7 @@ export default {
           });
       } else {
         //alert(this.seq);
-        this.$log.debug("else");
+        // this.$log.debug("else");
         result = await apiproject.updateProject(this.seq, project_info);
         if (result.error === 0) {
           this.onSuccess("정보가 수정되었습니다.");
@@ -294,8 +293,7 @@ export default {
       //}
     },
     async openPopup() {
-      console.log(this.is_open);
-      this.$log.debug("openPopup");
+      // this.$log.debug("openPopup");
       this.is_open = true;
       this.onRest();
     },
@@ -303,7 +301,7 @@ export default {
       this.is_open = false;
     },
     fnCheckUsed() {
-      console.log(this.status);
+      // console.log(this.status);
     },
   },
 };

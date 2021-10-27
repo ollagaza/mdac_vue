@@ -367,7 +367,7 @@ export default {
       params.used = sendParam.itype;
       params.classes = arrData;
       apiproject.delClass(params).then((data) => {
-        console.log(`data.error===${data.error}`)
+        // console.log(`data.error===${data.error}`)
         if (data.error === 0) {
           EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
           this.fnClassList(1);

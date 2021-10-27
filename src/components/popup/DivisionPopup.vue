@@ -276,7 +276,6 @@ export default {
         reg_member_seq: this.c_member_seq,
       };
       console.log(`c_member_seq===${this.c_member_seq}`);
-      //this.$log.debug(division_info);
       let result = "";
       if (this.isCreateMode()) {
         await apiproject
@@ -296,8 +295,7 @@ export default {
             this.onError(`등록에 실패하였습니다. (${e})`);
           });
       } else {
-        //alert(this.seq);
-        this.$log.debug("else");
+        // this.$log.debug("else");
         result = await apiproject.updateDivision(this.seq, division_info);
         if (result.error === 0) {
           this.onSuccess("정보가 수정되었습니다.");
@@ -324,14 +322,12 @@ export default {
     },
     async openPopupBySeq(seq) {
       this.seq = seq;
-      console.log(`modeType(ProjectPopup)===${this.modeType}`);
 
       const data = {
         division_seq: this.seq,
       };
 
       await apiproject.getDivisionInfo(data).then(async (result) => {
-        this.$log.debug(result);
         if (result.error === 0) {
           if (result.division_info.length > 0) {
             this.onRest();
@@ -385,7 +381,6 @@ export default {
 
       // 분류 조회
       apiproject.getDivision(data).then(async (result) => {
-        // this.$log.debug(result);
         this.$log.debug(`this.parent_division_seq.seq===${this.parent_division_seq.seq}`)
         if(itype==='D') { // 분류 selectbox 선택시 ( 프로젝트 선택 X)
           if(this.parent_path) {
@@ -396,15 +391,12 @@ export default {
         }
         
         if(this.parent_division_seq.seq === undefined) {
-          /// this.$log.debug(`parent_path reset`)
           this.parent_path = ""
           this.parent_seq = ""
         }
 
         if (result.error === 0) {
           if (result.division_info.length > 0) {
-            // this.parent_path = result.division_info[0].parent_path;
-            // this.project_seq = result.division_info[0].project_seq;
             this.division_info = result.division_info;
           }else {
             this.division_info = "";
