@@ -58,7 +58,8 @@
               </template>
             </div>
             <div>{{item.class_name}}</div>
-            <div>{{item.user_name}}</div>
+            <div v-if="subitem.reject_act !== 'A'">{{item.user_name}}</div>
+            <div v-else>{{subitem.user_name}}</div>
             <div>{{subitem.mb_name}}</div>
             <div>{{subitem.mc_name}}</div>
             <div>{{subitem.md_name}}</div>
@@ -76,6 +77,7 @@
 <script>
 import util from '../../utils/util';
 import util_name from '../../utils/util_name';
+import { mapActions, mapGetters } from 'vuex';
 import path from 'path';
 
 export default {
@@ -86,17 +88,19 @@ export default {
   async created() {
   },
   computed: {
+    ...mapGetters(['current_domain']),
     c_file_view() {
-      this.$log.debug('this.list_file_view', this.list_file_view);
+      // this.$log.debug('this.list_file_view', this.list_file_view);
       if (this.list_file_view && this.list_file_view.length > 0) {
         return this.list_file_view;
       }
       return [];
     },
     c_video_url() {
-      this.$log.debug('this.file_seq', this.file_seq);
+      // this.$log.debug('this.file_seq', this.file_seq);
+      // this.$log.debug(`${this.current_domain}/apid1/d1/datastatus/getvideo/${this.file_seq}/o`);
       if (this.file_seq) {
-        return `http://localhost:3600/apid1/d1/datastatus/getvideo/${this.file_seq}/o`;
+        return `${this.current_domain}/apid1/d1/datastatus/getvideo/${this.file_seq}/o`;
       }
       return '';
     }
@@ -112,20 +116,21 @@ export default {
   },
   methods: {
     onHisClick(seq) {
-      this.$log.debug(seq);
+      // this.$log.debug(seq);
       const a_seq = seq.split('_');
       const option = {};
       option.seq = a_seq[0];
       option.file_type = 'v';
       option.isResult = 'r';// o 오리지널 r-결과
-      option.ref_seq = a_seq[1];
-      option.ref_pair_key = a_seq[2];
+      option.ref_pair_key = a_seq[1];
+      option.ref_seq = a_seq[2];
       option.reject_pair_key = a_seq[3];
-      this.$log.debug(option);
+      // this.$log.debug('his');
+      // this.$log.debug(option);
       this.$emit('onHisClick', option);
     },
     onList(seq) {
-      this.$log.debug('list click');
+      // this.$log.debug('list click');
       this.$emit('onList', seq);
     },
     InitCh() {
@@ -142,7 +147,7 @@ export default {
       }
     },
     onCheckClick(seq) {
-      this.$log.debug(seq);
+      // this.$log.debug(seq);
       this.$set(this.checkData, seq, this.checkData[seq] !== true);
     },
     StatusToStr(code) {
@@ -157,10 +162,10 @@ export default {
       return ch;
     },
     getBase(filename) {
-      this.$log.debug(filename);
+      // this.$log.debug(filename);
       const basename = filename.split('\\');
       const path_name = basename[basename.length - 1];
-      this.$log.debug(path_name);
+      // this.$log.debug(path_name);
       return path_name;
     }
   },
