@@ -27,18 +27,17 @@
               </select>
 
               <select class="text" v-model="search_type" style="width: 220px;height: 36px;" @change="fnStatisticsList()">
-                <option value="NOW" selected=true>조회기준(기간:반려미적용)</option>
-                <option value="NOWC" selected=true>조회기준(기간:반려적용)</option>
-                <option value="SUM" selected=true>조회기준(누적:반려미적용)</option>
-                <option value="SUMC" selected=true>조회기준(누적:반려적용)</option>
+                <option value="NOW" selected=true>기간조회</option>
+                <option value="SUM" selected=true>전체조회(반려제외)</option>
+                <option value="SUMC" selected=true>전체조회(반려적용)</option>
               </select>
 
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
+                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
               <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
               <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
+                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnStatisticsList()">조회</div>
             </div>
@@ -55,9 +54,20 @@
           </div>
 
           <div style="padding: 10px 0 0 0 ;">
-            <div v-if="search_seq === '3'" class="grid_m class_check3 header">
+            <div v-if="search_seq === '3' && search_type === 'NOW'" class="grid_m class_check3 header">
               <div>프로젝트</div>
-              <div>총작업량</div>
+              <div>전체할당량</div>
+              <div>기간할당량</div>
+              <div>라벨링진행</div>
+              <div>라벨링완료</div>
+              <div>반려</div>
+              <div>총검수량</div>
+              <div>검수진행</div>
+              <div>검수완료</div>
+            </div>
+            <div v-if="search_seq === '3' && search_type !== 'NOW'" class="grid_m class_check3_all header">
+              <div>프로젝트</div>
+              <div>전체할당량</div>
               <div>라벨링진행</div>
               <div>라벨링완료</div>
               <div>라벨링완료율</div>
@@ -68,9 +78,20 @@
               <div>검수완료</div>
               <div>검수완료율</div>
             </div>
-            <div style="font-size: 10px" v-if="search_seq === '4'" class="grid_m class_check4 header">
+            <div style="font-size: 10px" v-if="search_seq === '4' && search_type === 'NOW'" class="grid_m class_check4 header">
               <div>프로젝트</div>
-              <div>총작업량</div>
+              <div>전체할당량</div>
+              <div>기간할당량</div>
+              <div>라벨링진행</div>
+              <div>라벨링완료</div>
+              <div>반려</div>
+              <div>검수1(전체/진행/완료)</div>
+              <div>검수2(전체/진행/완료)</div>
+              <div>검수3(전체/진행/완료)</div>
+            </div>
+            <div style="font-size: 10px" v-if="search_seq === '4' && search_type !== 'NOW'" class="grid_m class_check4_all header">
+              <div>프로젝트</div>
+              <div>전체할당량</div>
               <div>라벨링진행</div>
               <div>라벨링완료</div>
               <div>라벨링완료율</div>
@@ -92,7 +113,18 @@
 
             <template v-if="statistics_list.length > 0">
               <template v-for="(pStatistics, index) in statistics_list">
-                <div class="grid_m class_check3 body" v-if="search_seq === '3'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check3 body" v-if="search_seq === '3' && search_type === 'NOW'" v-on:click="one_chart(pStatistics)">
+                  <div>{{ pStatistics.project_name }}</div>
+                  <div>{{ pStatistics.label_total_all }}</div>
+                  <div>{{ pStatistics.label_total }}</div>
+                  <div>{{ pStatistics.label_ing }}</div>
+                  <div>{{ pStatistics.label_complete }}</div>
+                  <div>{{ pStatistics.label_reject }}</div>
+                  <div>{{ pStatistics.check_total }}</div>
+                  <div>{{ pStatistics.check_ing }}</div>
+                  <div>{{ pStatistics.check_complete }}</div>
+                </div>
+                <div class="grid_m class_check3_all body" v-if="search_seq === '3' && search_type !== 'NOW'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.label_total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
@@ -106,9 +138,21 @@
                   <div>{{ pStatistics.check_avgComplete }}</div>
                 </div>
                 
-                <div class="grid_m class_check4 body" v-if="search_seq === '4'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check4 body" v-if="search_seq === '4' && search_type === 'NOW'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
+                  <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_total }}</div>
+                  <div>{{ pStatistics.label_ing }}</div>
+                  <div>{{ pStatistics.label_complete }}</div>
+                  <div>{{ pStatistics.label_reject }}</div>
+                  <div>{{ pStatistics.check1_total }} / {{ pStatistics.check1_ing }} / {{ pStatistics.check1_complete }}</div>
+                  <div>{{ pStatistics.check2_total }} / {{ pStatistics.check2_ing }} / {{ pStatistics.check2_complete }}</div>
+                  <div>{{ pStatistics.check3_total }} / {{ pStatistics.check3_ing }} / {{ pStatistics.check3_complete }}</div>
+                </div>
+                
+                <div class="grid_m class_check4_all body" v-if="search_seq === '4' && search_type !== 'NOW'" v-on:click="one_chart(pStatistics)">
+                  <div>{{ pStatistics.project_name }}</div>
+                  <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}</div>
@@ -309,12 +353,21 @@ export default {
   border: 1px solid #888;
 }
 .grid_m.class_check3 {
+  grid-template-columns: 200px 100px 100px 100px 100px 100px 100px 100px 100px;
+}
+.grid_m.class_check3_all {
   grid-template-columns: 200px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
 }
 .grid_m.class_check4 {
+  grid-template-columns: 210px 80px 80px 80px 80px 80px 130px 130px 130px;
+}
+.grid_m.class_check4_all {
   grid-template-columns: 100px 60px 60px 60px 60px 60px 60px 120px 60px 120px 60px 120px 60px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
+}
+.colorLightgray {
+  background-color: lightgray;
 }
 </style>

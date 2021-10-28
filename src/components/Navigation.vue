@@ -16,7 +16,7 @@
         <div class="nav_box">
           <div class="logo" v-on:click="routeMain"><img src="/img/datamanager/logo.png"></div>
           <div class="nav_sp">
-            <div class="nav_menu">
+            <div class="nav_menu" v-if="is_logged">
               <div class="nmenu" v-bind:class="{on: menu_id === '1'}" v-on:click="Menu1">Data Management</div>
               <div class="nmenu" v-bind:class="{on: menu_id === '2'}" v-on:click="Menu2">Statistics</div>
               <div class="nmenu" v-bind:class="{on: menu_id === '3'}" v-on:click="Menu3">Member</div>
