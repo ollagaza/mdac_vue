@@ -97,9 +97,15 @@ export default {
             sublist.D = item.D1 + item.D2 + item.D5;
             sublist.E2 = item.E2 ? item.E2 : 0;
             sublist.labler_co = item.labler_co ? item.labler_co : 0;
+            sublist.reject_A_co = item.reject_A_co ? item.reject_A_co : 0;
             item.label_cnt_sum = item.label_cnt_sum ? item.label_cnt_sum : 0;
+            // item.label_cnt_sum = item.label_cnt_sum + sublist.reject_A_co;
             const A1 = item.label_cnt_sum - sublist.A2;
-            sublist.sumdataA = `${item.label_cnt_sum} / <span class="ing">${A1}</span> / ${sublist.A2}`;
+            let reject_A_str = '';
+            // if (sublist.reject_A_co > 0) {
+            //   reject_A_str = `(${sublist.reject_A_co})`;
+            // }
+            sublist.sumdataA = `${item.label_cnt_sum}${reject_A_str} / <span class="ing">${A1}</span> / ${sublist.A2}`;
             sublist.sumdataB = `${sublist.B} / <span class="ing">${sublist.B1}</span> / ${sublist.B2} / ${sublist.B5}`;
             sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;

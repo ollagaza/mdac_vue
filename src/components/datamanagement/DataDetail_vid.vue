@@ -22,7 +22,7 @@
           </div>
         </div>
         <div style="justify-self: left;" v-bind:style="`grid-row: 1/${item.rowcount}`" v-on:click.stop="onViewClick(item.seq)">
-          <img src="/img/datamanager/aa.jpg" style="vertical-align: middle;padding: 3px 5px 3px 0;max-width: 50px;max-height: 50px;"> {{item.org_file_name}}
+          <img v-bind:src="getVedioImg(item.seq, item.file_type)" style="vertical-align: middle;padding: 3px 5px 3px 0;max-width: 50px;max-height: 50px;"> {{item.org_file_name}}
         </div>
         <div v-bind:style="`grid-row: 1/${item.rowcount}`">{{getDateToStr(item.reg_date)}}</div>
         <template v-for="(subitem, subidx) of item.sublist">
@@ -34,7 +34,7 @@
             </div>
           </div>
           <div v-bind:title="subitem.sumdata">{{StatusToStr(subitem.status)}}</div>
-          <div>{{subitem.class_seq}} {{subitem.class_name}}</div>
+          <div>{{subitem.class_name}}</div>
           <div>{{subitem.user_name}}</div>
           <div>{{subitem.label_cnt}}</div>
           <div>{{subitem.sumdata}}</div>
@@ -46,6 +46,7 @@
 <script>
 import util from '../../utils/util';
 import util_name from '../../utils/util_name';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'DataDetail_img',
@@ -55,6 +56,7 @@ export default {
   async created() {
   },
   computed: {
+    ...mapGetters(['current_domain']),
     c_file_list() {
       if (this.file_list && this.file_list.length > 0) {
         return this.file_list;
@@ -73,8 +75,11 @@ export default {
   mounted() {
   },
   methods: {
+    getVedioImg(seq, type) {
+      return `${this.current_domain}/apid1/d1/datastatus/getvedioimg/${seq}/o`;
+    },
     onListClick(seq) {
-      this.$log.debug('list click');
+      // this.$log.debug('list click');
       this.$emit('onListClick', seq);
     },
     onViewClick(seq) {
@@ -131,9 +136,9 @@ export default {
     getCheckList() {
       const ch = {};
       ch.checkData = this.checkData;
-      this.$log.debug(ch.checkData);
+      // this.$log.debug(ch.checkData);
       ch.checkSubData = this.checkSubData;
-      this.$log.debug(ch.checkSubData);
+      // this.$log.debug(ch.checkSubData);
       return ch;
     },
   },

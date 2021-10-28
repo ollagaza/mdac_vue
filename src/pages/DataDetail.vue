@@ -69,7 +69,7 @@
                   </select>
                 </div>
                 <div style="width: 160px;" v-if="file_type==='v' && this.view_type !== 'v'">
-                  <select v-model="class_id" style="border: 1px solid #ccc; height: 30px; width: 150px;padding-left: 5px;">
+                  <select v-model="class_seq" style="border: 1px solid #ccc; height: 30px; width: 150px;padding-left: 5px;">
                     <option value="-1">클래스 선택</option>
                     <option v-for="(item, idx) in c_class" v-bind:value="item.seq">{{item.class_name}}</option>
                   </select>
@@ -233,7 +233,7 @@ export default {
       div_seq: -1,
       file_seq: -1,
       label_cnt: 100,
-      class_id: -1,
+      class_seq: -1,
       maxdepth: 0,
       selDiv: { seq: '', fullname: '분류를 선택하세요.' },
       list_worker: [],
@@ -268,7 +268,7 @@ export default {
       this.div_seq = query.div_seq ? query.div_seq : -1;
       this.file_seq = query.file_seq ? query.file_seq : -1;
       this.label_cnt = query.label_cnt ? query.label_cnt : 100;
-      this.class_id = query.class_id ? query.class_id : -1;
+      this.class_seq = query.class_seq ? query.class_seq : -1;
       this.work_status = query.work_status ? query.work_status : '-1';
       this.work_status_send = query.work_status_send ? query.work_status_send : 'A1';
       this.file_type = query.file_type ? query.file_type : 'i';
@@ -285,7 +285,7 @@ export default {
       query.div_seq = this.div_seq;
       query.file_seq = this.file_seq;
       query.label_cnt = this.label_cnt;
-      query.class_id = this.class_id;
+      query.class_seq = this.class_seq;
       query.work_status = this.work_status;
       query.work_status_send = this.work_status_send;
       query.file_type = this.file_type;
@@ -362,7 +362,7 @@ export default {
           check_filelist.push(item);
         }
       }
-      // this.$log.debug(check_filelist, this.file_type, this.worker_id, this.work_status_send, this.class_id, this.label_cnt);
+      // this.$log.debug(check_filelist, this.file_type, this.worker_id, this.work_status_send, this.class_seq, this.label_cnt);
       if (check_filelist.length < 1) {
         EventBus.emit('alertPopupOpen', null, '선택한 작업이 없습니다. 리스트에서 삭제할 작업을 선택하세요.', null);
         return;
@@ -454,7 +454,7 @@ export default {
       return pass;
     },
     e2_Pass(work_status_send, status) {
-      this.$log.debug(work_status_send, status);
+      // this.$log.debug(work_status_send, status);
       if (!status) {
         status = 'A0';
       }
@@ -464,7 +464,7 @@ export default {
       return false;
     },
     async onApplyClick() {
-      this.$log.debug('onApplyClick');
+      // this.$log.debug('onApplyClick');
       const reject_per = ['B1', 'C1', 'D1'];
       const check_filelist = [];
       // 작업 선택.
@@ -479,13 +479,13 @@ export default {
         EventBus.emit('alertPopupOpen', null, '선택한 작업이 없습니다. 리스트에서 작업을 선택하세요.', null);
         return;
       }
-      if (this.worker_id.length < 1 && this.work_status_send !== 'E2') {
+      if (this.worker_id.length < 1 && this.work_status_send !== 'E2' && this.work_status_send !== 'Z5') {
         EventBus.emit('alertPopupOpen', null, '선택한 작업자가 없습니다.', null);
         return;
       }
-      this.$log.debug('v', this.view_type);
+      // this.$log.debug('v', this.view_type);
       if (this.file_type === 'v' && this.view_type !== 'v') {
-        if (this.class_id < 0) {
+        if (this.class_seq < 0) {
           EventBus.emit('alertPopupOpen', null, '선택한 클래스가 없습니다.', null);
           return;
         }
@@ -502,13 +502,15 @@ export default {
       data.view_type = this.view_type;
       data.worker_id = this.worker_id;
       data.work_status_send = this.work_status_send;
-      data.class_id = this.class_id;
+      data.class_seq = this.class_seq;
       data.label_cnt = this.label_cnt;
+      data.file_seq = this.file_seq;
+      this.$log.debug(data);
       const obStep = this.nextStep(data.work_status_send);
       const check_filejoblist = [];
       if (this.file_type === 'i') {
         // 단계...
-        this.$log.debug('in');
+        // this.$log.debug('in');
         for(let i = 0; i < check_filelist.length; i++) {
           const iseq = parseInt(check_filelist[i], 10);
           const job_item = this.file_list.filter((item) => {
@@ -530,7 +532,7 @@ export default {
               if (iStatus > -1) {
                 obStep.perv_id = job_item[0].sublist[0].status;
               }
-              this.$log.debug('perv_id', iStatus, job_item[0].sublist[0].status, obStep.perv_id);
+              // this.$log.debug('perv_id', iStatus, job_item[0].sublist[0].status, obStep.perv_id);
             }
             if (obStep.perv_id !== job_item[0].sublist[0].status) {
               if (!this.e2_Pass(data.work_status_send, job_item[0].sublist[0].status)) {
@@ -542,6 +544,8 @@ export default {
               }
             }
             oblist = { seq: check_filelist[i], job_seq: job_item[0].sublist[0].job_seq, status: job_item[0].sublist[0].status };
+            oblist.reject_seq = job_item[0].sublist[0].reject_seq;
+            oblist.reject_act = job_item[0].sublist[0].reject_act;
           } else {
             // 신규로 입력.
             oblist = { seq: check_filelist[i], job_seq: 0, status: job_item[0].sublist[0].status };
@@ -555,11 +559,15 @@ export default {
           if (this.view_type === 'v') {
             const a_seq = check_filelist[i].split('_');
             const ijobseq = parseInt(a_seq[0], 10);
-            const irfseq = parseInt(a_seq[2], 10);
             const irf_pair_key = parseInt(a_seq[1], 10);
+            const irfseq = parseInt(a_seq[2], 10);
             const view_item = this.list_file_view.filter(item => item.job_seq === ijobseq);
-            const rf_item = view_item[0].sublist.filter(item => item.rf_seq === irfseq);
-            // this.$log.debug('rf_item', rf_item);
+            if (data.class_seq < 0) {
+              data.class_seq = view_item[0].class_seq;
+            }
+            // this.$log.debug(view_item);
+            const rf_item = view_item[0].sublist.filter(item => item.rf_pair_key === irf_pair_key);
+            this.$log.debug('rf_item', rf_item);
             if (rf_item[0].reject_act === 'R') {
               EventBus.emit('alertPopupOpen', null, `이미 재할당 받은 작업에 입력 할수 없습니다. `, null);
               return;
@@ -570,7 +578,7 @@ export default {
               if (iStatus > -1) {
                 obStep.perv_id = rf_item[0].rf_status;
               }
-              this.$log.debug('perv_id', iStatus, rf_item[0].rf_status, obStep.perv_id);
+              // this.$log.debug('perv_id', iStatus, rf_item[0].rf_status, obStep.perv_id);
             }
             if (obStep.perv_id !== rf_item[0].rf_status) {
               const str = this.StatusToStr(rf_item[0].rf_status);
@@ -582,6 +590,8 @@ export default {
               }
             }
             oblist = { seq: ijobseq, rf_seq: irfseq, rf_pair_key: irf_pair_key, status: rf_item[0].rf_status };
+            oblist.reject_seq = rf_item[0].reject_seq;
+            oblist.reject_act = rf_item[0].reject_act;
           } else {
             // 신규로 입력.
             oblist = { seq: check_filelist[i], job_seq: 0, status: 'A0' };
@@ -715,13 +725,14 @@ export default {
                 item.rf_seq = 0;
               }
               const view_seq = `${item.job_seq}_${item.rf_pair_key}_${item.rf_seq}`;
-              if (jlist.job_seq !== item.job_seq) {
+              if (jlist.reject_seq !== item.reject_seq) {
                 if (jlist.sublist && jlist.sublist.length > 0) {
                   this.list_file_view.push(jlist);
                 }
                 jlist = {};
                 jlist.sublist = [];
                 jlist.job_seq = item.job_seq;
+                jlist.reject_seq = item.reject_seq;
                 jlist.user_name = item.user_name;
                 jlist.label_cnt = item.label_cnt;
                 jlist.class_seq = item.class_seq;
@@ -744,10 +755,11 @@ export default {
             }
             this.page_navigation = result.page_navigation;
           }
-          // this.$log.debug(this.list_file_view);
+          this.$log.debug(this.list_file_view);
         });
     },
     async getJobList() {
+      // this.$log.debug('getJobList');
       this.check_all_click = false;
       this.$refs.detail_list.InitCh();
       this.page_navigation.list_count = this.list_count;
@@ -757,7 +769,7 @@ export default {
       // this.$log.debug('getJobList', this.page_navigation, data);
       await ApiStatus.getFileList(this.pro_seq, this.div_seq, data)
       .then((result) => {
-        this.$log.debug(result);
+        // this.$log.debug(result);
         this.file_list = [];
         let jlist = {};
         jlist.sublist = [];
@@ -791,7 +803,7 @@ export default {
             }
             sublist.status = item.status;
             sublist.user_name = item.user_name;
-            sublist.label_cnt = item.label_cnt;
+            sublist.label_cnt = item.label_cnt ? item.label_cnt : 0;
             sublist.labeler_jobdate = item.labeler_jobdate;
             sublist.labeler_member_seq = item.labeler_member_seq;
             sublist.labeler_method = item.labeler_method;
@@ -812,7 +824,8 @@ export default {
             sublist.D2 = item.D2 ? item.D2 : 0;
             sublist.D5 = item.D5 ? item.D5 : 0;
             sublist.E2 = item.E2 ? item.E2 : 0;
-            sublist.sumdata = `${sublist.A1}/${sublist.A2} ${sublist.B1}/${sublist.B2}/${sublist.B5}  ${sublist.C1}/${sublist.C2}/${sublist.C5}  ${sublist.D1}/${sublist.D2}/${sublist.D5} ${sublist.E2}`;
+            sublist.A = sublist.label_cnt - sublist.A2;
+            sublist.sumdata = `${sublist.A}/${sublist.A2}, ${sublist.B1}/${sublist.B2}/${sublist.B5},  ${sublist.C1}/${sublist.C2}/${sublist.C5},  ${sublist.D1}/${sublist.D2}/${sublist.D5}, ${sublist.E2}`;
             sublist.reject_act = item.reject_act;
             sublist.reject_seq = item.reject_seq;
             jlist.rowcount += 1;
@@ -825,7 +838,7 @@ export default {
             // this.$log.debug('2',this.file_list);
           }
         }
-        this.$log.debug(this.file_list);
+        // this.$log.debug(this.file_list);
         this.page_navigation = result.page_navigation;
       });
     },

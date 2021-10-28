@@ -17,7 +17,6 @@
         <div v-bind:style="`grid-row: 1/${item.rowcount}`">
           <div class="check_wrapper" style="padding:0 10px 0 0;">
             <div class="check_box" v-bind:class="[{on: checkData[item.seq]}]" v-on:click.stop="onCheckClick(item.seq)"></div>
-            {{item.seq}}
           </div>
         </div>
         <div style="justify-self: left;" v-bind:style="`grid-row: 1/${item.rowcount}`">
@@ -38,7 +37,7 @@
           <div>{{subitem.mb_name}}</div>
           <div>{{subitem.mc_name}}</div>
           <div>{{subitem.md_name}}</div>
-          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq)">{{subitem.job_seq}}이력조회</div></div>
+          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq)">이력조회</div></div>
         </template>
       </div>
     </template>
@@ -47,6 +46,7 @@
 <script>
 import util from '../../utils/util';
 import util_name from '../../utils/util_name';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'DataDetail_img',
@@ -56,6 +56,7 @@ export default {
   async created() {
   },
   computed: {
+    ...mapGetters(['current_domain']),
     c_job() {
       if (this.file_list && this.file_list.length > 0) {
         return this.file_list;
@@ -74,15 +75,18 @@ export default {
   },
   methods: {
     getImg(seq) {
-      return `http://localhost:3600/apid1/d1/datastatus/getimg/${seq}/o`;
+      const host_name = window.location.hostname;
+      const protocol = (window.location.protocol).replace(/:$/, '');
+      this.$log.debug(host_name, protocol, this.current_domain);
+      return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/o`;
     },
     onHisClick(seq) {
-      this.$log.debug(seq);
+      // this.$log.debug(seq);
       const option = {};
       option.seq = seq;
       option.file_type = 'i';
       option.isResult = 'o';// o 오리지널 r-결과
-      this.$log.debug(option);
+      // this.$log.debug(option);
       this.$emit('onHisClick', option);
     },
     onViewClick(seq) {

@@ -35,7 +35,7 @@
             </div>
             <div class="grid_m datalist header" style="align-content: center; justify-content: center;">
               <div>분류</div>
-              <div>라벨링<span style="font-size: 10px">[할당](전체/진행/완료)</span></div>
+              <div>라벨링<span style="font-size: 10px">(전체/진행/완료)</span></div>
               <div>검수1<span style="font-size: 10px">(전체/진행/완료/반려)</span></div>
               <div>검수2<span style="font-size: 10px">(전체/진행/완료/반려)</span></div>
               <div>검수3<span style="font-size: 10px">(전체/진행/완료/반려)</span></div>
@@ -221,8 +221,14 @@ export default {
             sublist.D = item.D1 + item.D2 + item.D5;
             sublist.E2 = item.E2 ? item.E2 : 0;
             sublist.labler_co = item.labler_co ? item.labler_co : 0;
+            sublist.reject_A_sum = item.reject_A_sum ? item.reject_A_sum : 0;
+            // item.label_cnt_sum = item.label_cnt_sum + item.reject_A_sum;
             const A1 = item.label_cnt_sum - sublist.A2;
-            sublist.sumdataA = `${item.label_cnt_sum} / <span class="ing">${A1}</span> / ${sublist.A2}`;
+            let re_str = '';
+            // if (item.reject_A_sum > 0){
+            //   re_str = `[${item.reject_A_sum}]`;
+            // }
+            sublist.sumdataA = `${item.label_cnt_sum}${re_str} / <span class="ing">${A1}</span> / ${sublist.A2}`;
             sublist.sumdataB = `${sublist.B} / <span class="ing">${sublist.B1}</span> / ${sublist.B2} / ${sublist.B5}`;
             sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;
