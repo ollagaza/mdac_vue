@@ -46,6 +46,7 @@
 <script>
 import util from '../../utils/util';
 import util_name from '../../utils/util_name';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'DataDetail_img',
@@ -55,6 +56,7 @@ export default {
   async created() {
   },
   computed: {
+    ...mapGetters(['current_domain']),
     c_job() {
       if (this.file_list && this.file_list.length > 0) {
         return this.file_list;
@@ -73,7 +75,10 @@ export default {
   },
   methods: {
     getImg(seq) {
-      return `http://localhost:3600/apid1/d1/datastatus/getimg/${seq}/o`;
+      const host_name = window.location.hostname;
+      const protocol = (window.location.protocol).replace(/:$/, '');
+      this.$log.debug(host_name, protocol, this.current_domain);
+      return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/o`;
     },
     onHisClick(seq) {
       // this.$log.debug(seq);

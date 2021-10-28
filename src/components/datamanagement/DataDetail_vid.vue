@@ -46,6 +46,7 @@
 <script>
 import util from '../../utils/util';
 import util_name from '../../utils/util_name';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'DataDetail_img',
@@ -55,6 +56,7 @@ export default {
   async created() {
   },
   computed: {
+    ...mapGetters(['current_domain']),
     c_file_list() {
       if (this.file_list && this.file_list.length > 0) {
         return this.file_list;
@@ -74,8 +76,7 @@ export default {
   },
   methods: {
     getVedioImg(seq, type) {
-      return `http://localhost:3600/apid1/d1/datastatus/getvedioimg/${seq}/o`;
-      //this.$log.debug(seq, type);
+      return `${this.current_domain}/apid1/d1/datastatus/getvedioimg/${seq}/o`;
     },
     onListClick(seq) {
       // this.$log.debug('list click');

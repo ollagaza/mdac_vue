@@ -46,7 +46,10 @@
                 <div class="check_box" v-bind:class="[{on: checkData[subitem.view_seq]}]" v-on:click.stop="onCheckClick(subitem.view_seq)"></div>
               </div>
             </div>
-            <div style="justify-self: left;">{{getBase(subitem.rf_file_name)}}</div>
+            <div style="justify-self: left;">
+              <img v-bind:src="getImg(subitem.rf_seq)" style="vertical-align: middle;padding: 3px 5px 3px 0;max-width: 50px;max-height: 50px;">
+              {{getBase(subitem.rf_file_name)}}
+            </div>
             <div>{{getDateToStr(subitem.rf_reg_date)}}</div>
             <div v-bind:class="{reject: subitem.reject_act==='R'}">
               {{StatusToStr(subitem.rf_status)}}
@@ -98,7 +101,7 @@ export default {
     },
     c_video_url() {
       // this.$log.debug('this.file_seq', this.file_seq);
-      // this.$log.debug(`${this.current_domain}/apid1/d1/datastatus/getvideo/${this.file_seq}/o`);
+      this.$log.debug(`${this.current_domain}/apid1/d1/datastatus/getvideo/${this.file_seq}/o`);
       if (this.file_seq) {
         return `${this.current_domain}/apid1/d1/datastatus/getvideo/${this.file_seq}/o`;
       }
@@ -115,6 +118,9 @@ export default {
   mounted() {
   },
   methods: {
+    getImg(seq) {
+      return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/i`;
+    },
     onHisClick(seq) {
       // this.$log.debug(seq);
       const a_seq = seq.split('_');
