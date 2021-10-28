@@ -282,6 +282,9 @@ export default {
               if(!result.division_info[key].parent_path) {
                 result.division_info[key].parent_path = "-"
               }
+              if(result.division_info[key].parent_path == result.division_info[key].division_name) {
+                result.division_info[key].parent_path = "";
+              }
             }
           }
           this.division_list = result.division_info;
