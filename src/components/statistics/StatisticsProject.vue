@@ -43,7 +43,7 @@
             </div>
           </div>
 
-          <div class=" ">
+          <div>
             <div style="height: fit-content;display: flex; flex-direction: row;">
               <div class="btn" v-bind:class="{ deepgreen: search_seq === '3' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('3')">통합검수</div>
               <div class="btn" v-bind:class="{ deepgreen: search_seq === '4' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('4')">별도검수</div>
@@ -61,7 +61,7 @@
               <div>라벨링진행</div>
               <div>라벨링완료</div>
               <div>반려</div>
-              <div>총검수량</div>
+              <div>전체검수량</div>
               <div>검수진행</div>
               <div>검수완료</div>
             </div>
@@ -73,7 +73,7 @@
               <div>라벨링완료율</div>
               <div>반려</div>
               <div>반려율</div>
-              <div>총검수량</div>
+              <div>전체검수량</div>
               <div>검수진행</div>
               <div>검수완료</div>
               <div>검수완료율</div>

@@ -53,7 +53,7 @@
             </div>
           </div>
 
-          <div class=" ">
+          <div>
             <div style="height: fit-content;display: flex; flex-direction: row;">
               <div class="btn" v-bind:class="{ deepgreen: search_seq === '1' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('1')">라벨러</div>
               <div class="btn" v-bind:class="{ deepgreen: search_seq === '2' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('2')">검수자</div>
@@ -152,7 +152,7 @@
             </template>
             
             <div v-if="search_seq === '1' && (search_type === 'NOW' || search_type === 'NOWW') && statistics_list.length > 0"  class="grid_m header class_label">
-              <div>합계1</div>
+              <div>합계</div>
               <div>{{ sum_worker_total }} 명</div>
               <div>{{ sum_label_total_all }}</div>
               <div>{{ sum_label_total }}</div>
@@ -161,7 +161,7 @@
             </div>
             
             <div v-if="search_seq === '1' && (search_type === 'SUM' || search_type === 'SUMC') && statistics_list.length > 0"  class="grid_m header class_label_all">
-              <div>합계2</div>
+              <div>합계</div>
               <div>{{ sum_worker_total }} 명</div>
               <div>{{ sum_label_total_all }}</div>
               <div>{{ sum_label_ing }}</div>
@@ -172,7 +172,7 @@
             </div>
             
             <div v-if="search_seq === '2' && (search_type === 'NOW' || search_type === 'NOWW') && statistics_list.length > 0"  class="grid_m header class_check">
-              <div>합계3</div>
+              <div>합계</div>
               <div>{{ sum_worker_total }} 명</div>
               <div>{{ sum_check_total_all }}</div>
               <div>{{ sum_check_total }}</div>
@@ -182,7 +182,7 @@
             </div>
 
             <div v-if="search_seq === '2' && (search_type === 'SUM' || search_type === 'SUMC') && statistics_list.length > 0"  class="grid_m header class_check">
-              <div>합계4</div>
+              <div>합계</div>
               <div>{{ sum_worker_total }} 명</div>
               <div>{{ sum_check_total_all }}</div>
               <div>{{ sum_check_ing }}</div>
