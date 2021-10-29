@@ -318,6 +318,7 @@ export default {
       this.$router.push({ name: 'datadetail', params, query });
     },
     async onSearch() {
+      this.page_navigation.cur_page = 1;
       if (this.file_type === 'v' && this.view_type === 'v') {
         await this.getJobView();
         return;
@@ -769,7 +770,7 @@ export default {
       // this.$log.debug('getJobList', this.page_navigation, data);
       await ApiStatus.getFileList(this.pro_seq, this.div_seq, data)
       .then((result) => {
-        // this.$log.debug(result);
+        this.$log.debug(result);
         this.file_list = [];
         let jlist = {};
         jlist.sublist = [];
@@ -838,7 +839,7 @@ export default {
             // this.$log.debug('2',this.file_list);
           }
         }
-        // this.$log.debug(this.file_list);
+        this.$log.debug(this.file_list);
         this.page_navigation = result.page_navigation;
       });
     },
