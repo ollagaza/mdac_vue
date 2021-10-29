@@ -195,7 +195,7 @@ export default {
     StatusToStr(code) {
       this.$log.debug('+++++++++++');
       if(!code || code === null){
-        return '레벨작업중';
+        return '라벨작업중';
       } else {
         return util_name.StatusToStr(code);
       }
