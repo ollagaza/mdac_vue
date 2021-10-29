@@ -14,6 +14,9 @@
           <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down('x')">{{getFilename('x')}}</div>
         </div>
       </div>
+      <template v-if="reg_file">
+        <div style="width:440px; text-align: right;padding-bottom: 5px;">등록일 {{getDateToStr(reg_file.reg_date)}}</div>
+      </template>
       <div style="height: 360px; width: 460px; padding-left: 30px; display: flex; flex-direction: column; justify-content: left; align-content: start; overflow: auto">
         <div class="grid_m datalist" style="background-color: #ccc">
           <div>상태</div>
@@ -25,9 +28,9 @@
         <template v-for="(item, idx) in c_his_list">
           <div class="grid_m datalist">
             <div>{{StatusToStr(item.job_status)}}</div>
-            <div>{{getDateToStr(item.reg_date)}}</div>
+            <div>{{getDateToStrJob(item)}}</div>
             <div>{{getDateToStr(item.job_date)}}</div>
-            <div>{{item.user_name}}</div>
+            <div>{{getWorker(item)}}</div>
             <div>{{item.reg_member}}</div>
           </div>
         </template>
@@ -41,7 +44,7 @@
         <template v-for="(item, idx) in c_per_list">
           <div class="grid_m datalist">
             <div>{{StatusToStr(item.job_status)}}</div>
-            <div>{{getDateToStr(item.reg_date)}}</div>
+            <div>{{StatusToStr(item.reg_date)}}</div>
             <div>{{getDateToStr(item.job_date)}}</div>
             <div>{{item.user_name}}</div>
             <div>{{item.reg_member}}</div>
@@ -73,6 +76,7 @@ export default {
       his_list: [],
       per_list: [],
       file_list: [],
+      reg_file: {},
     };
   },
   created() {
@@ -81,6 +85,12 @@ export default {
   },
   computed: {
     ...mapGetters(['logged_info', 'current_domain']),
+    c_reg_file() {
+      if (this.reg_file) {
+        return this.reg_file;
+      }
+      return {};
+    },
     c_his_list() {
       if (this.his_list && this.his_list.length > 0) {
         return this.his_list;
@@ -105,6 +115,16 @@ export default {
   mounted() {
   },
   methods: {
+    getWorker(item) {
+      if (item) {
+        if (item.user_name) {
+          return item.user_name;
+        } else {
+          return item.labeler_member;
+        }
+      }
+      return '';
+    },
     down(file_type) {
       if (this.c_result_file) {
         const data = { file_type };
@@ -154,6 +174,9 @@ export default {
           if (result.filelist) {
             this.file_list = result.filelist;
           }
+          if (result.reg_file) {
+            this.reg_file = result.reg_file[0];
+          }
         })
         .catch((e) => {
         });
@@ -161,8 +184,21 @@ export default {
     getDateToStr(date) {
       return util.getDateToStr(date);
     },
+    getDateToStrJob(item) {
+      this.$log.debug('+++++++++++++++++++item:', item);
+      if (item && item.reg_date) {
+        return util.getDateToStr(item.reg_date);
+      } else {
+        return util.getDateToStr(item.labeler_regdate);
+      }
+    },
     StatusToStr(code) {
-      return util_name.StatusToStr(code);
+      this.$log.debug('+++++++++++');
+      if(!code || code === null){
+        return '레벨작업중';
+      } else {
+        return util_name.StatusToStr(code);
+      }
     },
   },
 }

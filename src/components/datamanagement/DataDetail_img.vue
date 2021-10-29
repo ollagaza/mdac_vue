@@ -37,7 +37,7 @@
           <div>{{subitem.mb_name}}</div>
           <div>{{subitem.mc_name}}</div>
           <div>{{subitem.md_name}}</div>
-          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq)">이력조회</div></div>
+          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq, item.seq)">이력조회</div></div>
         </template>
       </div>
     </template>
@@ -80,10 +80,11 @@ export default {
       this.$log.debug(host_name, protocol, this.current_domain);
       return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/o`;
     },
-    onHisClick(seq) {
+    onHisClick(seq, file_seq) {
       // this.$log.debug(seq);
       const option = {};
       option.seq = seq;
+      option.file_seq = file_seq;
       option.file_type = 'i';
       option.isResult = 'o';// o 오리지널 r-결과
       // this.$log.debug(option);
