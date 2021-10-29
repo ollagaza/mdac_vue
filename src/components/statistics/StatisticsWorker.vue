@@ -26,27 +26,28 @@
                   </template>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 200px;height: 36px;" @change="fnStatisticsList()">
-                <option value="NOW" selected=true>조회기준(기간:반려미적용)</option>
-                <option value="NOWC" selected=true>조회기준(기간:반려적용)</option>
-                <option value="SUM" selected=true>조회기준(누적:반려미적용)</option>
-                <option value="SUMC" selected=true>조회기준(누적:반려적용)</option>
-              </select>
-
-              <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
-              </div>
-              <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
-              <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;"></datepicker>
-              </div>
-
-              <select class="text" v-model="worker" style="width: 140px;height: 36px;margin-left:10px;" @change="fnStatisticsList()">
+              <select class="text" v-model="worker" style="width: 140px;height: 36px;" @change="fnStatisticsList()">
                 <option value="" selected=true>작업자(전체)</option>
                   <template v-for="(member) in member_list">
                     <option v-bind:value="member.seq" v-bind:class="{ colorRed: member.is_used !== 'Y' }">{{member.user_name}}({{ member.is_used_str }})</option>
                   </template>
               </select>
+
+              <select class="text" v-model="search_type" style="width: 200px;height: 36px;" @change="fnStatisticsList()">
+                <option value="NOW" selected=true>기간조회(완료)</option>
+                <option value="NOWW" selected=true>기간조회(진행)</option>
+                <option v-if="search_seq == '1'" value="SUM" selected=true>전체조회(반려제외)</option>
+                <option v-if="search_seq == '1'" value="SUMC" selected=true>전체조회(반려적용)</option>
+                <option v-if="search_seq == '2'" value="SUM" selected=true>전체조회</option>
+              </select>
+
+              <div class="datepicker_icon" style="border: 1px solid #ccc;">
+                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+              </div>
+              <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
+              <div class="datepicker_icon" style="border: 1px solid #ccc;">
+                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+              </div>
 
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnStatisticsList()">조회</div>
             </div>
@@ -63,15 +64,44 @@
           </div>
         
           <div v-model="datalist" style="padding: 10px 0 0 0 ;">
-            <div class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
+            <div v-if="search_seq == '1' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m header class_label">
               <div>프로젝트</div>
               <div>작업자</div>
-              <div>총작업량</div>
+              <div>전체할당량</div>
+              <div>기간할당량</div>
+              <div>{{ worker_title }}진행</div>
+              <div>{{ worker_title }}완료</div>
+            </div>
+
+            <div v-if="search_seq == '1' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m header class_label_all">
+              <div>프로젝트</div>
+              <div>작업자</div>
+              <div>전체할당량</div>
               <div>{{ worker_title }}진행</div>
               <div>{{ worker_title }}완료</div>
               <div>{{ worker_title }}완료율</div>
-              <div v-if="search_seq === '1'">반려</div>
-              <div v-if="search_seq === '1'">반려율</div>
+              <div>반려</div>
+              <div>반려율</div>
+            </div>
+
+            <div v-if="search_seq == '2' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m header class_check">
+              <div>프로젝트</div>
+              <div>작업자</div>
+              <div>전체할당량</div>
+              <div>기간할당량</div>
+              <div>{{ worker_title }}진행</div>
+              <div>{{ worker_title }}완료</div>
+              <div>반려</div>
+            </div>
+
+            <div v-if="search_seq == '2' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m header class_check">
+              <div>프로젝트</div>
+              <div>작업자</div>
+              <div>전체할당량</div>
+              <div>{{ worker_title }}진행</div>
+              <div>{{ worker_title }}완료</div>
+              <div>{{ worker_title }}완료율</div>
+              <div>반려</div>
             </div>
 
             <template v-if="statistics_list.length === 0">
@@ -82,31 +112,58 @@
 
             <template v-if="statistics_list.length > 0">
               <template v-for="(pStatistics, seq) in statistics_list">
-                <div v-if="search_seq === '1'" class="grid_m class_label body" v-on:click="one_chart(pStatistics)">
+                <div v-if="search_seq === '1' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m class_label body" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
+                  <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_total }}</div>
+                  <div>{{ pStatistics.label_ing }}</div>
+                  <div>{{ pStatistics.label_complete }}</div>
+                </div>
+                <div v-if="search_seq === '1' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m class_label_all body" v-on:click="one_chart(pStatistics)">
+                  <div>{{ pStatistics.project_name }}</div>
+                  <div>{{ pStatistics.user_name }}</div>
+                  <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                   <div>{{ pStatistics.label_avgComplete }}</div>
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}</div>
                 </div>
-                <div v-if="search_seq === '2'" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
+                <div v-if="search_seq === '2' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
-                  <div>{{ pStatistics.label_total }}</div>
+                  <div>{{ pStatistics.check_total_all }}</div>
+                  <div>{{ pStatistics.check_total }}</div>
+                  <div>{{ pStatistics.check_ing }}</div>
+                  <div>{{ pStatistics.check_complete }}</div>
+                  <div>{{ pStatistics.check_reject }}</div>
+                </div>
+                <div v-if="search_seq === '2' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
+                  <div>{{ pStatistics.project_name }}</div>
+                  <div>{{ pStatistics.user_name }}</div>
+                  <div>{{ pStatistics.check_total_all }}</div>
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
                   <div>{{ pStatistics.check_avgComplete }}</div>
+                  <div>{{ pStatistics.check_reject }}</div>
                 </div>
               </template>
             </template>
             
-            <div v-if="search_seq === '1' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
-              <div>합계</div>
+            <div v-if="search_seq === '1' && (search_type === 'NOW' || search_type === 'NOWW') && statistics_list.length > 0"  class="grid_m header class_label">
+              <div>합계1</div>
               <div>{{ sum_worker_total }} 명</div>
+              <div>{{ sum_label_total_all }}</div>
               <div>{{ sum_label_total }}</div>
+              <div>{{ sum_label_ing }}</div>
+              <div>{{ sum_label_complete }}</div>
+            </div>
+            
+            <div v-if="search_seq === '1' && (search_type === 'SUM' || search_type === 'SUMC') && statistics_list.length > 0"  class="grid_m header class_label_all">
+              <div>합계2</div>
+              <div>{{ sum_worker_total }} 명</div>
+              <div>{{ sum_label_total_all }}</div>
               <div>{{ sum_label_ing }}</div>
               <div>{{ sum_label_complete }}</div>
               <div></div>
@@ -114,13 +171,24 @@
               <div></div>
             </div>
             
-            <div v-if="search_seq === '2' && statistics_list.length > 0"  class="grid_m header" v-bind:class="{ class_label: search_seq === '1', class_check: search_seq === '2' }">
-              <div>합계</div>
+            <div v-if="search_seq === '2' && (search_type === 'NOW' || search_type === 'NOWW') && statistics_list.length > 0"  class="grid_m header class_check">
+              <div>합계3</div>
               <div>{{ sum_worker_total }} 명</div>
-              <div>{{ sum_label_total }}</div>
+              <div>{{ sum_check_total_all }}</div>
+              <div>{{ sum_check_total }}</div>
+              <div>{{ sum_check_ing }}</div>
+              <div>{{ sum_check_complete }}</div>
+              <div>{{ sum_check_reject }}</div>
+            </div>
+
+            <div v-if="search_seq === '2' && (search_type === 'SUM' || search_type === 'SUMC') && statistics_list.length > 0"  class="grid_m header class_check">
+              <div>합계4</div>
+              <div>{{ sum_worker_total }} 명</div>
+              <div>{{ sum_check_total_all }}</div>
               <div>{{ sum_check_ing }}</div>
               <div>{{ sum_check_complete }}</div>
               <div></div>
+              <div>{{ sum_check_reject }}</div>
             </div>
 
             <template>  
@@ -188,12 +256,16 @@ export default {
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
+      sum_label_total_all: 0,
       sum_label_total: 0,
       sum_label_ing: 0,
       sum_label_complete: 0,
       sum_label_reject: 0,
+      sum_check_total_all: 0,
+      sum_check_total: 0,
       sum_check_ing: 0,
       sum_check_complete: 0,
+      sum_check_reject: 0,
     };
   },
   watch: {
@@ -281,24 +353,32 @@ export default {
         .then((result) => {
           // 합계 변수 Start
           this.sum_worker_total = 0
+          this.sum_label_total_all = 0
           this.sum_label_total = 0
           this.sum_label_ing = 0
           this.sum_label_complete = 0
           this.sum_label_reject = 0
+          this.sum_check_total_all = 0
+          this.sum_check_total = 0
           this.sum_check_ing = 0
           this.sum_check_complete = 0
+          this.sum_check_reject = 0
           // 합계 변수 End
 
           // 합계 계산
           if (result.statistics_info.length > 0) {
             for (const key in result.statistics_info) {
 
-              this.sum_label_total = this.sum_label_total + result.statistics_info[key].label_total                                 // 전체작업량
+              this.sum_label_total_all = this.sum_label_total_all + result.statistics_info[key].label_total_all   // 전체할당량
+              this.sum_label_total = this.sum_label_total + result.statistics_info[key].label_total               // 조회기간할당량
               this.sum_label_ing = this.sum_label_ing + result.statistics_info[key].label_ing                     // 라벨링진행중
               this.sum_label_complete = this.sum_label_complete + result.statistics_info[key].label_complete      // 라벨링완료
               this.sum_label_reject = this.sum_label_reject + result.statistics_info[key].label_reject            // 반려
+              this.sum_check_total_all = this.sum_check_total_all + result.statistics_info[key].check_total_all   // 전체검수량
+              this.sum_check_total = this.sum_check_total + result.statistics_info[key].check_total               // 조회기간검수량
               this.sum_check_ing = this.sum_check_ing + result.statistics_info[key].check_ing                     // 검수진행중
               this.sum_check_complete = this.sum_check_complete + result.statistics_info[key].check_complete      // 검수완료
+              this.sum_check_reject = this.sum_check_reject + result.statistics_info[key].check_reject            // 검수반려
               result.statistics_info[key].label_avgComplete = result.statistics_info[key].label_avgComplete + '%' // 라벨링완료율
               result.statistics_info[key].label_avgReject = result.statistics_info[key].label_avgReject + '%'     // 반려율
               result.statistics_info[key].check_avgComplete = result.statistics_info[key].check_avgComplete + '%' // 검수율
@@ -323,6 +403,7 @@ export default {
 
     statisticsGo(search_seq) {
       // this.$router.push({ name: 'statisticsworker' });
+      this.search_type = "NOW"
       this.$router.push({ name: 'statisticsworker', params: { search_seq: search_seq }});
     },
     // Data 툴팁 보이기/안보이기
@@ -448,15 +529,21 @@ export default {
   border: 1px solid #888;
 }
 .grid_m.class_label {
+  grid-template-columns: 320px 130px 130px 140px 140px 140px;
+}
+.grid_m.class_label_all {
   grid-template-columns: 260px 140px 100px 100px 100px 100px 100px 100px;
 }
 .grid_m.class_check {
-  grid-template-columns: 300px 200px 130px 120px 120px 130px;
+  grid-template-columns: 250px 150px 130px 120px 120px 130px 100px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
 }
 .colorRed {
   color: red;
+}
+.colorLightgray {
+  background-color: lightgray;
 }
 </style>
