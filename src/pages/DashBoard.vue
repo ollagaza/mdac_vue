@@ -114,9 +114,9 @@ export default {
       statistics_list: '',      // 통계 데이터 리스트
       member_count: '',         // 멤버 카운팅 정보
       chart_title: '',          // 챠트 제목
-      search_seq: '3',          // 조회종류(1:라벨러/2:검수자/3:프로젝트)
+      search_seq: '3',          // 조회종류(1:라벨러/2:검수자/3:프로젝트(통합검수)/4:프로젝트(별도검수))
       project_seq: '',          // 프로젝트
-      search_type: '',          // 조회기준
+      search_type: 'NOW',          // 조회기준
       date_locale_ko: ko,
       start_date: moment().day(1).format('YYYY-MM-DD'),  // 시작일
       end_date: moment().day(5).format('YYYY-MM-DD'),    // 종료일
@@ -140,7 +140,7 @@ export default {
       let project_seq = this.project_seq;
       let data = {
         search_seq: 3,
-        search_type: 'SUMC',
+        search_type: 'NOW',
         status: '1'
       };
       apistatistics.getStatistics(data) // 통계 API 호출

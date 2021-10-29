@@ -92,7 +92,7 @@ export default {
     },
     onViewClick(seq) {
       const option = {};
-      option.seq = 1;
+      option.seq = seq;
       option.file_type = 'i';
       option.isResult = 'o';// // o 오리지널 r-결과
       this.$emit('onViewClick', option);
