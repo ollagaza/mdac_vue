@@ -337,7 +337,6 @@
             {
               if(this.search_seq === '3' || this.search_seq === '4') {
                 this.labels.push(statistics_info.project_name)
-                this.check_total_count.push(this.getZeroToUndefined(statistics_info.check_total))
               } else {
                 this.labels.push(`${statistics_info.project_name} / ${statistics_info.user_name}`)
               }
@@ -364,6 +363,7 @@
               }else {
                 this.check_ing_count.push(this.getZeroToUndefined(statistics_info.check_ing))
                 this.check_complete_count.push(this.getZeroToUndefined(statistics_info.check_complete))
+                this.check_total_count.push(this.getZeroToUndefined(statistics_info.check_total))
               }
             } else {
               const data = {
@@ -381,7 +381,6 @@
                 for (const key in result.statistics_info) {
                     if(this.search_seq === '3' || this.search_seq === '4') {
                       this.labels.push(result.statistics_info[key].project_name)
-                      this.check_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check_total))
                     } else {
                       this.labels.push(`${result.statistics_info[key].project_name} / ${result.statistics_info[key].user_name}`)
                     }
@@ -405,10 +404,10 @@
                       this.check3_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].check3_ing))
                       this.check3_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].check3_complete))
                     }else {
+                      this.check_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check_total))
                       this.check_ing_count.push(this.getZeroToUndefined(result.statistics_info[key].check_ing))
                       this.check_complete_count.push(this.getZeroToUndefined(result.statistics_info[key].check_complete))
                       this.check_total_all_count.push(this.getZeroToUndefined(result.statistics_info[key].check_total_all))
-                      this.check_total_count.push(this.getZeroToUndefined(result.statistics_info[key].check_total))
                       this.check_reject_count.push(this.getZeroToUndefined(result.statistics_info[key].check_reject))
                     }
                     
@@ -671,7 +670,7 @@
                 barPercentage: 0.8
               },
               {
-                label: '총검수량',
+                label: '전체검수량',
                 backgroundColor: this.color_back[5],
                 pointBackgroundColor: this.color_back[5],
                 borderWidth: 1,
@@ -744,7 +743,7 @@
                 barPercentage: 0.8
               },
               {
-                label: '총검수량',
+                label: '전체검수량',
                 backgroundColor: this.color_back[4],
                 pointBackgroundColor: this.color_back[4],
                 borderWidth: 1,
