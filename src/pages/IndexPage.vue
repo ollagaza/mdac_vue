@@ -1,9 +1,9 @@
 <template>
   <div class="layout">
     <div style="position:relative; width: 1180px; height:100%; left: 0px; padding-top: 10px;">
-      <div style="height: 100%; ">
-        <div class="center">
-          Index Page
+      <div style="height: 100%; background-color:#000;">
+        <div class="center" style="color:#fff;font-size:60px;">
+          Data Management
         </div>
       </div>
     </div>
