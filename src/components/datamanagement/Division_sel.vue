@@ -95,14 +95,22 @@ export default {
           this.list_div[idx].first_seq = parname[0].first_seq;
           this.list_div[idx].depth = parname[0].depth + 1;
           this.list_div[idx].fullname = parname[0].fullname + '>' + this.list_div[idx].division_name;
-          if (this.list_div[idx].depth > this.maxdepth){
+          
+          // maxdepth 무조건 변경 by djyu 2021.11.03
+          // if (this.list_div[idx].depth > this.maxdepth){
             this.maxdepth = this.list_div[idx].depth;
-          }
+          // }
         }
         if (parseInt(this.div_seq, 10) === this.list_div[idx].seq) {
           this.division = this.list_div[idx].first_seq;
           this.selDiv = this.list_div[idx];
         }
+      }
+      // console.log(this.div_seq)
+      // 프로젝트 변경시 division 초기화 by djyu 2021.11.03
+      if(this.div_seq === -1) {
+          this.division = -1
+          this.selDiv = { seq: -1, fullname: '분류를 선택하세요.' }
       }
       this.$emit('onRedata', this.list_div, this.maxdepth);
     },
