@@ -9,7 +9,7 @@
             <div style="display: flex;  flex-direction: row; width: 100%; height:40px;">
               <div style="flex: 2; display: flex; flex-direction: row;">
                 <div style="width: 200px;">
-                  <select v-model="pro_seq" style="border: 1px solid #ccc; height: 30px; width: 190px;padding:0 20px 0 5px;">
+                  <select v-model="pro_seq" style="border: 1px solid #ccc; height: 30px; width: 190px;padding:0 20px 0 5px;" v-on:change="setDivision">
                     <option v-for="(item, key) in list_project" v-bind:value="item.seq">{{item.project_name}}</option>
                   </select>
                 </div>
@@ -506,7 +506,7 @@ export default {
       data.class_seq = this.class_seq;
       data.label_cnt = this.label_cnt;
       data.file_seq = this.file_seq;
-      this.$log.debug(data);
+      // this.$log.debug(data);
       const obStep = this.nextStep(data.work_status_send);
       const check_filejoblist = [];
       if (this.file_type === 'i') {
@@ -553,8 +553,7 @@ export default {
           }
           check_filejoblist.push(oblist);
         }
-        // 비디오 파일..
-      } else {
+      } else { // 비디오 파일..
         for (let i = 0; i < check_filelist.length; i++) {
           let oblist = {};
           if (this.view_type === 'v') {
@@ -566,6 +565,7 @@ export default {
             if (data.class_seq < 0) {
               data.class_seq = view_item[0].class_seq;
             }
+              data.class_seq = view_item[0].class_seq;
             // this.$log.debug(view_item);
             const rf_item = view_item[0].sublist.filter(item => item.rf_pair_key === irf_pair_key);
             this.$log.debug('rf_item', rf_item);
@@ -590,7 +590,10 @@ export default {
                 }
               }
             }
-            oblist = { seq: ijobseq, rf_seq: irfseq, rf_pair_key: irf_pair_key, status: rf_item[0].rf_status };
+            console.log(`aaaaaa`)
+            console.log(rf_item[0].class_seq)
+            console.log(`bbbbb`)
+            oblist = { seq: ijobseq, rf_seq: irfseq, rf_pair_key: irf_pair_key, status: rf_item[0].rf_status, class_seq: rf_item[0].class_seq };
             oblist.reject_seq = rf_item[0].reject_seq;
             oblist.reject_act = rf_item[0].reject_act;
           } else {
@@ -602,6 +605,7 @@ export default {
       }
       data.check_filelist = check_filelist;
       data.check_filejoblist = check_filejoblist;
+
       await ApiStatus.setWorkIn(this.pro_seq, this.div_seq, data)
         .then((result) => {
           this.onSearch();
@@ -726,7 +730,9 @@ export default {
                 item.rf_seq = 0;
               }
               const view_seq = `${item.job_seq}_${item.rf_pair_key}_${item.rf_seq}`;
-              if (jlist.reject_seq !== item.reject_seq) {
+
+              // class로 구분하기..by djyu 2021.11.04
+              if (jlist.class_seq !== item.class_seq) {
                 if (jlist.sublist && jlist.sublist.length > 0) {
                   this.list_file_view.push(jlist);
                 }
@@ -739,6 +745,20 @@ export default {
                 jlist.class_seq = item.class_seq;
                 jlist.class_name = this.getClassName(item.class_seq);
               }
+
+              // if (jlist.reject_seq !== item.reject_seq) {
+              //   if (jlist.sublist && jlist.sublist.length > 0) {
+              //     this.list_file_view.push(jlist);
+              //   }
+              //   jlist = {};
+              //   jlist.sublist = [];
+              //   jlist.job_seq = item.job_seq;
+              //   jlist.reject_seq = item.reject_seq;
+              //   jlist.user_name = item.user_name;
+              //   jlist.label_cnt = item.label_cnt;
+              //   jlist.class_seq = item.class_seq;
+              //   jlist.class_name = this.getClassName(item.class_seq);
+              // }
               old_rf_file_name = item.rf_file_name;
               item.view_seq = view_seq;
               item.rf_file = 0; // 등록된 파일여부 확인..
@@ -751,12 +771,11 @@ export default {
               jlist.sublist.push(item);
               idx += 1;
             }
-            if (idx > 0) {
+            // if (idx > 0) {
               this.list_file_view.push(jlist);
-            }
+            // }
             this.page_navigation = result.page_navigation;
           }
-          this.$log.debug(this.list_file_view);
         });
     },
     async getJobList() {
@@ -864,6 +883,10 @@ export default {
         }
       }
       return reStr;
+    },
+    setDivision() {
+      this.div_seq = -1
+      this.$refs.division_sel.load_div(this.pro_seq)
     },
   },
 };

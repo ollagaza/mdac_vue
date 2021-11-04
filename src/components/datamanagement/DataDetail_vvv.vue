@@ -48,7 +48,7 @@
             </div>
             <div style="justify-self: left;">
               <img v-bind:src="getImg(subitem.rf_seq)" style="vertical-align: middle;padding: 3px 5px 3px 0;max-width: 50px;max-height: 50px;">
-              {{getBase(subitem.rf_file_name)}}
+              {{ subitem.rf_org_file_name }} <!-- {{getBase(subitem.rf_file_name)}} --> {{ subitem.rf_pair_key}}
             </div>
             <div>{{getDateToStr(subitem.rf_reg_date)}}</div>
             <div v-bind:class="{reject: subitem.reject_act==='R'}">
@@ -119,7 +119,7 @@ export default {
   },
   methods: {
     getImg(seq) {
-      return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/i`;
+    //  return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/i`;
     },
     onHisClick(seq) {
       // this.$log.debug(seq);
@@ -168,8 +168,8 @@ export default {
       return ch;
     },
     getBase(filename) {
-      // this.$log.debug(filename);
-      const basename = filename.split('\\');
+      this.$log.debug(filename);
+      const basename = filename.split('//');
       const path_name = basename[basename.length - 1];
       // this.$log.debug(path_name);
       return path_name;
@@ -182,7 +182,7 @@ export default {
   grid-template-columns: 50px 200px 80px 120px 90px 90px 90px 90px 90px 100px;
 }
 .grid_m.title {
-  grid-template-columns: 200px 200px 200px 400px;
+  grid-template-columns: 200px 200px 400px 200px;
   /*background-color: #1C3048;*/
   background-color: #345987;
   height: 30px;
