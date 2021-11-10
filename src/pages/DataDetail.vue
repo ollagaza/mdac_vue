@@ -57,8 +57,8 @@
                     <option value="v">동영상파일</option>
                   </select>
                 </div>
-                <div style="width: 120px;margin: 0 0 0 50px;">
-                  <select v-model="worker_id" style="border: 1px solid #ccc; height: 30px; width: 110px;padding-left: 5px;">
+                <div style="width: 210px;margin: 0 0 0 50px;">
+                  <select v-model="worker_id" style="border: 1px solid #ccc; height: 30px; width: 200px;padding-left: 5px;">
                     <option value="">작업자 선택</option>
                     <option v-for="(item, idx) in c_list_worker" v-bind:value="item.seq">{{item.user_name}}</option>
                   </select>
@@ -75,19 +75,19 @@
                   </select>
                 </div>
                 <div style="width: 90px;" v-if="file_type==='v' && this.view_type !== 'v'">
-                  <input type="text" v-model="label_cnt" style="border: 1px solid #ccc;height: 30px; width: 80px;" v-on:keypress="onlyNumber">
+                  <input type="text" v-model="label_cnt" style="border: 1px solid #ccc;height: 30px; width: 60px;" v-on:keypress="onlyNumber">
                 </div>
-                <div style="width: 90px;">
-                  <div class="btn" style="width: 80px; height: 30px;" v-on:click="onApplyClick()">작업추가</div>
+                <div style="width: 80px;">
+                  <div class="btn" style="width: 70px; height: 30px;" v-on:click="onApplyClick()">작업추가</div>
                 </div>
               </div>
               <div style="display: flex;  flex-direction: row; height:40px;">
                 <div style="width: 80px;">
                   <div class="btn" style="width: 70px; height: 30px;" v-on:click="deleteWork">작업삭제</div>
                 </div>
-                <div style="width: 80px;">
-<!--                  <div class="btn" style="width: 70px; height: 30px;">전체삭제</div>-->
-                </div>
+                <!-- <div style="width: 80px;">
+                  <div class="btn" style="width: 70px; height: 30px;">전체삭제</div>
+                </div> -->
                 <div style="width: 100px;">
                   <select v-model="list_count" v-on:change="onPage_change" style="border: 1px solid #ccc; height: 30px; width: 100px;padding-left: 5px;">
                     <option value="1">1개씩 보기</option>
@@ -678,7 +678,7 @@ export default {
             const datalist = {};
             datalist.seq = item.seq;
             datalist.user_id = item.user_id;
-            datalist.user_name = item.user_name + this.getStatusCount(item);
+            datalist.user_name = `${item.user_name} (라벨링: ${item.labelcnt} / 검수: ${item.checkcnt})`;// this.getStatusCount(item);
             this.view_worker.push(datalist);
           }
         })
@@ -831,6 +831,7 @@ export default {
             sublist.mb_name = item.mb_name;
             sublist.mc_name = item.mc_name;
             sublist.md_name = item.md_name;
+            sublist.rf_status = item.rf_status; // image rf_status by djyu 2021.11.04
             sublist.A0 = item.A0 ? item.A0 : 0;
             sublist.A1 = item.A1 ? item.A1 : 0;
             sublist.A2 = item.A2 ? item.A2 : 0;
