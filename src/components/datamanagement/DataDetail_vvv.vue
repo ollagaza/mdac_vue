@@ -40,7 +40,7 @@
       </div>
       <template v-for="(subitem, subidx) of item.sublist">
         <div class="grid_m datalist body" style="align-content: center; justify-content: center;">
-          <template v-if="item.rf_file === 1">
+          <template v-if="item.rf_seq !== ''">
             <div>
               <div class="check_wrapper" style="padding:0 10px 0 0;">
                 <div class="check_box" v-bind:class="[{on: checkData[subitem.view_seq]}]" v-on:click.stop="onCheckClick(subitem.view_seq)"></div>
@@ -61,7 +61,7 @@
               </template>
             </div>
             <div>{{item.class_name}}</div>
-            <div v-if="subitem.reject_act !== 'A'">{{item.user_name}}</div>
+            <div v-if="subitem.reject_act !== 'A'">{{subitem.user_name}}</div>
             <div v-else>{{subitem.user_name}}</div>
             <div>{{subitem.mb_name}}</div>
             <div>{{subitem.mc_name}}</div>
