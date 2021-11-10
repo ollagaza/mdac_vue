@@ -500,7 +500,7 @@ export default {
 }
 
 .grid_m.division {
-  grid-template-columns: 50px 150px 150px 150px 200px 150px 150px;
+  grid-template-columns: 50px 180px 240px 100px 180px 100px 150px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
