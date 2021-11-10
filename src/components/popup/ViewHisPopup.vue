@@ -1,23 +1,23 @@
 <template>
-  <div class="popup_dim" ref="vPref"  v-bind:class="{ hide: !is_open }">
+  <div class="popup_dim" ref="vPref" v-bind:class="{ hide: !is_open }">
     <div class="popup_his" style="background-color: #fff">
       <div style="height: 50px; font-size: 15px; font-weight: 400; padding: 20px 0 10px 20px; ">
         이력정보
       </div>
       <div style="height: 40px; width: 460px;padding-left: 30px; display: flex; flex-direction: row; justify-content: left; align-content: start;" v-if="c_result_file">
-        <div style="width: 230px; display: flex; flex-direction: row;">
+        <!-- <div style="width: 230px; display: flex; flex-direction: row;">
           <div style="font-size: 12px; font-weight: 400;padding: 7px 10px 0 0;">결과 이미지 파일</div>
           <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down('i')">{{getFilename('i')}}</div>
-        </div>
+        </div> -->
         <div style="width: 230px; display: flex; flex-direction: row;">
           <div style="font-size: 12px; font-weight: 400;padding: 7px 10px 0 0;">결과 XML 파일</div>
-          <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down('x')">{{getFilename('x')}}</div>
+          <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down('x')">{{getFilename('x') ? getFilename('x') : 'Download'}}</div>
         </div>
       </div>
       <template v-if="reg_file">
         <div style="width:440px; text-align: right;padding-bottom: 5px;">등록일 {{getDateToStr(reg_file.reg_date)}}</div>
       </template>
-      <div style="height: 360px; width: 460px; padding-left: 30px; display: flex; flex-direction: column; justify-content: left; align-content: start; overflow: auto">
+      <div v-bind:style="c_result_file ? 'height: 330px' : 'height:370px'" style="width: 460px; padding-left: 30px; display: flex; flex-direction: column; justify-content: left; align-content: start; overflow: auto">
         <div class="grid_m datalist" style="background-color: #ccc">
           <div>상태</div>
           <div>등록일</div>
@@ -26,6 +26,13 @@
           <div>등록자</div>
         </div>
         <template v-for="(item, idx) in c_his_list">
+          <div class="grid_m datalist" v-if="item.job_status === 'B2' || item.job_status === 'B5' || item.job_status === 'C2' || item.job_status === 'C5' || item.job_status === 'D2' || item.job_status === 'D5'">
+            <div>{{StatusToStr(item.job_name + '1')}}할당</div>
+            <div>{{getDateToStrJob(item)}}</div>
+            <div></div>
+            <div>{{getWorker(item)}}</div>
+            <div>{{item.reg_member}}</div>
+          </div>
           <div class="grid_m datalist">
             <div>{{StatusToStr(item.job_status)}}</div>
             <div>{{getDateToStrJob(item)}}</div>
@@ -195,7 +202,7 @@ export default {
     StatusToStr(code) {
       this.$log.debug('+++++++++++');
       if(!code || code === null){
-        return '라벨작업중';
+        return '라벨할당';
       } else {
         return util_name.StatusToStr(code);
       }
