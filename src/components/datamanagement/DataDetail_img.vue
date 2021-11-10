@@ -25,7 +25,7 @@
         <div v-bind:style="`grid-row: 1/${item.rowcount}`">{{getDateToStr(item.reg_date)}}</div>
         <template v-for="(subitem, subidx) of item.sublist">
           <div v-bind:class="{reject: subitem.reject_act === 'R'}">
-            {{StatusToStr(subitem.status)}}
+            {{subitem.rf_status === '' ? StatusToStr(subitem.rf_status) : StatusToStr(subitem.status)}} 
             <template v-if="subitem.reject_act === 'R'">
               <span style="font-size:9px;">(재할당)</span>
             </template>
