@@ -52,7 +52,7 @@
             </div>
             <div>{{getDateToStr(subitem.rf_reg_date)}}</div>
             <div v-bind:class="{reject: subitem.reject_act==='R'}">
-              {{StatusToStr(subitem.rf_status)}}
+              {{subitem.now_status !== null ? StatusToStr(subitem.now_status) : StatusToStr(subitem.status)}}
               <template v-if="subitem.reject_act==='R'">
                 <span style="font-size:9px">(재할당)</span>
               </template>
