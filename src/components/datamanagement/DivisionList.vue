@@ -86,7 +86,7 @@
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
                   <div class="check_box" v-bind:class="[{on: checkData[pDivision.seq]}]" v-on:click="onCheckClick(pDivision.seq)"></div>
                   <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.project_name }}</div>
-                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.parent_path }}</div>
+                  <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.parent_path }} {{ pDivision.parent_path_id }}</div>
                   <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.division_id }}</div>
                   <div v-on:click="fnDivisionDetail(pDivision.seq)">{{ pDivision.division_name }}</div>
                   <div v-on:click="fnDivisionDetail(pDivision.seq)"><div :class="{ 'process_progress' : pDivision.is_used === 'Y', 'process_stop' : pDivision.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnDivisionList(1)">{{ pDivision.is_used_str }}</div></div>
@@ -284,6 +284,9 @@ export default {
               }
               if(result.division_info[key].parent_path == result.division_info[key].division_name) {
                 result.division_info[key].parent_path = "";
+                result.division_info[key].parent_path_id = "";
+              }else{
+                result.division_info[key].parent_path_id = `(${result.division_info[key].parent_path_id})`;
               }
             }
           }

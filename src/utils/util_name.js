@@ -1,6 +1,9 @@
 const StatusToStr = (code) => {
   let str = '라벨대기중';
   switch (code) {
+    case 'A':
+      str = '라벨할당';
+      break;
     case 'A1':
       str = '라벨작업중';
       break;
