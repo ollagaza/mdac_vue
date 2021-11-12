@@ -37,7 +37,7 @@
           <div>{{subitem.mb_name}}</div>
           <div>{{subitem.mc_name}}</div>
           <div>{{subitem.md_name}}</div>
-          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq, item.seq)">이력조회</div></div>
+          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq, item.seq)">{{subitem.rf_file_type}}이력조회</div></div>
         </template>
       </div>
     </template>
