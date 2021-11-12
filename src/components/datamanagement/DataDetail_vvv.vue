@@ -66,7 +66,7 @@
             <div>{{subitem.mb_name}}</div>
             <div>{{subitem.mc_name}}</div>
             <div>{{subitem.md_name}}</div>
-            <div><div class="btn" style="width: 80px; height: 25px;" v-on:click="onHisClick(subitem.view_seq+'_'+subitem.reject_seq)">이력조회</div></div>
+            <div><div class="btn" style="width: 80px; height: 25px;" v-on:click="onHisClick(subitem.view_seq+'_'+subitem.reject_seq+'_'+'_'+subitem.rf_file_type)">이력조회</div></div>
           </template>
           <template v-else>
             <div></div>
@@ -122,7 +122,6 @@ export default {
     //  return `${this.current_domain}/apid1/d1/datastatus/getimg/${seq}/i`;
     },
     onHisClick(seq) {
-      // this.$log.debug(seq);
       const a_seq = seq.split('_');
       const option = {};
       option.seq = a_seq[0];
@@ -131,6 +130,7 @@ export default {
       option.ref_pair_key = a_seq[1];
       option.ref_seq = a_seq[2];
       option.reject_pair_key = a_seq[3];
+      option.rf_file_type = a_seq[5];
       // this.$log.debug('his');
       // this.$log.debug(option);
       this.$emit('onHisClick', option);

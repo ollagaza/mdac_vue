@@ -10,8 +10,8 @@
           <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down('i')">{{getFilename('i')}}</div>
         </div> -->
         <div style="width: 230px; display: flex; flex-direction: row;">
-          <div style="font-size: 12px; font-weight: 400;padding: 7px 10px 0 0;">결과 XML 파일</div>
-          <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down('x')">{{getFilename('x') ? getFilename('x') : 'Download'}}</div>
+          <div style="font-size: 12px; font-weight: 400;padding: 7px 10px 0 0;">결과 {{ rf_file_type === 'x' ? 'XML' : 'JSON'}} 파일</div>
+          <div class="btn" style="padding: 0px 10px 5px 10px; height: 30px; background-color: #ccc;" v-on:click="down(`${rf_file_type}`,`${ref_pair_key}`)">{{getFilename('x') ? getFilename('x') : rf_file_type === 'x' ? 'XML Download' : 'JSON Download'}}</div>
         </div>
       </div>
       <template v-if="reg_file">
@@ -80,6 +80,8 @@ export default {
     return {
       is_open: false,
       seq: -1,
+      rf_file_type: 'x',
+      ref_pair_key: -1,
       his_list: [],
       per_list: [],
       file_list: [],
@@ -132,14 +134,16 @@ export default {
       }
       return '';
     },
-    down(file_type) {
+    down(file_type,ref_pair_key) {
       if (this.c_result_file) {
+        // console.log(rf_seq)
         const data = { file_type };
-        this.$log.debug(data);
+        // console.log(file_type)
+        // this.$log.debug(data);
         const file_name = 'filename';
         // const hostname = location.host;
         // const protocol = (window.location.protocol).replace(/:$/, '');
-        const url = `${this.current_domain}/apid1/d1/datastatus/resultdown/${this.seq}?file_type=${file_type}`;
+        const url = `${this.current_domain}/apid1/d1/datastatus/resultdown/${this.seq}?file_type=${file_type}&pair_key=${ref_pair_key}`;
         util.downloadFile(document, file_name, url);
         return;
       }
@@ -165,6 +169,8 @@ export default {
     openHisPopup(option, size = null, pos = null) {
       this.$log.debug(option);
       this.seq = option.seq;
+      this.rf_file_type = option.rf_file_type;
+      this.ref_pair_key = option.ref_pair_key;
       this.load_data(option);
       this.is_open = true;
     },
