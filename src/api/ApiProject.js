@@ -93,4 +93,12 @@ export default {
       params,
     },
   }),
+
+  // Category
+  getCategory: data => request({
+    url: '/project/category',
+    method: 'post',
+    data,
+  }),
+
 }

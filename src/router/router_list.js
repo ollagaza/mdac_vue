@@ -8,6 +8,7 @@ import StatisticsWorker from '../components/statistics/StatisticsWorker';
 import StatisticsProject from '../components/statistics/StatisticsProject';
 import Chart from '../components/statistics/ChartTest';
 import MemberList from '../components/member/MemberList';
+import Board from '../components/board/Board';
 
 const router_list = [
   {
@@ -70,6 +71,12 @@ const router_list = [
     component: MemberList,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
+  {
+    path: '/board/:board_code',
+    name: 'board',
+    component: Board,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: true, helpCode: 'main' },
+  }
 ];
 
 

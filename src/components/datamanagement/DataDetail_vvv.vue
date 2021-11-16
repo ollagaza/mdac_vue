@@ -50,7 +50,7 @@
               <img v-bind:src="getImg(subitem.rf_seq)" style="vertical-align: middle;padding: 3px 5px 3px 0;max-width: 50px;max-height: 50px;">
               {{ subitem.rf_org_file_name }} <!-- {{getBase(subitem.rf_file_name)}} --> {{ subitem.rf_pair_key}}
             </div>
-            <div>{{getDateToStr(subitem.rf_reg_date)}}</div>
+            <div>{{getDateTimeToStr(subitem.rf_reg_date)}}</div>
             <div v-bind:class="{reject: subitem.reject_act==='R'}">
               {{subitem.now_status !== null ? StatusToStr(subitem.now_status) : StatusToStr(subitem.status)}}
               <template v-if="subitem.reject_act==='R'">
@@ -161,6 +161,9 @@ export default {
     },
     getDateToStr(date) {
       return util.getDateToStr(date);
+    },
+    getDateTimeToStr(date) {
+      return util.getDateTimeToStr(date);
     },
     getCheckList() {
       const ch = {};

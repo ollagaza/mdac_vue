@@ -12,11 +12,15 @@
         <div class="left_slice"></div>
         <div class="left_title sub" v-bind:class="{select: menu_id===4}" v-on:click="Menu4">- 클래스관리</div>
       </template>
+
+      <div class="left_title" v-bind:class="{select: menu_id===5}" v-on:click="Menu5">라벨링 가이드</div>
     </div>
   </div>
 </template>
 
 <script>
+import apiproject from '../../api/ApiProject';
+
 export default {
   name: 'Datalist_Left',
   components: { },
@@ -51,6 +55,25 @@ export default {
     Menu4() {
       this.$router.push({ name: 'class' });
     },
+    Menu5() {
+      this.$router.push({ name: 'board', params: { board_code: 1 } });
+    },
+    category_menu() {
+      // Category Menu API 호출
+      apiproject.getCategory(data)
+        .then((result) => {
+
+          if (result.category_info.length > 0) {
+            for (const key in result.category_info) {
+            }
+          }
+          this.member_list = result.member_info;
+          this.paging = result.paging;
+          this.no = this.paging.total_count - ((this.paging.cur_page-1) * this.paging.list_count);
+          this.page_navigation = this.paging
+          //console.log(this.paging)
+        });
+    }
   },
 };
 </script>

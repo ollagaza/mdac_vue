@@ -21,10 +21,10 @@
             <div class="check_box" v-bind:class="[{on: checkData[item.seq]}]" v-on:click.stop="onCheckClick(item.seq)"></div>
           </div>
         </div>
-        <div style="justify-self: left;" v-bind:style="`grid-row: 1/${item.rowcount}`" v-on:click.stop="onViewClick(item.seq)">
+        <div style="justify-self: left;font-size:10px;" v-bind:style="`grid-row: 1/${item.rowcount}`" v-on:click.stop="onViewClick(item.seq)">
           <img v-bind:src="getVedioImg(item.seq, item.file_type)" style="vertical-align: middle;padding: 3px 5px 3px 0;max-width: 50px;max-height: 50px;"> {{item.org_file_name}}
         </div>
-        <div v-bind:style="`grid-row: 1/${item.rowcount}`">{{getDateToStr(item.reg_date)}}</div>
+        <div v-bind:style="`grid-row: 1/${item.rowcount}`" style="text-align:center;">{{getDateTimeToStr(item.reg_date)}}</div>
         <template v-for="(subitem, subidx) of item.sublist">
           <div>
             <div class="check_wrapper" style="padding:0 10px 0 0;">
@@ -132,6 +132,9 @@ export default {
     },
     getDateToStr(date) {
       return util.getDateToStr(date);
+    },
+    getDateTimeToStr(date) {
+      return util.getDateTimeToStr(date);
     },
     getCheckList() {
       const ch = {};
