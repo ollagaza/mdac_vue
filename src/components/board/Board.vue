@@ -10,12 +10,12 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="5"></Datalist_Left>
+        <Datalist_Left v-bind:menu_id="this.board_code === '1' ? 5 : 6"></Datalist_Left>
         <div style="flex: 2; padding-top: 14px;">
-          <div v-if="board_code === '1'" style="font-weight: 600; font-size: 15pt; color: #333">
+          <div v-if="this.board_code === '1'" style="font-weight: 600; font-size: 15pt; color: #333">
             라벨링 가이드
           </div>
-          <div v-if="board_code === '2'" style="font-weight: 600; font-size: 15pt; color: #333">
+          <div v-if="this.board_code === '2'" style="font-weight: 600; font-size: 15pt; color: #333">
             공지사항
           </div>
 
@@ -23,10 +23,11 @@
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
 
-              <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnBoardList(1)">
-                <option value="" selected=true>상태(전체)</option>
-                <option value="Y" selected=true>사용중</option>
-                <option value="N">정지중</option>
+              <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnBoardList(1)">
+                <option value="" selected=true>전체프로젝트</option>
+                  <template v-for="(project, seq) in project_list">
+                    <option v-bind:value="project.seq">{{project.project_name}}</option>
+                  </template>
               </select>
 
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
@@ -49,7 +50,7 @@
 
               <!-- <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('Y')">사용중</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('N')">사용정지</div> -->
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('D')">삭제</div>
+              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="board_change('D')">삭제</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
@@ -66,10 +67,10 @@
           <div style="padding: 10px 0 0 0 ;">
             <div class="grid_m class header">
               <div></div><!-- v-model="checked_all"  -->
+              <div>프로젝트</div>
               <div>제목</div>
               <div>등록자</div>
               <div>등록일</div>
-              <div>상태</div>
               <div>등록일</div>
             </div>
 
@@ -80,15 +81,15 @@
             </template>
 
             <template v-if="board_list.length > 0">
-              <template v-for="(pClass, seq) in board_list">
+              <template v-for="(pBoard, seq) in board_list">
                 <div class="grid_m class body">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
-                  <div class="check_box" v-bind:class="[{on: checkData[pClass.seq]}]" v-on:click="onCheckClick(pClass.seq)"></div>
-                  <div v-on:click="fnBoardDetail(pClass.seq)">{{ pClass.subject }}</div>
-                  <div v-on:click="fnBoardDetail(pClass.seq)">{{ pClass.member_seq }}</div>
-                  <div v-on:click="fnBoardDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
-                  <div v-on:click="fnBoardDetail(pClass.seq)"><div :class="{ 'process_progress' : pClass.is_used === 'Y', 'process_stop' : pClass.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnBoardList(1)">{{ pClass.is_used_str }}</div></div>
-                  <div v-on:click="fnBoardDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
+                  <div class="check_box" v-bind:class="[{on: checkData[pBoard.seq]}]" v-on:click="onCheckClick(pBoard.seq)"></div>
+                  <div v-on:click="fnBoardDetail(pBoard.seq)">{{ pBoard.project_name === null ? '전체' : pBoard.project_name }}</div>
+                  <div style="margin-right: auto;margin-left:5px;" v-on:click="fnBoardDetail(pBoard.seq)">{{ pBoard.subject }}</div>
+                  <div v-on:click="fnBoardDetail(pBoard.seq)">{{ pBoard.user_name }}</div>
+                  <div v-on:click="fnBoardDetail(pBoard.seq)">{{ pBoard.reg_date_dt }}</div>
+                  <div v-on:click="fnBoardDetail(pBoard.seq)">{{ pBoard.reg_date_dt }}</div>
                 </div>
               </template>
             </template>
@@ -103,27 +104,29 @@
       </div>
     </div>
 
-    <ClassPopup ref="classpopup"
+    <BoardPopup ref="boardpopup"
              v-bind:modeType="modeType"
+             v-bind:board_code="board_code"
+             v-bind:project_list="project_list"
              v-on:callBoardList="fnBoardList"
-    ></ClassPopup>
+    ></BoardPopup>
   </div>
 </template>
 
 
 <script>
 import apiboard from '../../api/Apiboard';
-import ClassPopup from '../../components/popup/ClassPopup';
+import apiproject from '../../api/ApiProject';
+import BoardPopup from '../../components/popup/BoardPopup';
 import BaseMixin from '../Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
-import Member_Left from '../member/Member_Left';
 import Datalist_Left from '../datamanagement/Datalist_Left';
 import Pagination from '../../components/Pagination';
 
 export default {
   name: 'BoardList',
   components: {
-    ClassPopup,
+    BoardPopup,
     Datalist_Left,
     Pagination,
   },
@@ -131,8 +134,9 @@ export default {
   data() {
     return {
       board_code: this.$route.params.board_code ? this.$route.params.board_code: '1',   // 게시판종류
+      project_list: '',         // 프로젝트 리스트
       board_list: '',           // 클래스 데이터 리스트
-      is_used: '',              // 사용여부
+      project_seq: '',          // 프로젝트 select
       search_type: 'subject',   // 검색조건
       keyword: '',              // 검색어
       no:'',                    // 게시판 숫자
@@ -157,6 +161,12 @@ export default {
       },
     };
   },
+  watch: {
+    '$route': function(){
+      this.board_code = this.$route.params.board_code ? this.$route.params.board_code: '1';
+      this.fnBoardList(1);    
+    }
+  },  
   computed: {
     cpage_navigation() {
       const null_navigation = {};
@@ -179,6 +189,10 @@ export default {
         ,search_type:''
         ,keyword:''
     }
+    apiproject.getProjectInfo(data)
+      .then((result) => {
+        this.project_list = result.project_info;
+      });
     this.fnBoardList(1);
   },
   methods: {
@@ -199,7 +213,7 @@ export default {
     fnBoardList(pg) {
       //body = req.query;
       this.showLoading(true);
-      let board_seq = this.board_seq;
+      let project_seq = this.project_seq;
       let search_type = this.search_type;
       let keyword = this.keyword;
       if(this.cur_page === 'undefined') {
@@ -212,11 +226,11 @@ export default {
       const data = {
         cur_page:this.cur_page
         ,list_count:this.list_count
-        ,board_seq:this.board_seq
+        ,project_seq:this.project_seq
         ,search_type:this.search_type
         ,keyword:this.keyword
       };
-      this.$log.debug('board_code', this.board_code)
+      // this.$log.debug('board_code', this.board_code)
       apiboard.getBoardInfo(this.board_code,data) // 클래스 API 호출
         .then((result) => {
 
@@ -225,12 +239,6 @@ export default {
               const reg_date = result.board_info[key].reg_date;
               if (reg_date) {
                 result.board_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
-              }
-              if (result.board_info[key].is_used == 'Y') {
-                result.board_info[key].is_used = 'Y';
-                result.board_info[key].is_used_str = '사용중';
-              } else {
-                result.board_info[key].is_used_str = "정지중";
               }
             }
           }
@@ -272,8 +280,9 @@ export default {
       }
     },
 
+
     // 상태 변경
-    class_change(itype) {
+    board_change(itype) {
       const options = {};
       const checkData = this.checkData;
       let confirm_msg = '';
@@ -281,9 +290,9 @@ export default {
       let szTitle = '';
       switch(itype) {
         case 'D' :
-          confirm_msg = '선택한 글을 삭제하시겠습니까?';
+          confirm_msg = '선택한 게시물을 삭제하시겠습니까?';
           close_msg = '삭제했습니다.';
-          szTitle = '게시판삭제';
+          szTitle = '게시물삭제';
           break;
       }
       let selUserCo = 0;
@@ -293,18 +302,16 @@ export default {
         }
       }
       if (selUserCo < 1) {
-        EventBus.emit('alertPopupOpen', null, '선택한 글이 없습니다.', null);
+        EventBus.emit('alertPopupOpen', null, '선택한 게시물이 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
         if (itype === 'D') { // 삭제
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_delete, options);
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.board_delete, options);
         }
       }
     },
-
-
     // 삭제 실행
-    class_delete(sendParam, setDate) {
+    board_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
       Object.keys(checkData).forEach((key) => {
@@ -315,8 +322,8 @@ export default {
       // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
-      params.classes = arrData;
-      apiproject.delClass(params).then((data) => {
+      params.boards = arrData;
+      apiboard.delBoard(params).then((data) => {
         // console.log(`data.error===${data.error}`)
         if (data.error === 0) {
           EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
@@ -330,13 +337,14 @@ export default {
 
     // 클래스 상세보기
     fnBoardDetail(seq) {
+      // console.log(seq)
       if(seq === '')
       {
         this.modeType = 'c';
-        this.$refs.classpopup.openPopup();
+        this.$refs.boardpopup.openPopup();
       }else{
         this.modeType = 'e';
-        this.$refs.classpopup.openPopupBySeq(seq);
+        this.$refs.boardpopup.openPopupBySeq(seq);
       }
     },
     checkedAll(checked) {
@@ -387,7 +395,7 @@ export default {
   border: 1px solid #888;
 }
 .grid_m.class {
-  grid-template-columns: 50px 250px 150px 250px 150px 150px;
+  grid-template-columns: 50px 200px 400px 100px 100px 150px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;

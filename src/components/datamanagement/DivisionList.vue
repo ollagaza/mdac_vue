@@ -28,7 +28,7 @@
               <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnDivisionList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
-                <option value="N">정지중</option>
+                <option value="N">중지중</option>
               </select>
               
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
@@ -50,7 +50,7 @@
               </div>
 
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('Y')">사용중</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('N')">사용정지</div>
+              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('N')">사용중지</div>
               <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('D')">삭제</div>
             
               <div style="flex: 2"></div>
@@ -277,7 +277,7 @@ export default {
                 result.division_info[key].is_used = 'Y';
                 result.division_info[key].is_used_str = '사용중';
               } else {
-                result.division_info[key].is_used_str = "정지중";
+                result.division_info[key].is_used_str = "중지중";
               }
               if(!result.division_info[key].parent_path) {
                 result.division_info[key].parent_path = "-"
@@ -345,9 +345,9 @@ export default {
           szTitle = '사용중';
           break;
         case 'N' :
-          confirm_msg = '선택 분류를 사용정지로 변경하시겠습니까?';
-          close_msg = '사용정지 시켰습니다.';
-          szTitle = '사용정지';
+          confirm_msg = '선택 분류를 사용중지로 변경하시겠습니까?';
+          close_msg = '사용중지 시켰습니다.';
+          szTitle = '사용중지';
           break;
         case 'D' :
           confirm_msg = '선택 분류를 삭제하시겠습니까?';
@@ -365,7 +365,7 @@ export default {
         EventBus.emit('alertPopupOpen', null, '선택한 분류가 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
-        if (itype === 'D') { // 활동정지??
+        if (itype === 'D') {
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.division_delete, options);
         } else {
           EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.division_used_change, options);

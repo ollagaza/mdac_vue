@@ -1,7 +1,10 @@
 import IndexPage from '../pages/IndexPage';
+import IndexPage2 from '../pages/IndexPage_new';
+import IndexTest from '../pages/IndexTest';
 import DashBoard from '../pages/DashBoard';
 import Project from '../components/datamanagement/ProjectList';
 import Division from '../components/datamanagement/DivisionList';
+import Codegroup from '../components/datamanagement/CodegroupList';
 import Class from '../components/datamanagement/ClassList';
 import Page2 from '../pages/Page2';
 import StatisticsWorker from '../components/statistics/StatisticsWorker';
@@ -14,7 +17,13 @@ const router_list = [
   {
     path: '/',
     name: 'index',
-    component: IndexPage,
+    component: IndexPage2,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
+  },
+  {
+    path: '/test',
+    name: 'indextest',
+    component: IndexTest,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
@@ -33,6 +42,12 @@ const router_list = [
     path: '/division',
     name: 'division',
     component: Division,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
+  },
+  {
+    path: '/codegroup/:ref_codegroup',
+    name: 'codegroup',
+    component: Codegroup,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {

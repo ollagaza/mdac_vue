@@ -60,12 +60,36 @@ module.exports = {
           proxyReq.setHeader('X-Forwarded-Host', req.get('host'));
           proxyReq.setHeader('Host', req.hostname);
         }
-      },
+      }, 
+      '/MDC': {
+        target: 'http://localhost/MDC',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/MDC': '',
+          secure: false
+        },
+        onProxyReq: function(proxyReq, req, res) {
+          proxyReq.setHeader('X-Forwarded-Host', req.get('host'));
+          proxyReq.setHeader('Host', req.hostname);
+        }
+      }, 
       '/apid1': {
         target: 'http://localhost:3600/apid1',
         changeOrigin: true,
         pathRewrite: {
           '^/apid1': '',
+          secure: false
+        },
+        onProxyReq: function(proxyReq, req, res) {
+          proxyReq.setHeader('X-Forwarded-Host', req.get('host'));
+          proxyReq.setHeader('Host', req.hostname);
+        }
+      },
+      '/uploads': {
+        target: 'http://localhost:3600/uploads',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/uploads': '',
           secure: false
         },
         onProxyReq: function(proxyReq, req, res) {

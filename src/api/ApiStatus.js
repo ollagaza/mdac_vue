@@ -2,12 +2,17 @@ import request from '../utils/request';
 
 export default {
   getProjectList: () => request({
-    url: '/datastatus/projectlist',
-    method: 'get',
+    url: '/project/projectinfo',
+    method: 'post',
   }),
   getStatusList: () => request({
     url: '/datastatus/statuslist',
     method: 'get',
+  }),
+  getCategoryStatusList: (data) => request({
+    url: '/datastatus/categorystatuslist',
+    data,
+    method: 'post',
   }),
   getDivision: (seq, data) => request({
     url: `/datastatus/getdivsion/${seq}`,
@@ -16,6 +21,11 @@ export default {
   }),
   getWokerList: () => request({
     url: '/datastatus/getworker',
+    method: 'post',
+  }),
+  getCategoryList: (data) => request({
+    url: '/datastatus/getcategory',
+    data, 
     method: 'post',
   }),
   getFileList: (pro_seq, div_seq, data) => request({

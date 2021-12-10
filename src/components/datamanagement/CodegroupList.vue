@@ -1,45 +1,43 @@
 <!--
 =======================================
-'	파일명 : ClassList.vue
+'	파일명 : CodegroupList.vue
 '	작성자 : djyu
-'	작성일 : 2021.09.30
-'	기능   : class list
+'	작성일 : 2021.11.16
+'	기능   : Codegroup list
 '	=====================================
 -->
 <template>
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="4"></Datalist_Left>
+        <Datalist_Left v-bind:menu_id="'A' + this.ref_codegroup" ref="datalist_left" ></Datalist_Left>
         <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
-            클래스 리스트
+          <div v-if="this.ref_codegroup === 0" style="font-weight: 600; font-size: 15pt; color: #333">
+            코드그룹 리스트
+          </div>
+          <div v-else style="font-weight: 600; font-size: 15pt; color: #333">
+            {{ this.codegroup_name }} 리스트
           </div>
 
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnClassList(1)">
-                <option value="" selected=true>전체프로젝트</option>
-                  <template v-for="(project, seq) in project_list">
-                    <option v-bind:value="project.seq">{{project.project_name}}</option>
-                  </template>
-              </select>
-
-              <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnClassList(1)">
+              <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnCodegroupList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">중지중</option>
               </select>
 
               <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
-                <option value="class_name" selected=true>클래스명</option>
-                <option value="class_id">클래스코드</option>
+                <option v-if="this.ref_codegroup === 0" value="codegroup_name" selected=true>그룹명</option>
+                <option v-if="this.ref_codegroup === 0" value="codegroup_id">그룹코드</option>
+                <option v-if="this.ref_codegroup !== 0" value="codegroup_name" selected=true>{{ this.codegroup_name }}코드명</option>
+                <option v-if="this.ref_codegroup !== 0" value="codegroup_id">{{ this.codegroup_name }}코드</option>
               </select>
 
-              <input type="text" v-model="keyword" @keyup.enter="fnClassList(1)" />
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassDetail('')">등록</div>
+              <input type="text" v-model="keyword" @keyup.enter="fnCodegroupList(1)" />
+              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnCodegroupList(1)">검색</div>
+              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnCodegroupDetail('')">등록</div>
             </div>
           </div>
 
@@ -50,13 +48,13 @@
                 <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
               </div>
 
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('Y')">사용중</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('N')">사용중지</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('D')">삭제</div>
+              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="codegroup_change('Y')">사용중</div>
+              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="codegroup_change('N')">사용중지</div>
+              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="codegroup_change('D')">삭제</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="list_count" style="width: 120px;" @change="fnClassList(1)">
+                <select class="text" v-model="list_count" style="width: 120px;" @change="fnCodegroupList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -67,31 +65,39 @@
           </div>
 
           <div style="padding: 10px 0 0 0 ;">
-            <div class="grid_m class header">
+            <div v-if="this.ref_codegroup.toString() === '0'" class="grid_m header codegroup">
               <div></div><!-- v-model="checked_all"  -->
-              <div>프로젝트</div>
-              <div>클래스코드</div>
-              <div>클래스명</div>
+              <div>그룹아이디</div>
+              <div>그룹명</div>
+              <div>우선순위</div>
               <div>상태</div>
               <div>등록일</div>
             </div>
 
-            <template v-if="class_list.length === 0">
-              <div class="grid_m class nodata">
+            <div v-if="this.ref_codegroup.toString() !== '0'" class="grid_m header code">
+              <div></div><!-- v-model="checked_all"  -->
+              <div>{{ this.codegroup_name }}코드</div>
+              <div>{{ this.codegroup_name }}명</div>
+              <div>상태</div>
+              <div>등록일</div>
+            </div>
+
+            <template v-if="codegroup_list.length === 0">
+              <div class="grid_m nodata" v-bind:class="{'codegroup': this.ref_codegroup.toString() === '0', 'code': this.ref_codegroup.toString() !== '0'}">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
-            <template v-if="class_list.length > 0">
-              <template v-for="(pClass, seq) in class_list">
-                <div class="grid_m class body">
+            <template v-if="codegroup_list.length > 0">
+              <template v-for="(item, seq) in codegroup_list">
+                <div class="grid_m body" v-bind:class="{'codegroup': item.ref_codegroup.toString() === '0', 'code': item.ref_codegroup.toString() !== '0'}">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
-                  <div class="check_box" v-bind:class="[{on: checkData[pClass.seq]}]" v-on:click="onCheckClick(pClass.seq)"></div>
-                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.project_name }}</div>
-                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.class_id }}</div>
-                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.class_name }}</div>
-                  <div v-on:click="fnClassDetail(pClass.seq)"><div :class="{ 'process_progress' : pClass.is_used === 'Y', 'process_stop' : pClass.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnClassList(1)">{{ pClass.is_used_str }}</div></div>
-                  <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
+                  <div class="check_box" v-bind:class="[{on: checkData[item.seq]}]" v-on:click="onCheckClick(item.seq)"></div>
+                  <div v-on:click="fnCodegroupDetail(item.seq)">{{ item.codegroup_id }}</div>
+                  <div v-on:click="fnCodegroupDetail(item.seq)">{{ item.codegroup_name }}</div>
+                  <div v-if="item.ref_codegroup.toString() === '0'" v-on:click="fnCodegroupDetail(item.seq)">{{ item.sort_no }}</div>
+                  <div v-on:click="fnCodegroupDetail(item.seq)"><div :class="{ 'process_progress' : item.is_used === 'Y', 'process_stop' : item.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnCodegroupList(1)">{{ item.is_used_str }}</div></div>
+                  <div v-on:click="fnCodegroupDetail(item.seq)">{{ item.reg_date_dt }}</div>
                 </div>
               </template>
             </template>
@@ -106,38 +112,40 @@
       </div>
     </div>
 
-    <ClassPopup ref="classpopup"
+    <CodegroupPopup ref="codegrouppopup"
              v-bind:modeType="modeType"
-             v-bind:project_list="project_list"
-             v-on:callClassList="fnClassList"
-    ></ClassPopup>
+             v-bind:ref_codegroup="ref_codegroup"
+             v-bind:ref_codegroup_name="codegroup_name"
+             v-on:callCodegroupList="fnCodegroupList"
+    ></CodegroupPopup>
   </div>
 </template>
 
 
 <script>
 import apiproject from '../../api/ApiProject';
-import ClassPopup from '../../components/popup/ClassPopup';
-import BaseMixin from '../../components/Mixins/BaseMixin';
+import CodegroupPopup from '../../components/popup/CodegroupPopup';
+import BaseMixin from '../Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 import Datalist_Left from './Datalist_Left';
 import Pagination from '../../components/Pagination';
 
 export default {
-  name: 'ClassList',
+  name: 'CodegroupList',
   components: {
-    ClassPopup,
+    CodegroupPopup,
     Datalist_Left,
     Pagination,
   },
   mixins: [BaseMixin],
   data() {
     return {
-      project_list: '',         // 프로젝트 리스트
-      class_list: '',           // 클래스 데이터 리스트
-      project_seq: '',          // 프로젝트
+      codegroup_list: '',       // 코드그룹 데이터 리스트
+      codegroup_title:this.$route.params.codegroup_title ? this.$route.params.codegroup_title:'',
+      ref_codegroup:this.$route.params.ref_codegroup ? this.$route.params.ref_codegroup:0,
+      codegroup_name: '', 
       is_used: '',              // 사용여부
-      search_type: 'class_name',// 검색조건
+      search_type: 'codegroup_name',// 검색조건
       keyword: '',              // 검색어
       no:'',                    // 게시판 숫자
       paging:'',                // 페이징 데이터
@@ -161,6 +169,13 @@ export default {
       },
     };
   },
+  watch: {
+    '$route': function(){
+      this.ref_codegroup = this.$route.params.ref_codegroup ? this.$route.params.ref_codegroup: 0;
+      this.codegroup_title = this.$route.params.codegroup_title ? this.$route.params.codegroup_title: '';
+      this.fnCodegroupList(1);    
+    }
+  },  
   computed: {
     cpage_navigation() {
       const null_navigation = {};
@@ -170,25 +185,27 @@ export default {
       return null_navigation;
     },
     cis_data() {
-      if (this.class_list && this.class_list.length > 0) {
+      if (this.codegroup_list && this.codegroup_list.length > 0) {
         return true;
       }
       return false;
     }
 
   },
-  mounted() {
+  updated() {
     const data = {
-        list_count:''
-        ,status:''
-        ,search_type:''
-        ,keyword:''
-    }
-    apiproject.getProjectInfo(data)
+      ref_codegroup: 0
+      ,codegroup_seq: this.ref_codegroup
+    };
+    apiproject.getCodegroup(data)
       .then((result) => {
-        this.project_list = result.project_info;
-      });
-    this.fnClassList(1);
+        if (result.codegroup_info.length > 0) {
+          this.codegroup_name = result.codegroup_info[0].codegroup_name;
+        }
+      });  
+  },
+  mounted() {
+    this.fnCodegroupList(1);
   },
   methods: {
     Menu1() {
@@ -204,11 +221,10 @@ export default {
       this.$router.push({ name: 'class' });
     },
 
-    // 클래스 리스트 조회
-    fnClassList(pg) {
+    // 코드그룹 리스트 조회
+    fnCodegroupList(pg) {
       //body = req.query;
       this.showLoading(true);
-      let project_seq = this.project_seq;
       let is_used = this.is_used;
       let search_type = this.search_type;
       let keyword = this.keyword;
@@ -220,37 +236,38 @@ export default {
       cur_page = cur_page ? cur_page : this.cur_page;
       this.cur_page = cur_page;
       const data = {
-        cur_page:this.cur_page
+        ref_codegroup:this.ref_codegroup
+        ,cur_page:this.cur_page
         ,list_count:this.list_count
-        ,project_seq:this.project_seq
         ,is_used:this.is_used
         ,search_type:this.search_type
         ,keyword:this.keyword
       };
-      apiproject.getClassInfo(data) // 클래스 API 호출
+      apiproject.getCodegroupInfo(data) // 코드그룹 API 호출
         .then((result) => {
-
-          if (result.class_info.length > 0) {
-            for (const key in result.class_info) {
-              const reg_date = result.class_info[key].reg_date;
+          this.$log.debug(result)
+          if (result.codegroup_info.length > 0) {
+            for (const key in result.codegroup_info) {
+              const reg_date = result.codegroup_info[key].reg_date;
               if (reg_date) {
-                result.class_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
+                result.codegroup_info[key].reg_date_dt = reg_date.substr(0, 10).replaceAll('-', '.');
               }
-              if (result.class_info[key].is_used == 'Y') {
-                result.class_info[key].is_used = 'Y';
-                result.class_info[key].is_used_str = '사용중';
+              if (result.codegroup_info[key].is_used == 'Y') {
+                result.codegroup_info[key].is_used = 'Y';
+                result.codegroup_info[key].is_used_str = '사용중';
               } else {
-                result.class_info[key].is_used_str = "중지중";
+                result.codegroup_info[key].is_used_str = "중지중";
               }
             }
           }
-          this.class_list = result.class_info;
+          this.codegroup_list = result.codegroup_info;
           this.paging = result.paging;
           this.no = this.paging.total_count - ((this.paging.cur_page-1) * this.paging.list_count);
           // this.page_navigation = { cur_page: result.paging.total_page, list_count: result.paging.list_count, total_count: result.paging.total_count, first_page: result.paging.first_page, page_count: 10 };
           this.page_navigation = this.paging
         });
       this.showLoading(false);
+      this.$refs.datalist_left.category_menu();
     },
     onMovePage(page) {
       this.fnPage(page);
@@ -258,7 +275,7 @@ export default {
     fnPage(n) {
       if(this.cur_page != n) {
         this.cur_page = n;
-        this.fnClassList(n);
+        this.fnCodegroupList(n);
       }
     },
     isUsed: function (state) {
@@ -277,9 +294,9 @@ export default {
     },
     allCheck(value) {
       if (this.cis_data) {
-        Object.keys(this.class_list).forEach((key) => {
-          if (this.class_list[key].is_admin !== 'A') {
-            const seq = this.class_list[key].seq;
+        Object.keys(this.codegroup_list).forEach((key) => {
+          if (this.codegroup_list[key].is_admin !== 'A') {
+            const seq = this.codegroup_list[key].seq;
             this.$set(this.checkData, seq, value);
           }
         });
@@ -287,7 +304,7 @@ export default {
     },
 
     // 상태 변경
-    class_change(itype) {
+    codegroup_change(itype) {
       const options = {};
       const checkData = this.checkData;
       let confirm_msg = '';
@@ -295,19 +312,19 @@ export default {
       let szTitle = '';
       switch(itype) {
         case 'Y' :
-          confirm_msg = '선택 클래스를 사용중으로 변경하시겠습니까?';
+          confirm_msg = '선택 코드그룹을 사용중으로 변경하시겠습니까?';
           close_msg = '사용중으로 변경되었습니다.';
           szTitle = '사용중';
           break;
         case 'N' :
-          confirm_msg = '선택 클래스를 사용중지로 변경하시겠습니까?';
+          confirm_msg = '선택 코드그룹을 사용중지로 변경하시겠습니까?';
           close_msg = '사용중지 시켰습니다.';
           szTitle = '사용중지';
           break;
         case 'D' :
-          confirm_msg = '선택 클래스를 삭제하시겠습니까?';
+          confirm_msg = '선택 코드그룹을 삭제하시겠습니까?';
           close_msg = '삭제했습니다.';
-          szTitle = '클래스삭제';
+          szTitle = '코드그룹삭제';
           break;
       }
       let selUserCo = 0;
@@ -317,19 +334,19 @@ export default {
         }
       }
       if (selUserCo < 1) {
-        EventBus.emit('alertPopupOpen', null, '선택한 클래스가 없습니다.', null);
+        EventBus.emit('alertPopupOpen', null, '선택한 코드그룹이 없습니다.', null);
       } else {
         const sendParam = { itype: itype, szTitle: szTitle, checkData: checkData, close_msg: close_msg };
         if (itype === 'D') { // 삭제
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_delete, options);
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.codegroup_delete, options);
         } else {
-          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.class_used_change, options);
+          EventBus.emit('confirmPopupOpen', sendParam, confirm_msg, this.codegroup_used_change, options);
         }
       }
     },
 
     // 상태변경 실행
-    class_used_change(sendParam, setDate) {
+    codegroup_used_change(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
       Object.keys(checkData).forEach((key) => {
@@ -340,12 +357,12 @@ export default {
       // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
-      params.classes = arrData;
-      apiproject.setClassUsed(params).then((data) => {
+      params.codegroups = arrData;
+      apiproject.setCodegroupUsed(params).then((data) => {
         console.log(`data.error===${data.error}`)
         if (data.error === 0) {
           EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
-          this.fnClassList(1);
+          this.fnCodegroupList(1);
         } else {
           this.onError(data.message);
         }
@@ -354,7 +371,7 @@ export default {
     },
 
     // 삭제 실행
-    class_delete(sendParam, setDate) {
+    codegroup_delete(sendParam, setDate) {
       const checkData = sendParam.checkData;
       const arrData = [];
       Object.keys(checkData).forEach((key) => {
@@ -365,12 +382,11 @@ export default {
       // this.$log.debug('sendParam', sendParam, setDate);
       const params = {};
       params.used = sendParam.itype;
-      params.classes = arrData;
-      apiproject.delClass(params).then((data) => {
-        // console.log(`data.error===${data.error}`)
+      params.codegroups = arrData;
+      apiproject.delCodegroup(params).then((data) => {
         if (data.error === 0) {
           EventBus.emit('alertPopupOpen', null, sendParam.close_msg, null);
-          this.fnClassList(1);
+          this.fnCodegroupList(1);
         } else {
           this.onError(data.message);
         }
@@ -378,28 +394,28 @@ export default {
       });
     },
 
-    // 클래스 상세보기
-    fnClassDetail(seq) {
+    // 코드그룹 상세보기
+    fnCodegroupDetail(seq) {
       if(seq === '')
       {
         this.modeType = 'c';
-        this.$refs.classpopup.openPopup();
+        this.$refs.codegrouppopup.openPopup();
       }else{
         this.modeType = 'e';
-        this.$refs.classpopup.openPopupBySeq(seq);
+        this.$refs.codegrouppopup.openPopupBySeq(seq);
       }
     },
     checkedAll(checked) {
       //if (this.cis_data) {
         this.allChecked = checked
-        for (let i in this.class_list) {
-            this.class_list[i].selected = this.allChecked;
+        for (let i in this.codegroup_list) {
+            this.codegroup_list[i].selected = this.allChecked;
         }
       //}
     },
     selected (e) {
-        for (let i in this.class_list) {
-            if(! this.class_list[i].selected) {
+        for (let i in this.codegroup_list) {
+            if(! this.codegroup_list[i].selected) {
                 this.allChecked = false;
                 return;
             } else {
@@ -409,9 +425,9 @@ export default {
     },
     getSelected(){
         let user_ids = [];
-        for (let i in this.class_list) {
-            if(this.class_list[i].selected) {
-                user_ids.push(this.class_list[i].seq);
+        for (let i in this.codegroup_list) {
+            if(this.codegroup_list[i].selected) {
+                user_ids.push(this.codegroup_list[i].seq);
             }
         }
         console.log(user_ids)
@@ -436,8 +452,11 @@ export default {
   padding: 0 10px;
   border: 1px solid #888;
 }
-.grid_m.class {
+.grid_m.codegroup {
   grid-template-columns: 50px 250px 150px 250px 150px 150px;
+}
+.grid_m.code {
+  grid-template-columns: 100px 250px 250px 200px 200px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;

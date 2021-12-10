@@ -14,7 +14,7 @@
     <template v-else>
       <nav class="navigation" >
         <div class="nav_box">
-          <div class="logo" v-on:click="routeMain"><img src="/img/datamanager/logo.png"></div>
+          <div class="logo" v-on:click="routeMain"><img src="/MDC/main_logo.png"></div>
           <div class="nav_sp">
             <div class="nav_menu" v-if="is_logged">
               <div class="nmenu" v-bind:class="{on: menu_id === '1'}" v-on:click="Menu1">Data Management</div>
@@ -167,7 +167,7 @@ export default {
 }
 .logo {
   width: 187px;
-  padding: 10px 0 0 20px;
+  padding: 20px 0 0 20px;
   cursor: pointer;
 }
 .login_text{

@@ -94,11 +94,84 @@ export default {
     },
   }),
 
-  // Category
-  getCategory: data => request({
-    url: '/project/category',
+  // code group
+  getCodegroup: data => request({
+    url: '/project/codegroup',
     method: 'post',
     data,
+  }),
+
+  getCodegroupInfo: data => request({
+    url: '/project/codegroupinfo',
+    method: 'post',
+    data,
+  }),
+
+  createCodegroup: codegroup_info => request({
+    url: '/project/createcodegroup',
+    method: 'post',
+    data: codegroup_info,
+  }),
+
+  updateCodegroup: (codegroup_seq, codegroup_info) => request({
+    url: `/project/${codegroup_seq}/updatecodegroup`,
+    method: 'post',
+    data: codegroup_info,
+  }),
+
+  setCodegroupUsed: params => request({
+    url: '/project/setcodegroupdata',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
+  delCodegroup: params => request({
+    url: '/project/delcodegroup',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
+
+  // code
+  getCode: data => request({
+    url: '/project/code',
+    method: 'post',
+    data,
+  }),
+
+  getCodeInfo: data => request({
+    url: '/project/codeinfo',
+    method: 'post',
+    data,
+  }),
+
+  createCode: code_info => request({
+    url: '/project/createcode',
+    method: 'post',
+    data: code_info,
+  }),
+
+  updateCode: (codegroup_seq, code_info) => request({
+    url: `/project/${codegroup_seq}/updatecode`,
+    method: 'post',
+    data: code_info,
+  }),
+
+  setCodeUsed: params => request({
+    url: '/project/setcodedata',
+    method: 'post',
+    data: {
+      params,
+    },
+  }),
+  delCode: params => request({
+    url: '/project/delcode',
+    method: 'post',
+    data: {
+      params,
+    },
   }),
 
 }

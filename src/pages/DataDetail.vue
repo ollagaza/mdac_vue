@@ -13,13 +13,19 @@
                     <option v-for="(item, key) in list_project" v-bind:value="item.seq">{{item.project_name}}</option>
                   </select>
                 </div>
-                <Division_sel
+                <!-- <Division_sel
                   ref="division_sel"
                   v-bind:pro_seq ="pro_seq"
                   v-bind:div_seq ="div_seq"
                   v-on:onRedata="onRedata"
                   v-on:onSeldata="onSeldata"
-                ></Division_sel>
+                ></Division_sel> -->
+                <select v-model="category_seq" v-on:change="onDiv_change" style="border: 1px solid #ccc; height: 30px; width: 360px;padding-left: 5px;">
+                <option value="-1">전체</option>
+                <template v-for="(item, idx) in list_category">
+                  <option v-bind:value="item.seq">{{item.full_path}}</option>
+                </template>
+                </select>                
                 <div style="width: 120px;">
                   <select v-model="work_status" v-on:change="status_change"
                           style="border: 1px solid #ccc; height: 30px; width: 110px;padding-left: 5px;background-position: 90% center;">
@@ -126,6 +132,7 @@
 <script>
 import Datalist_Left from '../components/datamanagement/Datalist_Left';
 import Division_sel from '../components/datamanagement/Division_sel';
+import apiproject from '../api/ApiProject';
 import ApiStatus from '../api/ApiStatus';
 import util from '../utils/util';
 import util_name from '../utils/util_name';
@@ -156,6 +163,7 @@ export default {
       this.setQuery(query);
       await this.load_data();
       await this.load_worker();
+      await this.load_category(this.$route.query.pro_seq)
       if (this.file_type && this.file_type === 'v' && this.list_class.length < 1){
         await this.getClass();
       }
@@ -238,6 +246,9 @@ export default {
       selDiv: { seq: '', fullname: '분류를 선택하세요.' },
       list_worker: [],
       view_worker: [],
+      list_category: [],
+      view_category: [],
+      category_seq: '-1',
       work_status: '-1', // A0- 라벨할당전 라벨작업중A1 라벨작업완료A2 검수1할당B1 검수1완료B2 검수1반려B8
       work_status_send: 'A1',
       file_list: [],
@@ -276,6 +287,7 @@ export default {
       this.list_count = query.list_count ? query.list_count : 20;
       this.page_navigation.cur_page = query.cur_page ? query.cur_page : 1;
       this.page_navigation.list_count = this.list_count;
+      this.category_seq = query.div_seq ? query.div_seq : -1;
     },
     getQuery() {
       const query = {};
@@ -590,9 +602,6 @@ export default {
                 }
               }
             }
-            console.log(`aaaaaa`)
-            console.log(rf_item[0].class_seq)
-            console.log(`bbbbb`)
             oblist = { seq: ijobseq, rf_seq: irfseq, rf_pair_key: irf_pair_key, status: rf_item[0].rf_status, class_seq: rf_item[0].class_seq };
             oblist.reject_seq = rf_item[0].reject_seq;
             oblist.reject_act = rf_item[0].reject_act;
@@ -653,10 +662,10 @@ export default {
     },
     async load_data() {
       // 프로젝트 리스트
-      await ApiStatus.getProjectList()
+      await apiproject.getProjectInfo()
         .then((data) => {
           // this.$log.debug(data);
-          this.list_project = data.list;
+          this.list_project = data.project_info;
         })
         .catch((e) => {
 
@@ -671,15 +680,35 @@ export default {
     async load_worker() {
       this.view_worker = [];
       await ApiStatus.getWokerList()
-        .then((data) => {
+        .then((result) => {
           // this.$log.debug(data);
-          this.list_worker = data.list;
+          this.list_worker = result.list;
           for(const item of this.list_worker) {
             const datalist = {};
             datalist.seq = item.seq;
             datalist.user_id = item.user_id;
             datalist.user_name = `${item.user_name} (라벨링: ${item.labelcnt} / 검수: ${item.checkcnt})`;// this.getStatusCount(item);
             this.view_worker.push(datalist);
+          }
+        })
+        .catch((e) => {
+
+        });
+    },
+    async load_category(project_seq) {
+      this.view_category = [];
+      const data = {
+        project_seq : project_seq
+      }
+      await ApiStatus.getCategoryList(data)
+        .then((result) => {
+          // this.$log.debug(result);
+          this.list_category = result.list;
+          for(const item of this.list_category) {
+            const datalist = {};
+            datalist.seq = item.seq;
+            datalist.full_path = item.full_path
+            this.view_category.push(datalist);
           }
         })
         .catch((e) => {
@@ -886,8 +915,19 @@ export default {
       return reStr;
     },
     setDivision() {
-      this.div_seq = -1
-      this.$refs.division_sel.load_div(this.pro_seq)
+      this.category_seq = -1
+      this.load_category(this.pro_seq)
+      this.onDiv_change();
+      // this.div_seq = -1
+      // this.$refs.division_sel.load_div(this.pro_seq)
+      
+    },
+    onDiv_change() {
+      const params = {}
+      const query = {}
+      query.div_seq = this.category_seq;
+      query.pro_seq = this.pro_seq;
+      this.$router.push({ name: 'datadetail', params, query });            
     },
   },
 };

@@ -8,14 +8,14 @@ export default {
     data,
   }),
 
-  createBoard: board_info => request({
+  createBoard: data => request({
     url: '/board/createboard',
     method: 'post',
-    data: board_info,
+    data,
   }),
 
   updateBoard: (board_seq, board_info) => request({
-    url: `/board/${board_seq}/updateclass`,
+    url: `/board/${board_seq}/updateboard`,
     method: 'post',
     data: board_info,
   }),
@@ -26,6 +26,12 @@ export default {
     data: {
       params,
     },
+  }),
+
+  uploadFile: (board_code, data) => request({
+    url: `/board/${board_code}/upload`,
+    method: 'post',
+    data,
   }),
 
 }

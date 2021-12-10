@@ -85,6 +85,20 @@ input.text::placeholder{
   color:#888;
 }
 
+textarea.text{
+  border:1px solid #ccc;
+  height: 40px;
+  font-weight: 400;
+  font-size: 13px;
+  color: #333;
+  padding-left: 10px;
+  letter-spacing: -0.5px;
+}
+
+textarea.text::placeholder{
+  color:#888;
+}
+
 
 select {
   border: none;
@@ -230,6 +244,10 @@ select.text {
 }
 .left_title.sub {
   padding-left: 30px;
+  font-size: 14px;
+}
+.left_title.subsub {
+  padding-left: 45px;
   font-size: 14px;
 }
 .left_slice{

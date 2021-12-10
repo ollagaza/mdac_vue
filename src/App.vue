@@ -6,15 +6,19 @@
           <template v-if="meta.border_line === 'bottom'">
             <div style="position: absolute;top: 99px; width:100%; height: 1px; border-bottom: 1px solid #ccc;"></div>
           </template>
-          <div class="page_div">
+          <div v-if="$route.name !== 'index'" class="" v-bind:class="{ page_div: $route.name !== 'index' }">
             <Navigation :route_name="route_name" :navview="meta.navigation" :menu_id="meta.menu_id"></Navigation>
+          </div>
+          <div class="" v-bind:class="{ page_div: $route.name !== 'index' }">
             <router-view/>
           </div>
         </div>
         <div class="page_bottom"></div>
       </template>
     </div>
+    <div v-if="$route.name !== 'index'">
     <Footer></Footer>
+    </div>
     <NowLoading v-show="is_nowLoading" :scaleData="nowLoading_scale" :comment="nowLoading_comment"></NowLoading>
     <AlertPopup ref="alertPopup"></AlertPopup>
     <ConfirmPopup ref="confirmPopup"></ConfirmPopup>

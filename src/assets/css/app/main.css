@@ -1,0 +1,760 @@
+@import url('https://fonts.google.com/specimen/Montserrat');
+@import url('https://fonts.googleapis.com/earlyaccess/notosanskr.css');
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: content-box;
+	text-decoration: none;
+}
+body {
+	font-family: "Montserrat", sans-serif;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 180%;
+}
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+header {
+	min-width: 1200px;
+	width:100%;
+	height:800px;
+	background-image: url('/MDC/main_bg.jpg');
+}
+header h1 { position :absolute; left: 50px; top: 0;}
+header .MDC_login { position: absolute; right:300px; top: 0;
+ }
+header h2 { position: absolute; left: -5000px; }
+
+.hb-menu > nav > ul 
+a:link, a:link:active, a:visited, a:visited:active {
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+	display: inline-block;
+	vertical-align: top;
+}
+img {
+	vertical-align: top;}
+
+.MDC_box {
+  width: 80px;
+  height: 30px;
+  margin: 16px 0px 0;
+  border: solid 1px #f0f0f0;
+  background-color: #f0f0f0;
+  padding: 10px 19px 10px 20px;
+  opacity: 0.9;
+  background: rgba(0, 0, 0, 0.4);
+}
+.MDC_btnLogin {
+  width: 50px;
+  height: 20px;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-weight: 500;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.4;
+  letter-spacing: normal;
+  text-align: right;
+  color: #fff;
+  padding: 0px 15px 10px 10px;
+
+}
+header .logo {
+  width: 750px;
+  height: 81px;
+  box-shadow: 0px 5px 16px 0 rgba(21, 21, 21, 0.13);
+  position: absolute;
+  text-align: left;
+  margin: 262px 20px 6px 391px;
+}
+header .MTEG-DATA-CENTER {
+  width: 750px;
+  height: 44px;
+  margin: 377px 20px 6px 391px;
+  position: absolute;
+  font-family: Montserrat;
+  font-size: 60.5px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 0.69;
+  letter-spacing: 4.54px;
+  text-align: left;
+  color: #fff;
+}
+header .deep {
+  width: 750px;
+  height: 28px;
+  margin: 442px 20px 6px 391px;
+  position: absolute;
+  font-family: "Noto Sans KR", Arial, "sans-serif";
+  font-size: 30.5px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.92;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+footer {
+  min-width: 1200px;
+
+  height: 484px;
+  margin: 246px 3px 0 0;
+  padding: 0 97px 0 256px;  
+  background-color: #F7F7F7;
+}
+
+
+.footer-logo {
+	width: 240px;
+	height: 51px;
+	padding: 98px 11px 22px 50px;
+}
+.footer-addr {
+	width: 300px;
+	height: 34px;
+	padding: 18px 11px 22px 50px;
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 12px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.67;
+	letter-spacing: normal;
+	text-align: left;
+	color: #bbb;
+}
+.MDIC-AI {
+	padding: 18px 11px 22px 50px;
+	width: 420px;
+	height: 34px;
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 12px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.67;
+	letter-spacing: normal;
+	text-align: left;
+	color: #888;
+}
+
+.site-liner {
+	opacity: 0.5;
+    border-bottom: 1px solid gray;
+}
+.footer-copyright {
+	padding: 0px 11px 22px 50px;
+	width: 280px;
+	height: 20px;
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 12px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 4;
+	letter-spacing: normal;
+	text-align: left;
+	color: #bbb;
+}  
+.footer-right {	
+	padding: 100px 100px 0 0 ;
+}
+.mteg {
+	background: url("/MDC/mteglogo_off.png") no-repeat;
+	width: 55px;
+	height: 20px;
+	float: left;
+	margin: 5px 0 0 0;
+}
+.mteg:hover {
+	background: url("/MDC/mteglogo_on.png") no-repeat;
+}
+.surgstory {
+	background: url("/MDC/surglogo_off.png") no-repeat;
+	width: 115px;
+	height: 15px;
+	float: left;
+	margin: 10px 0 0 0;
+}
+.surgstory:hover {
+	background: url("/MDC/surglogo_on.png") no-repeat;
+}
+.cancerrop {
+	background: url("/MDC/cancerlogo_off.png") no-repeat;
+	width: 81px;
+	height: 34px;
+	float: left;
+}
+.cancerrop:hover {
+	background: url("/MDC/cancerlogo_on.png") no-repeat;
+}
+.geein {
+	background: url("/MDC/geeinlogo_off.png") no-repeat;
+	width: 45px;
+	height: 18px;
+	float: left;
+	margin: 5px 0 0 0;
+}
+.geein:hover {
+	background: url("/MDC/geeinlogo_on.png") no-repeat;
+}
+.site-guide {
+	width:320px;
+	height:62px;
+	display: table-cell;
+	vertical-align: middle;	 
+}
+
+.center-1-image {
+	margin: 260px 319px 16px 0px;
+	height: 21px;
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 20px;
+	font-weight: 350;
+	font-stretch: normal;
+	font-style: normal;
+	/* line-height: 2.28; */
+	letter-spacing: normal;
+	text-align: left;
+	color: #555;
+}
+.center-1-text1 {
+  font-family: "Montserrat", sans-serif;
+  font-size: 42px;
+  font-weight: 600;
+  padding-right: 100px;
+  /* padding: 260px 319px 16px 0px; */
+  line-height: 1.2;
+  /* float: right; */
+  color: #333;
+
+  display: flex;
+  padding-top: 250px;
+  text-align: center;
+  padding-bottom: 20px;
+  padding-right: 200px;
+  margin: auto 0;
+}
+.center-1-text2 {
+  font-family: "Noto Sans KR", Arial, "sans-serif";
+  font-size: 20px;
+  font-weight: 380;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.28;
+  letter-spacing: normal;
+  text-align: left;
+  color: #555;
+}
+
+.center-1-text3 {
+	padding-top: 60px;
+	font-family: "Montserrat", sans-serif;
+	font-size: 17.5px;
+	font-weight: 350;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.74;
+	letter-spacing: normal;
+	text-align: left;
+	color: #555;
+}
+.center-2-image {
+	margin: 0px 45px 0px 0px;
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 20px;
+	font-weight: 350;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 2.28;
+	letter-spacing: normal;
+	text-align: left;
+	color: #555;
+}
+.center-2-text1 {
+	font-family: "Montserrat", sans-serif;
+	font-size: 42px;
+	font-weight: 600;
+	/* padding: 260px 319px 16px 0px; */
+	line-height: 1.2;
+	/* float: right; */
+	color: #333;
+  
+	display: flex;
+	padding-top: 250px;
+	text-align: center;
+	padding-bottom: 20px;
+	padding-right: 200px;
+	margin: auto 0;
+}
+
+.center-2-text2 {
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 20px;
+	font-weight: 350;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 2.28;
+	letter-spacing: normal;
+	text-align: left;
+	color: #555;
+	color: #555;
+}
+.center-3-image {
+	margin: 0 0 0 116px;
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 20px;
+	font-weight: 350;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 2.28;
+	letter-spacing: normal;
+	text-align: left;
+	color: #555;
+}
+.center-3-text1 {
+	font-family: "Montserrat", sans-serif;
+	font-size: 42px;
+	font-weight: 600;
+	/* padding: 260px 319px 16px 0px; */
+	line-height: 1.2;
+	/* float: right; */
+	color: #333;
+  
+	display: flex;
+	padding-top: 250px;
+	text-align: center;
+	padding-bottom: 20px;
+	padding-right: 200px;
+	margin: auto 0;
+}
+.center-3-text2 {
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 20px;
+	font-weight: 350;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 2.28;
+	letter-spacing: normal;
+	text-align: left;
+	color: #555;
+}
+.center-4 {
+	/* width: 199px;
+	height: 18px; */
+	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-size: 18px;
+	font-weight: 300;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.22;
+	color: #fff;
+  }
+
+  .center-4-sub {
+	/* width: 165px;
+	height: 51px;
+	margin: 1px 117px 14px 11px; */
+	font-family: "Montserrat", sans-serif;
+	font-size: 24px;
+	font-weight: 500;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.15;
+	letter-spacing: normal;
+	text-align: center;
+	color: #fff;
+  }
+
+  
+.center-6 {
+	width: 500px;
+	height: 140px;
+	font-family: "Montserrat", sans-serif;
+	font-size: 42px;
+	font-weight: 600;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.2;
+	letter-spacing: normal;
+	text-align: left;
+	color: #333;
+  }
+  
+  .center-6-sub {
+	  width: 480px;
+	  height: 19px;
+	  font-family: "Noto Sans KR", Arial, "sans-serif";
+	  font-size: 20px;
+	  font-weight: 350;
+	  font-stretch: normal;
+	  font-style: normal;
+	  line-height: 2.28;
+	  letter-spacing: normal;
+	  text-align: left;
+	  color: #555;
+  }
+  .center-6-sub2 {
+	  width: 250px;
+	  height: 48px;
+	  margin: 60px 10px 245px 0;
+	  font-family: "Montserrat", sans-serif;
+	  font-size: 17.5px;
+	  font-weight: normal;
+	  font-stretch: normal;
+	  font-style: normal;
+	  line-height: 1.74;
+	  letter-spacing: normal;
+	  text-align: left;
+	  color: #555;
+  }
+.content_layer .content_wrapper {
+    position: relative;
+    display: table-cell;
+    vertical-align: top;
+    max-width: 100%;
+    padding: 0 50px;
+    z-index: 20;
+}
+.clear {
+	clear: both;
+}
+.disable_event {
+	pointer-events: none;
+}
+
+.wrap {
+	width: 100%;
+	scroll-snap-type: y proximity;
+	/* overflow-y: auto;
+	overflow-x: hidden; */
+	scroll-behavior: smooth;
+	min-width: 1900px;
+}
+
+.content_layer {
+	position: relative;
+	display: table;
+	width: 100%;
+	/* min-height: 1000px; */
+	z-index: 10;
+	scroll-snap-align: start;
+}
+.content_layer.v_full {
+	min-height: 100vh;
+}
+.content_layer.bg_gray {
+	background-color: #26282b;
+}
+.content_layer.bg_dark_gray {
+	background-color: #0e1010;
+}
+.content_layer.bg_mid_gray {
+	background-color: #13171b;
+}
+.content_layer.bg_img_heartbeat {
+	background-image: url("/img/heartbeat.png");
+	background-repeat: repeat-x;
+	background-position: center top;
+}
+.content_layer.p_v_90 {
+	padding-top: 90px;
+	padding-bottom: 90px;
+}
+
+.content_layer .content_wrapper {
+	position: relative;
+	display: table-cell;
+	/* vertical-align: middle; */
+	width: 100%;
+	max-width: 100%;
+	padding: 0 50px;
+	z-index: 20;
+}
+.content_layer .content_wrapper.v_top {
+	vertical-align: top;
+	text-align: center;
+}
+.content_layer .content_wrapper .content {
+	position: relative;
+	width: 100%;
+	max-width: 100%;
+	margin: 0 auto;
+}
+.content_layer .content_wrapper .content .float_content {
+	text-align: left;
+	max-width: 100%;
+}
+.content_layer .content_wrapper .content .float_content img {
+	max-width: 100%;
+}
+.content_layer .content_wrapper .content .float_content.fixed_width {
+	min-width: 50%;
+}
+.content_layer .content_wrapper .content .float_content.align_right {
+	text-align: right;
+}
+.content_layer .content_wrapper .content .float_content.align_center {
+	text-align: center;
+}
+.content_layer .content_wrapper .content .float_content.left {
+	float: left;
+}
+.content_layer .content_wrapper .content .float_content.right {
+	float: right;
+}
+
+.p_b_10 {
+	padding-bottom: 10px;
+}
+.p_b_20 {
+	padding-bottom: 20px;
+}
+.p_b_25 {
+	padding-bottom: 25px;
+}
+.p_b_30 {
+	padding-bottom: 30px;
+}
+.p_b_40 {
+	padding-bottom: 40px;
+}
+.p_b_45 {
+	padding-bottom: 45px;
+}
+.p_b_50 {
+	padding-bottom: 50px;
+}
+.p_b_65 {
+	padding-bottom: 65px;
+}
+.p_l_30 {
+	padding-left: 30px;
+}
+.p_t_10 {
+	padding-top: 10px;
+}
+.p_t_15 {
+	padding-top: 15px;
+}
+.p_t_20 {
+	padding-top: 20px;
+}
+.p_t_25 {
+	padding-top: 25px;
+}
+.p_t_30 {
+	padding-top: 30px;
+}
+.p_t_35 {
+	padding-top: 35px;
+}
+.p_t_40 {
+	padding-top: 40px;
+}
+.p_t_45 {
+	padding-top: 45px;
+}
+.p_t_50 {
+	padding-top: 50px;
+}
+.p_t_55 {
+	padding-top: 55px;
+}
+.p_t_60 {
+	padding-top: 60px;
+}
+
+.text {
+	text-align: left;
+}
+.text.right {
+	text-align: right;
+}
+.text.center {
+	text-align: center;
+}
+
+.text.white {
+	color: #ffffff;
+}
+.text.black_alpha_50 {
+	color: rgba(255, 255, 255, 0.5);
+}
+.text.gray {
+	color: #606060;
+}
+.text.light_gray {
+	color: #a7a7a7;
+}
+.text.soft_gray {
+	color: #808182;
+}
+
+.text.s_12 {
+	font-size: 12px;
+}
+.text.s_13 {
+	font-size: 13px;
+}
+.text.s_14 {
+	font-size: 14px;
+}
+.text.s_15 {
+	font-size: 15px;
+}
+.text.s_16 {
+	font-size: 16px;
+}
+.text.s_17 {
+	font-size: 16px;
+}
+.text.s_19 {
+	font-size: 19px;
+}
+.text.s_20 {
+	font-size: 20px;
+}
+.text.s_24 {
+	font-size: 24px;
+}
+.text.s_28 {
+	font-size: 28px;
+}
+
+.text.s_36 {
+	font-size: 36px;
+}
+
+.text.s_45 {
+	font-size: 45px;
+}
+.text.s_47 {
+	font-size: 47px;
+}
+.text.s_48 {
+	font-size: 48px;
+}
+.text.s_50 {
+	font-size: 50px;
+}
+.text.s_68 {
+	font-size: 68px;
+}
+
+.text.lh_110 {
+	line-height: 110%;
+}
+.text.lh_120 {
+	line-height: 120%;
+}
+.text.lh_140 {
+	line-height: 140%;
+}
+.text.lh_150 {
+	line-height: 150%;
+}
+.text.lh_160 {
+	line-height: 160%;
+}
+.text.lh_170 {
+	line-height: 170%;
+}
+
+.text.w_100 {
+	font-weight: 100;
+}
+.text.w_300 {
+	font-weight: 300;
+}
+.text.w_400 {
+	font-weight: 400;
+}
+.text.w_700 {
+	font-weight: 700;
+}
+
+/*footer*/
+.content_layer.footer {
+	height: 245px;
+	min-height: 245px;
+	background-color: #232526;
+	background-image: url("/img/footer.png");
+	background-repeat: no-repeat;
+	background-position: bottom;
+}
+
+.footer_wrap {
+	display: table;
+	width: 100%;
+	table-layout: fixed;
+}
+.footer_wrap > div {
+	display: table-cell;
+}
+
+.footer_wrap .footer_gnb_wrap {
+	padding-top: 40px;
+	width: 200px;
+}
+
+.footer_wrap .footer_gnb_wrap .footer_gnb {
+	font-weight: 300;
+	font-size: 14px;
+}
+.footer_wrap .footer_gnb_wrap ul li {
+	list-style: none;
+	padding: 3px 0;
+}
+
+.footer_wrap .footer_mteg_wrap {
+	padding-top: 40px;
+}
+
+.footer_wrap .footer_mteg {
+	font-weight: 300;
+	line-height: 140%;
+}
+
+.copyright {
+	font-weight: 300;
+	font-size: 13px;
+	color:#808182;
+	padding-top: 16px;
+}
+
+.footer_contact_wrap {
+	width: 410px;
+	padding-top: 40px;
+	margin-left: 670px;
+}
+
+.footer_mail {
+	font-weight: 300;
+	font-size: 13px;
+	color:#808182;
+	float: left;
+	padding-left: 30px;
+	padding-top: 30px;
+}
+
+.footer_tel {
+	font-weight: 300;
+	font-size: 13px;
+	color:#808182;
+	float: left;
+	padding-top: 32px;
+}
+
+
