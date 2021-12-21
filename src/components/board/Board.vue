@@ -115,7 +115,7 @@
 
 
 <script>
-import apiboard from '../../api/Apiboard';
+import apiboard from '../../api/ApiBoard';
 import apiproject from '../../api/ApiProject';
 import BoardPopup from '../../components/popup/BoardPopup';
 import BaseMixin from '../Mixins/BaseMixin';
