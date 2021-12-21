@@ -151,6 +151,7 @@ export default {
       allChecked: false,        // All check
       checkData: {},
       check_click: false,
+      abc: '',
 
       page_navigation: {
         cur_page: 1,
