@@ -21,6 +21,19 @@
       </template>
       <div style="padding-top: 20px">
         <div class="item_title">
+          <div class="item">프로젝트코드</div>
+          <div>
+            <input
+              type="text"
+              ref="project_code"
+              v-model="project_code"
+              style="width: 380px"
+              placeholder="프로젝트코드를 입력하세요."
+              maxlength="20"
+            />
+          </div>
+        </div>
+        <div class="item_title">
           <div class="item">프로젝트명</div>
           <div>
             <input
@@ -136,6 +149,7 @@ export default {
   data() {
     return {
       seq: -1,
+      project_code: "",
       project_name: "",
       is_class: "N",
       memo: "",
@@ -155,8 +169,11 @@ export default {
         return "c";
       }
     },
+    c_is_verify_project_code() {
+      return this.project_code && this.project_code.length > 1;
+    },
     c_is_verify_project_name() {
-      return this.project_name && this.project_name.length > 1;
+      return this.project_name && this.project_name.length > 0;
     },
     c_member_seq() {
       console.log(this.logged_info)
@@ -169,6 +186,7 @@ export default {
   mounted() {},
   methods: {
     onRest() {
+      this.project_code = "";
       this.project_name = "";
       this.is_class = "N";
       this.memo = "";
@@ -183,6 +201,11 @@ export default {
       return false;
     },
     onModify() {
+      if (!this.c_is_verify_project_code) {
+        this.$refs.project_code.focus();
+        this.onError("프로젝트코드를 입력해주세요.");
+        return;
+      }
       if (!this.c_is_verify_project_name) {
         this.$refs.project_name.focus();
         this.onError("프로젝트명을 입력해주세요.");
@@ -197,6 +220,11 @@ export default {
     },
     onVerify() {
       // this.$log.debug(this.isCreateMode());
+      if (!this.c_is_verify_project_code) {
+        this.$refs.project_code.focus();
+        this.onError("프로젝트코드를 입력해주세요.");
+        return;
+      }
       if (!this.c_is_verify_project_name) {
         this.$refs.project_name.focus();
         this.onError("프로젝트명을 입력해주세요.");
@@ -208,6 +236,7 @@ export default {
       // this.$log.debug("on Next");
       //const bday = this.dateFormatter(this.birth_day);
       const project_info = {
+        project_code: this.project_code,
         project_name: this.project_name,
         is_class: this.is_class,
         status: this.status,
@@ -275,6 +304,7 @@ export default {
           if (result.project_info.length > 0) {
             this.onRest();
             this.seq = result.project_info[0].seq;
+            this.project_code = result.project_info[0].project_code;
             this.project_name = result.project_info[0].project_name;
             this.is_class = result.project_info[0].is_class;
             this.memo = result.project_info[0].memo;

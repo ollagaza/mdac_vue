@@ -10,15 +10,14 @@
         <div class="left_slice"></div>
         <!-- <div class="left_title sub" v-bind:class="{select: menu_id===3}" v-on:click="Menu3">- 분류관리</div>
         <div class="left_slice"></div> -->
-        <div class="left_title sub" v-bind:class="{select: menu_id==='A0'}" v-on:click="Menu0">- 코드그룹관리</div>
+        <div class="left_title" v-bind:class="{select: menu_id==='A0'}" v-on:click="Menu0">코드그룹관리</div>
         <template v-for="(item, idx) of codegroup_mnulist">
         <div class="left_slice"></div>
-        <div class="left_title subsub" v-bind:class="{select: menu_id === 'A' + item.seq}" v-on:click="Menu7(item.seq, item.codegroup_name)">- {{ item.codegroup_name }}</div>
+        <div class="left_title sub" v-bind:class="{select: menu_id === 'A' + item.seq}" v-on:click="Menu7(item.seq, item.codegroup_name)">- {{ item.codegroup_name }}</div>
         </template>
-        <div class="left_slice"></div>
-        <div class="left_title sub" v-bind:class="{select: menu_id===4}" v-on:click="Menu4">- 클래스관리</div>
       </template>
  
+      <div class="left_title" v-bind:class="{select: menu_id===4}" v-on:click="Menu4">클래스관리</div>
       <div class="left_title" v-bind:class="{select: menu_id===5}" v-on:click="Menu5">라벨링 가이드</div>
       <div class="left_title" v-bind:class="{select: menu_id===6}" v-on:click="Menu6">공지사항</div>
     </div>

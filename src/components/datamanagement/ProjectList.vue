@@ -60,6 +60,7 @@
 
           <div style="padding: 10px 0 0 0 ;">
             <div class="grid_m project header">
+              <div>프로젝트코드</div>
               <div>프로젝트명</div>
               <div>할당라벨러</div>
               <div>할당검수자</div>
@@ -77,6 +78,7 @@
             <template v-if="project_list.length > 0">
               <template v-for="(project, seq) in project_list">
                 <div class="grid_m project body">
+                  <div v-on:click="fnProjectDetail(project.seq)">{{ project.project_code }}</div>
                   <div style="align-items: left;justify-items: left !important;" v-on:click="fnProjectDetail(project.seq)">{{ project.project_name }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.labeler_str }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.checker_str }}</div>
@@ -433,7 +435,7 @@ export default {
 }
 
 .grid_m.project {
-  grid-template-columns: 350px 150px 150px 150px 100px 100px;
+  grid-template-columns: 100px 250px 150px 150px 150px 100px 100px;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;

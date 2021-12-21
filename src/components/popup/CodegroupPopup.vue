@@ -156,7 +156,7 @@ export default {
       return this.codegroup_id && this.codegroup_id.length > 1;
     },
     c_is_verify_codegroup_name() {
-      return this.codegroup_name && this.codegroup_name.length > 1;
+      return this.codegroup_name && this.codegroup_name.length > 0;
     },
     c_member_seq() {
       // console.log(this.logged_info)
