@@ -7,13 +7,13 @@
 		<div class="">
 			<h1>
 			<div style="margin:16px 0 0 320px">
-				<img src="@/assets/MDC/main_logo.png" alt="LOGO IMAGE">
+				<img src="/MDC/main_logo.png" alt="LOGO IMAGE">
 			</div>
 			</h1>
 			<h2>대메뉴</h2>
 			<h2>로그인</h2>
 			<div style="cursor:pointer;"  v-on:click="login" class="MDC_login MDC_box MDC_btnLogin">LOGIN</div>
-			<div class="logo"></div>
+			<div class="logo"><img src="/MDC/logo_visual.png"></div>
 			<div class="MTEG-DATA-CENTER">MTEG DATA CENTER</div>
 			<div class="deep">딥러닝 데이터 가공 센터</div>
 		</div>
@@ -24,7 +24,7 @@
 			<div class="content">
 				<div class="float_content left align_center fixed_width">
 					<div class="center-1-imagex">
-						<img src="@/assets/MDC/logo_visual.png"><img :src="require(`@/assets/MDC/visual_01.png`)" alt="VISUAL_01">
+						<img src="/MDC/visual_01.png" alt="">
 					</div>
 				</div>
 				<div class="float_content right">
