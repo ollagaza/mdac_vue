@@ -24,7 +24,7 @@ header {
 	min-width: 1200px;
 	width:100%;
 	height:800px;
-	background-image: url('/src/assets/MDC/main_bg.jpg');
+	background-image: url('/MDC/main_bg.jpg');
 }
 header h1 { position :absolute; left: 50px; top: 0;}
 header .MDC_login { position: absolute; right:300px; top: 0;
@@ -171,43 +171,43 @@ footer {
 	padding: 100px 100px 0 0 ;
 }
 .mteg {
-	background: url("/assets/MDC/mteglogo_off.png") no-repeat;
+	background: url("/MDC/mteglogo_off.png") no-repeat;
 	width: 55px;
 	height: 20px;
 	float: left;
 	margin: 5px 0 0 0;
 }
 .mteg:hover {
-	background: url("/assets/MDC/mteglogo_on.png") no-repeat;
+	background: url("/MDC/mteglogo_on.png") no-repeat;
 }
 .surgstory {
-	background: url("/assets/MDC/surglogo_off.png") no-repeat;
+	background: url("/MDC/surglogo_off.png") no-repeat;
 	width: 115px;
 	height: 15px;
 	float: left;
 	margin: 10px 0 0 0;
 }
 .surgstory:hover {
-	background: url("/assets/MDC/surglogo_on.png") no-repeat;
+	background: url("/MDC/surglogo_on.png") no-repeat;
 }
 .cancerrop {
-	background: url("/assets/MDC/cancerlogo_off.png") no-repeat;
+	background: url("/MDC/cancerlogo_off.png") no-repeat;
 	width: 81px;
 	height: 34px;
 	float: left;
 }
 .cancerrop:hover {
-	background: url("/assets/MDC/cancerlogo_on.png") no-repeat;
+	background: url("/MDC/cancerlogo_on.png") no-repeat;
 }
 .geein {
-	background: url("/assets/MDC/geeinlogo_off.png") no-repeat;
+	background: url("/MDC/geeinlogo_off.png") no-repeat;
 	width: 45px;
 	height: 18px;
 	float: left;
 	margin: 5px 0 0 0;
 }
 .geein:hover {
-	background: url("/assets/MDC/geeinlogo_on.png") no-repeat;
+	background: url("/MDC/geeinlogo_on.png") no-repeat;
 }
 .site-guide {
 	width:320px;
@@ -464,7 +464,7 @@ footer {
 	background-color: #13171b;
 }
 .content_layer.bg_img_heartbeat {
-	background-image: url("/assets/img/heartbeat.png");
+	background-image: url("/img/heartbeat.png");
 	background-repeat: repeat-x;
 	background-position: center top;
 }
@@ -690,7 +690,7 @@ footer {
 	height: 245px;
 	min-height: 245px;
 	background-color: #232526;
-	background-image: url("/assets/img/footer.png");
+	background-image: url("/img/footer.png");
 	background-repeat: no-repeat;
 	background-position: bottom;
 }
