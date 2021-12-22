@@ -4,8 +4,9 @@
 * {
 	margin: 0;
 	padding: 0;
-	box-sizing: content-box;
+	/* box-sizing: border-box; */
 	text-decoration: none;
+}
 }
 body {
 	font-family: "Montserrat", sans-serif;
@@ -24,10 +25,10 @@ header {
 	min-width: 1200px;
 	width:100%;
 	height:800px;
-	background-image: url('/src/assets/MDC/main_bg.jpg');
+	background-image: url('main_bg.jpg');
 }
 header h1 { position :absolute; left: 50px; top: 0;}
-header .MDC_login { position: absolute; right:300px; top: 0;
+header .login { position: absolute; right:300px; top: 0;
  }
 header h2 { position: absolute; left: -5000px; }
 
@@ -42,7 +43,7 @@ a:link, a:link:active, a:visited, a:visited:active {
 img {
 	vertical-align: top;}
 
-.MDC_box {
+.box {
   width: 80px;
   height: 30px;
   margin: 16px 0px 0;
@@ -52,7 +53,7 @@ img {
   opacity: 0.9;
   background: rgba(0, 0, 0, 0.4);
 }
-.MDC_btnLogin {
+.btnLogin {
   width: 50px;
   height: 20px;
   font-family: Montserrat;
@@ -150,7 +151,7 @@ footer {
 }
 
 .site-liner {
-	opacity: 0.5;
+	opacity: 0.2;
     border-bottom: 1px solid gray;
 }
 .footer-copyright {
@@ -171,47 +172,44 @@ footer {
 	padding: 100px 100px 0 0 ;
 }
 .mteg {
-	background: url("/assets/MDC/mteglogo_off.png") no-repeat;
+	background: url("mteglogo_off.png") no-repeat;
 	width: 55px;
 	height: 20px;
 	float: left;
-	margin: 5px 0 0 0;
 }
 .mteg:hover {
-	background: url("/assets/MDC/mteglogo_on.png") no-repeat;
+	background: url("mteglogo_on.png") no-repeat;
 }
 .surgstory {
-	background: url("/assets/MDC/surglogo_off.png") no-repeat;
+	background: url("surglogo_off.png") no-repeat;
 	width: 115px;
 	height: 15px;
 	float: left;
-	margin: 10px 0 0 0;
 }
 .surgstory:hover {
-	background: url("/assets/MDC/surglogo_on.png") no-repeat;
+	background: url("surglogo_on.png") no-repeat;
 }
 .cancerrop {
-	background: url("/assets/MDC/cancerlogo_off.png") no-repeat;
+	background: url("cancerlogo_off.png") no-repeat;
 	width: 81px;
 	height: 34px;
 	float: left;
 }
 .cancerrop:hover {
-	background: url("/assets/MDC/cancerlogo_on.png") no-repeat;
+	background: url("cancerlogo_on.png") no-repeat;
 }
 .geein {
-	background: url("/assets/MDC/geeinlogo_off.png") no-repeat;
+	background: url("geeinlogo_off.png") no-repeat;
 	width: 45px;
 	height: 18px;
 	float: left;
-	margin: 5px 0 0 0;
 }
 .geein:hover {
-	background: url("/assets/MDC/geeinlogo_on.png") no-repeat;
+	background: url("geeinlogo_on.png") no-repeat;
 }
 .site-guide {
 	width:320px;
-	height:62px;
+	height:60px;
 	display: table-cell;
 	vertical-align: middle;	 
 }
@@ -464,7 +462,7 @@ footer {
 	background-color: #13171b;
 }
 .content_layer.bg_img_heartbeat {
-	background-image: url("/assets/img/heartbeat.png");
+	background-image: url("/img/heartbeat.png");
 	background-repeat: repeat-x;
 	background-position: center top;
 }
@@ -500,7 +498,7 @@ footer {
 	max-width: 100%;
 }
 .content_layer .content_wrapper .content .float_content.fixed_width {
-	min-width: 50%;
+	min-width: : 50%;
 }
 .content_layer .content_wrapper .content .float_content.align_right {
 	text-align: right;
@@ -690,7 +688,7 @@ footer {
 	height: 245px;
 	min-height: 245px;
 	background-color: #232526;
-	background-image: url("/assets/img/footer.png");
+	background-image: url("/img/footer.png");
 	background-repeat: no-repeat;
 	background-position: bottom;
 }
