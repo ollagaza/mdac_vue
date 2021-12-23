@@ -192,7 +192,7 @@
 		</div>
 	</div>
 </div>
-	<footer>
+	<footer style="box-sizing: content-box;">
 		<div class="content_layer ">
 			<div class="content_wrapper">
 				<div class="content">
@@ -200,15 +200,15 @@
 						<div class="text footer-logo ">
 							<img src="/MDC/footer_logo.png" alt="">
 						</div>
-						<div class="left MDIC-AI"  style="box-sizing: content-box;">
+						<div class="left MDIC-AI">
 							MDIC의 데이터 라벨링은 인공지능이 데이터를 판단하고 학습할 수 있도록<br />
 							정확한 AI 모델을 위한 쉽고 빠른 데이터 확보, AI 전문가와 상담하세요.
 						</div>
-						<div class=" left footer-addr"  style="box-sizing: content-box;">
+						<div class=" left footer-addr">
 							서울특별시 마포구 성암로 330 DMC첨단산업센터 516<br />
 							support@mteg.co.kr | 대표전화 : 02-859-3585
 						</div>
-						<div class="left footer-copyright"  style="box-sizing: content-box;">
+						<div class="left footer-copyright">
 							copyright©2021 MDC . All rights reserved.
 				
 						</div>
