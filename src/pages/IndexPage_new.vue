@@ -12,7 +12,7 @@
 			</h1>
 			<h2>대메뉴</h2>
 			<h2>로그인</h2>
-			<div style="cursor:pointer;"  v-on:click="login" class="MDC_login MDC_box MDC_btnLogin">LOGIN</div>
+			<div style="cursor:pointer;box-sizing: content-box;"  v-on:click="login" class="MDC_login MDC_box MDC_btnLogin">LOGIN</div>
 			<div class="logo"><img src="/MDC/logo_visual.png"></div>
 			<div class="MTEG-DATA-CENTER">MTEG DATA CENTER</div>
 			<div class="deep">딥러닝 데이터 가공 센터</div>
@@ -200,15 +200,15 @@
 						<div class="text footer-logo ">
 							<img src="/MDC/footer_logo.png" alt="">
 						</div>
-						<div class="left MDIC-AI">
+						<div class="left MDIC-AI"  style="box-sizing: content-box;">
 							MDIC의 데이터 라벨링은 인공지능이 데이터를 판단하고 학습할 수 있도록<br />
 							정확한 AI 모델을 위한 쉽고 빠른 데이터 확보, AI 전문가와 상담하세요.
 						</div>
-						<div class=" left footer-addr">
+						<div class=" left footer-addr"  style="box-sizing: content-box;">
 							서울특별시 마포구 성암로 330 DMC첨단산업센터 516<br />
 							support@mteg.co.kr | 대표전화 : 02-859-3585
 						</div>
-						<div class="left footer-copyright">
+						<div class="left footer-copyright"  style="box-sizing: content-box;">
 							copyright©2021 MDC . All rights reserved.
 				
 						</div>
@@ -253,14 +253,10 @@
 </html>
 
 </template>
-<!--<style lang="scss" scoped>
-    @import '../../src/assets/css/app/default.css';
-    @import '../../src/assets/css/app/main.css';
-</style>-->
 
-<style scoped > 
-    @import '../../src/assets/css/app/default.css';
-    @import '../../src/assets/css/app/main.css';
+<style > 
+    @import '../assets/css/app/default.css';
+    @import '../assets/css/app/main.css';
 </style>
 <script>
 import { mapActions, mapGetters } from 'vuex';

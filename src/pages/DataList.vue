@@ -3,7 +3,10 @@
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
         <Datalist_Left v-bind:menu_id="1"></Datalist_Left>
-        <div style="flex: 2; padding-top: 40px;">
+        <div style="flex: 2; padding-top: 14px;">
+          <div style="font-weight: 600; font-size: 15pt; color: #333">
+            Data Status
+          </div>
           <div style="padding: 0 0 0 0 ;">
             <div style="display: flex;  flex-direction: row; width: 100%; height:20px;">
               <div style="flex: 2">

@@ -123,6 +123,7 @@
 
 
 <script>
+
 import apiproject from '../../api/ApiProject';
 import CodegroupPopup from '../../components/popup/CodegroupPopup';
 import BaseMixin from '../Mixins/BaseMixin';

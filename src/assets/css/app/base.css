@@ -220,7 +220,7 @@ select.text {
 }
 .left_wrapper{
   width:160px;
-  padding: 40px 5px 0 0;
+  padding: 5px 5px 0 0;
   height: 100%;
   border-right: solid 1px #ccc;
 }
