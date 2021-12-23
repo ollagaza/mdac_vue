@@ -16,7 +16,7 @@
     </div>
     <div ref="upload_drop" style="position: relative; width: 450px; height:400px;border: 1px solid #bfb6a9; margin-top: 10px;text-align: center;">
       <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <img src="/img/jiin/leaf_icon.png" ref="imgref" style="max-width: 400px;max-height: 350px;">
+        <img src="/img/datamanager/leaf_icon.png" ref="imgref" style="max-width: 400px;max-height: 350px;">
       </div>
       <div class="imgtext"  v-bind:class="{hide: isHide}" >
         이미지를 마우스로 끌어놓으세요.
@@ -101,7 +101,7 @@ export default {
         this.isHide = true;
         this.imgfilename = this.imgfile[0].name;
       } else {
-        this.$refs.imgref.src = '/img/jiin/leaf_icon.png';
+        this.$refs.imgref.src = '/img/datamanager/leaf_icon.png';
         this.isHide = false;
         this.imgfilename = '';
       }
