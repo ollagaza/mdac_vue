@@ -12,8 +12,8 @@
       <div>검수3</div>
       <div>이력조회</div>
     </div>
-    <template v-for="(item, idx) of c_job">
-      <div class="grid_m datalist body" style="align-content: center; justify-content: center;" v-on:click="onViewClick(item.seq)">
+    <template v-for="(item, index) of c_job">
+      <div class="grid_m datalist body" v-bind:class="{ bottom : c_job.length === index+1 }" style="align-content: center; justify-content: center;" v-on:click="onViewClick(item.seq)">
         <div v-bind:style="`grid-row: 1/${item.rowcount}`">
           <div class="check_wrapper" style="padding:0 10px 0 0;">
             <div class="check_box" v-bind:class="[{on: checkData[item.seq]}]" v-on:click.stop="onCheckClick(item.seq)"></div>
@@ -25,7 +25,7 @@
         <div v-bind:style="`grid-row: 1/${item.rowcount}`" style="text-align: center;">{{getDateTimeToStr(item.reg_date)}}</div>
         <template v-for="(subitem, subidx) of item.sublist">
           <div v-bind:class="{reject: subitem.reject_act === 'R'}">
-            {{subitem.rf_status === '' ? StatusToStr(subitem.rf_status) : StatusToStr(subitem.status)}} 
+            <div :class="{ 'process_work' : subitem.status.trim() === 'A0', 'process_stop' : subitem.status === '2', 'process_end' : subitem.status === '3' }">{{subitem.rf_status === '' ? StatusToStr(subitem.rf_status) : StatusToStr(subitem.status)}}</div>
             <template v-if="subitem.reject_act === 'R'">
               <span style="font-size:9px;">(재할당)</span>
             </template>
@@ -33,11 +33,12 @@
               <span style="font-size:9px;">(재작업)</span>
             </template>
           </div>
+          
           <div>{{subitem.user_name}}</div>
           <div>{{subitem.mb_name}}</div>
           <div>{{subitem.mc_name}}</div>
           <div>{{subitem.md_name}}</div>
-          <div><div class="btn" style="width: 80px; height: 25px;" v-on:click.stop="onHisClick(subitem.job_seq, item.seq)">{{subitem.rf_file_type}}이력조회</div></div>
+          <div><div class="btn history" style="width: 80px;" v-on:click.stop="onHisClick(subitem.job_seq, item.seq)">{{subitem.rf_file_type}}이력조회</div></div>
         </template>
       </div>
     </template>

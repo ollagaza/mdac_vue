@@ -3,99 +3,89 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="1"></Datalist_Left>
-        <div style="flex: 2; padding-top: 40px;">
-          <div style="padding: 0 0 0 0 ;">
-            <div style="display: flex;  flex-direction: row; width: 100%; height:40px;">
-              <div style="flex: 2; display: flex; flex-direction: row;">
-                <div style="width: 200px;">
-                  <select v-model="pro_seq" style="border: 1px solid #ccc; height: 30px; width: 190px;padding:0 20px 0 5px;" v-on:change="setDivision">
-                    <option v-for="(item, key) in list_project" v-bind:value="item.seq">{{item.project_name}}</option>
-                  </select>
-                </div>
-                <!-- <Division_sel
-                  ref="division_sel"
-                  v-bind:pro_seq ="pro_seq"
-                  v-bind:div_seq ="div_seq"
-                  v-on:onRedata="onRedata"
-                  v-on:onSeldata="onSeldata"
-                ></Division_sel> -->
-                <select v-model="category_seq" v-on:change="onDiv_change" style="border: 1px solid #ccc; height: 30px; width: 360px;padding-left: 5px;">
-                <option value="-1">전체</option>
-                <template v-for="(item, idx) in list_category">
-                  <option v-bind:value="item.seq">{{item.full_path}}</option>
-                </template>
-                </select>                
-                <div style="width: 120px;">
-                  <select v-model="work_status" v-on:change="status_change"
-                          style="border: 1px solid #ccc; height: 30px; width: 110px;padding-left: 5px;background-position: 90% center;">
-                    <option v-bind:value="'-1'">상태</option>
-                    <option v-bind:value="'A0'">작업대기</option>
-                    <option v-bind:value="'A1'">라벨중</option>
-                    <option v-bind:value="'A2'">라벨작업완료</option>
-                    <option v-bind:value="'B1'">검수1</option>
-                    <option v-bind:value="'B2'">검수1완료</option>
-                    <option v-bind:value="'B5'">검수1반려</option>
-                    <option v-bind:value="'C1'">검수2</option>
-                    <option v-bind:value="'C2'">검수2완료</option>
-                    <option v-bind:value="'C5'">검수2반려</option>
-                    <option v-bind:value="'D1'">검수3</option>
-                    <option v-bind:value="'D2'">검수3완료</option>
-                    <option v-bind:value="'D5'">검수3반려</option>
-                    <option v-bind:value="'EN'">완료</option>
-                    <option v-bind:value="'Z5'">반려전체</option>
-                  </select>
-                </div>
-                <div style="width: 60px;">
-                  <div class="btn" style="width: 50px; height: 30px;" v-on:click="onSearch">검색</div>
-                </div>
-              </div>
-              <!--              <div class="btn navy" style="right: 0; width:100px; height: 36px;">프로젝트 등록</div>-->
+        <Side_bar v-bind:menu_id="2" v-bind:menu_show=this.$route.params.menu_show></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Data Management
+          </div>
+          <div class="sub_title">
+            Data Status
+          </div>
+
+          <div class="searchWrap">
+            <div style="display: flex; flex-direction: row; justify-content: left;">
+              <select class="text selbox" v-model="pro_seq" style="border: 1px solid #ccc; width: 190px;padding:0 20px 0 5px;" v-on:change="setDivision">
+                <option v-for="(item, key) in list_project" v-bind:value="item.seq">{{item.project_name}}</option>
+              </select>
+
+              <select class="text selbox" v-model="category_seq" v-on:change="onDiv_change" style="border: 1px solid #ccc; width: 360px;padding-left: 5px;">
+              <option value="-1">전체</option>
+              <template v-for="(item, idx) in list_category">
+                <option v-bind:value="item.seq">{{item.full_path}}</option>
+              </template>
+              </select>                
+
+              <select class="text selbox"v-model="work_status" v-on:change="status_change"
+                      style="border: 1px solid #ccc; width: 110px;padding-left: 5px;background-position: 90% center;">
+                <option v-bind:value="'-1'">상태</option>
+                <option v-bind:value="'A0'">작업대기</option>
+                <option v-bind:value="'A1'">라벨중</option>
+                <option v-bind:value="'A2'">라벨작업완료</option>
+                <option v-bind:value="'B1'">검수1</option>
+                <option v-bind:value="'B2'">검수1완료</option>
+                <option v-bind:value="'B5'">검수1반려</option>
+                <option v-bind:value="'C1'">검수2</option>
+                <option v-bind:value="'C2'">검수2완료</option>
+                <option v-bind:value="'C5'">검수2반려</option>
+                <option v-bind:value="'D1'">검수3</option>
+                <option v-bind:value="'D2'">검수3완료</option>
+                <option v-bind:value="'D5'">검수3반려</option>
+                <option v-bind:value="'EN'">완료</option>
+                <option v-bind:value="'Z5'">반려전체</option>
+              </select>
+
+              <div class="btn deepgray" style="margin-left:5px;width: 10%;" v-on:click="onSearch">검색</div>
             </div>
-            <div style="display: flex;  flex-direction: row; width: 100%; height:40px;">
+            <div style="display: flex; flex-direction: row; justify-content: left;padding-top: 10px;">
               <div style="flex: 2; display: flex;  flex-direction: row; width: 100%; height:40px;">
-                <div class="check_wrapper" style="padding:0 10px 10px 0;">
+                <div class="check_wrapper" style="padding:0 10px 0 0;">
                   <div class="check_box" v-bind:class="{ on: check_all_click }" v-on:click="onAllCheckClick"></div>
                 </div>
                 <div style="width: 120px;">
-                  <select v-model="file_type" style="border: 1px solid #ccc; height: 30px; width: 110px;padding-left: 5px;" v-on:change="typechange">
+                  <select class="text selbox" v-model="file_type" style="border: 1px solid #ccc; width: 110px;padding-left: 5px; height: 33px;" v-on:change="typechange">
                     <option value="i">이미지파일</option>
                     <option value="v">동영상파일</option>
                   </select>
                 </div>
-                <div style="width: 210px;margin: 0 0 0 50px;">
-                  <select v-model="worker_id" style="border: 1px solid #ccc; height: 30px; width: 200px;padding-left: 5px;">
-                    <option value="">작업자 선택</option>
-                    <option v-for="(item, idx) in c_list_worker" v-bind:value="item.seq">{{item.user_name}}</option>
-                  </select>
-                </div>
-                <div style="width: 80px;">
-                  <select v-model="work_status_send" v-on:change="st_change" style="border: 1px solid #ccc; height: 30px; width: 70px;padding-left: 5px;">
-                    <option v-for="item in c_status" v-bind:value="item.value">{{item.name}}</option>
-                  </select>
-                </div>
+
+                <select class="text selbox" v-model="worker_id" style="border: 1px solid #ccc; width: 200px;padding-left: 5px; height: 33px;">
+                  <option value="">작업자 선택</option>
+                  <option v-for="(item, idx) in c_list_worker" v-bind:value="item.seq">{{item.user_name}}</option>
+                </select>
+
+                <select class="text selbox" v-model="work_status_send" v-on:change="st_change" style="border: 1px solid #ccc; width: 100px;padding-left: 5px; height: 33px;">
+                  <option v-for="item in c_status" v-bind:value="item.value">{{item.name}}</option>
+                </select>
+
                 <div style="width: 160px;" v-if="file_type==='v' && this.view_type !== 'v'">
-                  <select v-model="class_seq" style="border: 1px solid #ccc; height: 30px; width: 150px;padding-left: 5px;">
+                  <select class="text selbox" v-model="class_seq" style="border: 1px solid #ccc; width: 180px;padding-left: 5px; height: 33px;">
                     <option value="-1">클래스 선택</option>
                     <option v-for="(item, idx) in c_class" v-bind:value="item.seq">{{item.class_name}}</option>
                   </select>
                 </div>
-                <div style="width: 90px;" v-if="file_type==='v' && this.view_type !== 'v'">
-                  <input type="text" v-model="label_cnt" style="border: 1px solid #ccc;height: 30px; width: 60px;" v-on:keypress="onlyNumber">
+                <div style="width: 90px;padding-left: 25px;" v-if="file_type==='v' && this.view_type !== 'v'">
+                  <input class="text" type="text" v-model="label_cnt" style="border: 1px solid #ccc;width: 60px; height: 33px;" v-on:keypress="onlyNumber">
                 </div>
                 <div style="width: 80px;">
-                  <div class="btn" style="width: 70px; height: 30px;" v-on:click="onApplyClick()">작업추가</div>
+                  <div class="btn square navy" style="width: 70px; height: 33px;" v-on:click="onApplyClick()">작업추가</div>
+                </div>
+                <div style="width: 80px;">
+                  <div class="btn square red" style="width: 70px; height: 33px;" v-on:click="deleteWork">작업삭제</div>
                 </div>
               </div>
-              <div style="display: flex;  flex-direction: row; height:40px;">
-                <div style="width: 80px;">
-                  <div class="btn" style="width: 70px; height: 30px;" v-on:click="deleteWork">작업삭제</div>
-                </div>
-                <!-- <div style="width: 80px;">
-                  <div class="btn" style="width: 70px; height: 30px;">전체삭제</div>
-                </div> -->
-                <div style="width: 100px;">
-                  <select v-model="list_count" v-on:change="onPage_change" style="border: 1px solid #ccc; height: 30px; width: 100px;padding-left: 5px;">
+              <div style="display: flex;  flex-direction: row; justify-content: right;">
+                <div style="width: 120px;">
+                  <select class="text selbox" v-model="list_count" v-on:change="onPage_change" style="height: 33px; width: 120px;padding-left: 5px;">
                     <option value="1">1개씩 보기</option>
                     <option value="2">2개씩 보기</option>
                     <option value="20">20개씩 보기</option>
@@ -106,7 +96,12 @@
                   </select>
                 </div>
               </div>
+
             </div>
+          </div>
+
+          <div style="flex: 2;">
+          <div style="padding: 0 0 0 0 ;">
             <DataDetail_img ref="detail_list" v-bind:file_list="file_list" v-on:onViewClick="onViewClick" v-on:onHisClick="onHisClick" v-if="file_type!=='v'" ></DataDetail_img>
             <DataDetail_vid ref="detail_list" v-bind:file_list="file_list" v-on:onViewClick="onViewClick" v-on:onHisClick="onHisClick" v-on:onListClick="onListClick" v-if="file_type==='v' && view_type === 'l'"></DataDetail_vid>
             <DataDetail_vvv ref="detail_list"
@@ -124,13 +119,15 @@
         </div>
       </div>
     </div>
+    </div>
     <ViewHisPopup ref="viewhis"></ViewHisPopup>
     <ViewPlayerPopup ref="viewplayer"></ViewPlayerPopup>
   </div>
 </template>
 
 <script>
-import Datalist_Left from '../components/datamanagement/Datalist_Left';
+// import Datalist_Left from '../components/datamanagement/Datalist_Left';
+import Side_bar from '../components/Sidebar';
 import Division_sel from '../components/datamanagement/Division_sel';
 import apiproject from '../api/ApiProject';
 import ApiStatus from '../api/ApiStatus';
@@ -148,7 +145,8 @@ import ViewHisPopup from '../components/popup/ViewHisPopup';
 export default {
   name: 'DataDetail',
   components: {
-    Datalist_Left,
+    // Datalist_Left,
+    Side_bar,
     Division_sel,
     Pagination,
     DataDetail_img,
@@ -936,6 +934,48 @@ export default {
 <style scoped>
 .grid_m.datalist {
   grid-template-columns: 50px 250px 100px 100px 100px 100px 100px 100px 100px;
+}
+
+.searchWrap {
+  border: 0px solid #888;
+  border-radius: 5px;
+  text-align: center;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.searchWrap input {
+  /* width: 60%;
+  height: 36px;
+  border-radius: 3px;
+  padding: 0 10px;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+}
+
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
 }
 </style>
 

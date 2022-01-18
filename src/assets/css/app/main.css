@@ -1,5 +1,17 @@
-@import url('https://fonts.google.com/specimen/Montserrat');
-@import url('https://fonts.googleapis.com/earlyaccess/notosanskr.css');
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Roboto:wght@300;400;600;700&family=Montserrat:wght@500;700;900&display=swap');
+
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 100;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Thin.otf) format('opentype');}
+
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 300;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Light.otf) format('opentype');}
+
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 400;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Regular.otf) format('opentype');}
+
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 500;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Medium.otf) format('opentype');}
+
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 700;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Bold.otf) format('opentype');}
+
+@font-face {font-family: 'Noto Sans KR';font-style: normal;font-weight: 900;src: url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff2) format('woff2'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.woff) format('woff'),url(//fonts.gstatic.com/ea/notosanskr/v2/NotoSansKR-Black.otf) format('opentype');}
 
 /* * {
 	margin: 0;
@@ -13,6 +25,7 @@
 	font-weight: 500;
 	line-height: 180%;
 } */
+
 html, body {
 	width: 100%;
 	height: 100%;
@@ -24,7 +37,7 @@ header {
 	min-width: 1200px;
 	width:100%;
 	height:800px;
-	background-image: url('/MDC/main_bg.jpg');
+	background-image: url('/img/MDAC/main_bg.jpg');
 }
 header h1 { position :absolute; left: 50px; top: 0;}
 header .MDC_login { position: absolute; right:300px; top: 0;
@@ -40,7 +53,8 @@ a:link, a:link:active, a:visited, a:visited:active {
 	vertical-align: top;
 }
 img {
-	vertical-align: top;}
+	vertical-align: top;
+}
 
 .MDC_box {
   width: 80px;
@@ -55,7 +69,7 @@ img {
 .MDC_btnLogin {
   width: 50px;
   height: 20px;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px;
   font-weight: 500;
   font-stretch: normal;
@@ -80,7 +94,7 @@ header .MTEG-DATA-CENTER {
   height: 44px;
   margin: 377px 20px 6px 391px;
   position: absolute;
-  font-family: Montserrat;
+  font-family: 'Montserrat', sans-serif;
   font-size: 60.5px;
   font-weight: bold;
   font-stretch: normal;
@@ -95,7 +109,7 @@ header .deep {
   height: 28px;
   margin: 442px 20px 6px 391px;
   position: absolute;
-  font-family: "Noto Sans KR", Arial, "sans-serif";
+  font-family: 'Noto Sans KR', sans-serif;
   font-size: 30.5px;
   font-weight: 300;
   font-stretch: normal;
@@ -116,29 +130,15 @@ footer {
 
 
 .footer-logo {
-	width: 240px;
-	height: 51px;
-	padding: 98px 11px 22px 50px;
-}
-.footer-addr {
-	width: 300px;
-	height: 34px;
-	padding: 18px 11px 10px 50px;
-	font-family: "Noto Sans KR", Arial, "sans-serif";
-	font-size: 12px;
-	font-weight: normal;
-	font-stretch: normal;
-	font-style: normal;
-	line-height: 1.67;
-	letter-spacing: normal;
-	text-align: left;
-	color: #bbb;
+	/* width: 240px;
+	height: 51px; */
+	padding: 98px 11px 18px 50px;
 }
 .MDIC-AI {
-	padding: 38px 11px 62px 50px;
-	width: 420px;
+	padding: 0px 11px 80px 50px;
+	width: 440px;
 	height: 34px;
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 12px;
 	font-weight: normal;
 	font-stretch: normal;
@@ -149,15 +149,29 @@ footer {
 	color: #888;
 }
 
+.footer-addr {
+	width: 600px;
+	height: 34px;
+	padding: 48px 11px 10px 50px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+	font-stretch: normal;
+	font-style: normal;
+	line-height: 1.67;
+	letter-spacing: normal;
+	text-align: left;
+	color: #bbb;
+}
 .site-liner {
 	opacity: 0.5;
     border-bottom: 1px solid gray;
 }
 .footer-copyright {
-	padding: 0px 11px 22px 50px;
-	width: 280px;
+	padding: 30px 11px 22px 50px;
+	width: 600px;
 	height: 20px;
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 12px;
 	font-weight: normal;
 	font-stretch: normal;
@@ -171,43 +185,43 @@ footer {
 	padding: 100px 100px 0 0 ;
 }
 .mteg {
-	background: url("/MDC/mteglogo_off.png") no-repeat;
+	background: url("/img/MDAC/mteglogo_off.png") no-repeat;
 	width: 55px;
 	height: 20px;
 	float: left;
 	margin: 5px 0 0 0;
 }
 .mteg:hover {
-	background: url("/MDC/mteglogo_on.png") no-repeat;
+	background: url("/img/MDAC/mteglogo_on.png") no-repeat;
 }
 .surgstory {
-	background: url("/MDC/surglogo_off.png") no-repeat;
+	background: url("/img/MDAC/surglogo_off.png") no-repeat;
 	width: 115px;
 	height: 15px;
 	float: left;
 	margin: 10px 0 0 0;
 }
 .surgstory:hover {
-	background: url("/MDC/surglogo_on.png") no-repeat;
+	background: url("/img/MDAC/surglogo_on.png") no-repeat;
 }
 .cancerrop {
-	background: url("/MDC/cancerlogo_off.png") no-repeat;
+	background: url("/img/MDAC/cancerlogo_off.png") no-repeat;
 	width: 81px;
 	height: 34px;
 	float: left;
 }
 .cancerrop:hover {
-	background: url("/MDC/cancerlogo_on.png") no-repeat;
+	background: url("/img/MDAC/cancerlogo_on.png") no-repeat;
 }
 .geein {
-	background: url("/MDC/geeinlogo_off.png") no-repeat;
+	background: url("/img/MDAC/geeinlogo_off.png") no-repeat;
 	width: 45px;
 	height: 18px;
 	float: left;
 	margin: 5px 0 0 0;
 }
 .geein:hover {
-	background: url("/MDC/geeinlogo_on.png") no-repeat;
+	background: url("/img/MDAC/geeinlogo_on.png") no-repeat;
 }
 .site-guide {
 	width:320px;
@@ -219,7 +233,7 @@ footer {
 .center-1-image {
 	margin: 260px 319px 16px 0px;
 	height: 21px;
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 20px;
 	font-weight: 350;
 	font-stretch: normal;
@@ -272,7 +286,7 @@ footer {
 }
 .center-2-image {
 	margin: 0px 45px 0px 0px;
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 20px;
 	font-weight: 350;
 	font-stretch: normal;
@@ -300,7 +314,7 @@ footer {
 }
 
 .center-2-text2 {
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 20px;
 	font-weight: 350;
 	font-stretch: normal;
@@ -313,7 +327,7 @@ footer {
 }
 .center-3-image {
 	margin: 0 0 0 116px;
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 20px;
 	font-weight: 350;
 	font-stretch: normal;
@@ -340,7 +354,7 @@ footer {
 	margin: auto 0;
 }
 .center-3-text2 {
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 20px;
 	font-weight: 350;
 	font-stretch: normal;
@@ -353,7 +367,7 @@ footer {
 .center-4 {
 	/* width: 199px;
 	height: 18px; */
-	font-family: "Noto Sans KR", Arial, "sans-serif";
+	font-family: 'Noto Sans KR', sans-serif;
 	font-size: 18px;
 	font-weight: 300;
 	font-stretch: normal;
@@ -395,7 +409,7 @@ footer {
   .center-6-sub {
 	  width: 480px;
 	  height: 19px;
-	  font-family: "Noto Sans KR", Arial, "sans-serif";
+	  font-family: 'Noto Sans KR', sans-serif;
 	  font-size: 20px;
 	  font-weight: 350;
 	  font-stretch: normal;
@@ -756,5 +770,3 @@ footer {
 	float: left;
 	padding-top: 32px;
 }
-
-

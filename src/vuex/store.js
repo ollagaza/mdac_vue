@@ -29,6 +29,8 @@ export default new Vuex.Store({
     user_data: {
       menu_mode: null,
       stored: {},
+      menu_id: 1,
+      sub_menu_id: 2222,
     },
     operation_options: null,
   },

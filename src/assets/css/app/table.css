@@ -59,21 +59,50 @@ tr.content:hover td.title{
 
 .grid_m {
   display: grid;
+  height: 62px;
   padding: 0px 0 0px 0;
   align-items: center;
   justify-items: center;
   grid-auto-rows: minmax(40px, auto);
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #f7f7f7;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.85;
+  letter-spacing: normal;
+  text-align: center;
+  color: #888;
 }
 .grid_m.header {
-  background-color: #eee;
+  border-radius: 10px 10px 0 0;
+  background-color: #fff;
 }
 .grid_m.body {
+  background-color: #fff;
   cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  font-stretch: normal;
+  font-style: normal;
+  /* line-height: 3.23; */
+  letter-spacing: normal;
+  color: #555;
+  /* border-radius: 0px 0px 10px 10px; */
+}
+.grid_m.bottom {
+  background-color: #fff;
+  border-radius: 0px 0px 10px 10px;
 }
 .grid_m.body:hover {
-  background-color: #dddddd;
+  background-color: #F1F1F8;
 }
 .grid_m.nodata {
   grid-template-columns: 1000px;
+}
+.grid_m.subbody {
+  background-color:#e8e8e8;
+  border: 1px solid #f7f7f7;  
 }

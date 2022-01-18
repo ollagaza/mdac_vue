@@ -1,5 +1,4 @@
 import IndexPage from '../pages/IndexPage';
-import IndexPage2 from '../pages/IndexPage_new';
 import IndexTest from '../pages/IndexTest';
 import DashBoard from '../pages/DashBoard';
 import Project from '../components/datamanagement/ProjectList';
@@ -12,12 +11,15 @@ import StatisticsProject from '../components/statistics/StatisticsProject';
 import Chart from '../components/statistics/ChartTest';
 import MemberList from '../components/member/MemberList';
 import Board from '../components/board/Board';
+import DataStatus from '../pages/DataList';
+import DataDivision from '../pages/DataDivison';
+import DataDetail from '../pages/DataDetail';
 
 const router_list = [
   {
     path: '/',
     name: 'index',
-    component: IndexPage2,
+    component: IndexPage,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
@@ -30,13 +32,13 @@ const router_list = [
     path: '/dashboard',
     name: 'dashboard',
     component: DashBoard,
-    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
+    meta: { navigation: '', border_line: '', menu_id: '1', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
     path: '/project',
     name: 'project',
     component: Project,
-    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: false, helpCode: 'main' },
+    meta: { navigation: '', border_line: '', menu_id: '3', no_pad: true, guest: true, login: false, helpCode: 'main' },
   },
   {
     path: '/division',
@@ -91,7 +93,25 @@ const router_list = [
     name: 'board',
     component: Board,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: true, helpCode: 'main' },
-  }
+  },
+  {
+    path: '/datastatus',
+    name: 'datastatus',
+    component: DataStatus,
+    meta: { navigation: '', border_line: '', menu_id: '1', no_pad: true, guest: true, login: true, helpCode: 'main' },
+  },
+  {
+    path: '/datadivision',
+    name: 'datadivision',
+    component: DataDivision,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: true, helpCode: 'main' },
+  },
+  {
+    path: '/datadetail',
+    name: 'datadetail',
+    component: DataDetail,
+    meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: true, helpCode: 'main' },
+  },  
 ];
 
 

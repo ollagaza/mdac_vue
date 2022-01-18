@@ -80,7 +80,7 @@
                   <div class="div_sp_img">
                     <div>
                       <div class="zoom-out-data">
-                        <img src="/img/datamanager/sample1.jpg" style="max-width: 1000px;">
+                        <img src="/img/MDAC/sample1.jpg" style="max-width: 1000px;">
                       </div>
                     </div>
                   </div>
@@ -90,7 +90,7 @@
                   <div class="div_sp_img">
                     <div>
                       <div style="flat:left; width:250px;">
-                        <img src="/img/datamanager/sample1.jpg" style="max-width: 700px;">
+                        <img src="/img/MDAC/sample1.jpg" style="max-width: 700px;">
                       </div>
                     </div>
                   </div>
@@ -265,11 +265,11 @@ export default {
   margin: 6px 10px 0 0;
   width: 14px;
   height: 11px;
-  background-image: url('/img/datamanager/report_arrow_gray.png');
+  background-image: url('/img/MDAC/report_arrow_gray.png');
 }
 
 .chart.on > .chart_img {
-  background-image: url('/img/datamanager/report_arrow_white.png');
+  background-image: url('/img/MDAC/report_arrow_white.png');
 }
 
 .chart > .chart_line {

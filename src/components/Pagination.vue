@@ -126,33 +126,33 @@ export default {
 
 .move.first {
   margin-right: 6px;
-  background-image: url(/img/datamanager/page/page_first_btn.png);
+  background-image: url(/img/MDAC/page/page_first_btn.png);
 }
 .move.prev {
-  background-image: url(/img/datamanager/page/page_prev_btn.png);
+  background-image: url(/img/MDAC/page/page_prev_btn.png);
 }
 .move.next {
   margin-left: 20px;
-  background-image: url(/img/datamanager/page/page_next_btn.png);
+  background-image: url(/img/MDAC/page/page_next_btn.png);
 }
 .move.last {
   margin-left: 6px;
-  background-image: url(/img/datamanager/page/page_end_btn.png);
+  background-image: url(/img/MDAC/page/page_end_btn.png);
 }
 
 .move.first:hover {
   margin-right: 6px;
-  background-image: url(/img/datamanager/page/page_first_active_btn.png);
+  background-image: url(/img/MDAC/page/page_first_active_btn.png);
 }
 .move.prev:hover {
-  background-image: url(/img/datamanager/page/page_prev_active_btn.png);
+  background-image: url(/img/MDAC/page/page_prev_active_btn.png);
 }
 .move.next:hover {
   margin-left: 20px;
-  background-image: url(/img/datamanager/page/page_next_active_btn.png);
+  background-image: url(/img/MDAC/page/page_next_active_btn.png);
 }
 .move.last:hover {
-  background-image: url(/img/datamanager/page/page_end_active_btn.png);
+  background-image: url(/img/MDAC/page/page_end_active_btn.png);
 }
 .paging_wrapper {
   display: flex;

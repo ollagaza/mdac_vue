@@ -9,22 +9,94 @@
 <template>
   <div class="layout">
     <div class="layout2" style="width: 100%;">
-      <div style="" >
-        <!-- <div class="left_menu">
-          <div class="left_wrapper">
-            <div class="left_title">Data Status</div>
-            <div class="left_slice"></div>
-            <div class="left_title">Project Manager</div>
+      <div style="display:flex; flex-direction: row;" >
+        <Side_bar v-bind:menu_id="1"></Side_bar>
+        <div class="content_layout">
+          <div style="font-weight: 600; font-size: 15pt; color: #333;">
+            <!-- Dashboard -->
           </div>
-        </div> -->
-        <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
-            Dashboard
+
+          <!-- user dashboard -->
+          <div v-if="member_count.length > 0" style="flex: 2; margin-top:10px;" class="Rectangle_user">
+            <div>
+              <div style="height: fit-content;display: flex; flex-direction: row;">
+                <div class="user_title">작업자현황</div>
+                <div style="flex: 1"></div>
+                <div class="btn_more pointer" v-on:click="memberGo()"><img src="/img/MDAC/arrow.png"></div>
+              </div>
+              <div class="user_line"></div>
+              <div style="height: fit-content;display: flex; flex-direction: row;">
+                <div class="user_content_title" style="margin: 0 0 19px 19px;">총 작업자</div>
+                <div class="user_content" style="float:right;">{{ member_count[0].total }}</div>
+                <div class="user_line2"></div>
+                <div class="user_content_title">미할당</div>
+                <div class="user_content">{{ member_count[0].not_work }}</div>
+                <div class="user_line2"></div>
+                <div class="user_content_title">라벨러</div>
+                <div class="user_content">{{ member_count[0].labeler }}</div>
+                <div class="user_line2"></div>
+                <div class="user_content_title">검수자</div>
+                <div class="user_content" style="margin: 0 15px 20px 0;" >{{ member_count[0].checker }}</div>
+              </div>
+              <!-- <div class="grid_m dashboard header">
+                <div>총작업자</div>
+                <div class="grid_m worker_value">{{ member_count[0].total }}</div>
+                <div>미할당</div>
+                <div class="grid_m worker_value">{{ member_count[0].not_work }}</div>
+              </div>
+              <div class="grid_m dashboard header">
+                <div>라벨러</div>
+                <div class="grid_m worker_value">{{ member_count[0].labeler }}</div>
+                <div>검수자</div>
+                <div class="grid_m worker_value">{{ member_count[0].checker }}</div>
+              </div> -->
+
+            </div>
           </div>
           
-          <div v-if="statistics_list.length > 0" class="dashboard" style="height: fit-content;display: flex; flex-direction: row;justify-content:space-between;">
+          <!-- project dashboard -->
+          <div v-if="statistics_list.length > 0" class="dashboard">
           <template v-for="(pStatistics, index) in statistics_list">
-            <div class="dashboard_border" style="width:49%;padding: 5px 0 0 0;margin-top:10px;">
+            <div v-if="member_count.length > 0" style="flex: 2; margin-top:10px;" class="Rectangle_project">
+              <div><!--  v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' } -->
+                <div style="height: fit-content;display: flex; flex-direction: row;">
+                  <div class="project_title">{{ pStatistics.project_name }}</div>
+                  <div style="flex: 1"></div>
+                  <div class="btn_more pointer" v-on:click="projectGo(`${pStatistics.project_name}`)"><img src="/img/MDAC/arrow.png"></div>
+                </div>
+                <div class="project_line"></div>
+                <div style="height: fit-content;display: flex; flex-direction: row;"> 
+                  <div class="project_content_title"><span style="color:#ffb1c1;font-size:12px;padding-right:5px;">●</span> 전체 라벨링 데이터</div>
+                  <div class="project_content" style="margin: 0 0 20px 0;">{{ pStatistics.label_total }}</div>
+                  <div class="project_line2"></div>
+                  <div class="project_content_title" style="margin: 0 0 19px 0px;"><span style="color:#b71c1c;font-size:12px;padding-right:5px;">●</span> 반려데이터</div>
+                  <div class="project_content">{{ pStatistics.label_reject }}</div>
+                </div>
+                <div class="project_line"></div>
+                <div style="height: fit-content;display: flex; flex-direction: row;">
+                  <div class="project_content_title"><span style="color:#a3e0e0;font-size:12px;padding-right:5px;">●</span> 라벨링 완료</div>
+                  <div class="project_content" style="margin: 0 0 20px 0;">{{ pStatistics.label_complete }}</div>
+                  <div class="project_line2"></div>
+                  <div class="project_content_title" style="margin: 0 0 19px 0px;"><span style="color:#311b92;font-size:12px;padding-right:5px;">●</span> 검수완료</div>
+                  <div class="project_content" >{{ pStatistics.check_complete }}</div>
+                </div>
+                <!-- <div class="grid_m dashboard header">
+                  <div>총작업자</div>
+                  <div class="grid_m worker_value">{{ member_count[0].total }}</div>
+                  <div>미할당</div>
+                  <div class="grid_m worker_value">{{ member_count[0].not_work }}</div>
+                </div>
+                <div class="grid_m dashboard header">
+                  <div>라벨러</div>
+                  <div class="grid_m worker_value">{{ member_count[0].labeler }}</div>
+                  <div>검수자</div>
+                  <div class="grid_m worker_value">{{ member_count[0].checker }}</div>
+                </div> -->
+
+              </div>
+            </div>
+
+            <!-- <div class="dashboard_border" style="width:49%;padding: 5px 0 0 0;margin-top:10px;">
               <div style="font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
                 <div style="font-weight: 540;padding: 5px 5px 5px 10px;">{{ pStatistics.project_name }}</div>
                 <div style="flex: 1"></div>
@@ -42,37 +114,14 @@
                 <div>검수완료</div>
                 <div class="grid_m project_value">{{ pStatistics.check_complete }}</div>
               </div>
-            </div>
+            </div> -->
           </template>
           </div>
 
-          <div v-if="member_count.length > 0" style="flex: 2; margin-top:10px;" class="dashboard_border">
-            <div>
-              <div style="padding: 5px 0 0 0 ;font-weight: 600; font-size: 11pt; color: #333; height: fit-content;display: flex; flex-direction: row;">
-                <div style="font-weight: 540;padding: 5px 5px 5px 10px;">작업자현황</div>
-                <div style="flex: 1"></div>
-                <div style="padding: 5px 10px 5px 5px;cursor:pointer;font-weight:300; font-size: 9pt;" v-on:click="memberGo()">더보기 ></div>
-              </div>
-              <div class="grid_m dashboard header">
-                <div>총작업자</div>
-                <div class="grid_m worker_value">{{ member_count[0].total }}</div>
-                <div>미할당</div>
-                <div class="grid_m worker_value">{{ member_count[0].not_work }}</div>
-              </div>
-              <div class="grid_m dashboard header">
-                <div>라벨러</div>
-                <div class="grid_m worker_value">{{ member_count[0].labeler }}</div>
-                <div>검수자</div>
-                <div class="grid_m worker_value">{{ member_count[0].checker }}</div>
-              </div>
-            </div>
-          </div>
+          <!-- <div style="flex: 2; margin:20px 0 20px 0;" class="dashboard_border"> -->
 
-          <div style="flex: 2; margin:20px 0 20px 0;" class="dashboard_border">
-
-          <template>  
-            <div style="height:20px;"></div>            
-            <ChartPage 
+          <template>            
+            <ChartPage style="background-color: #fff;" class="Rectangle_chart" 
               ref="chartpage" 
               chartData="chartData" 
               v-bind:statistics_list="statistics_list" 
@@ -102,11 +151,13 @@ import apiuser from '../api/ApiUser';
 import { ko } from 'vuejs-datepicker/dist/locale';
 import BaseMixin from '../components/Mixins/BaseMixin';
 import moment from 'moment/moment';
+import Side_bar from '../components/Sidebar';
 
 export default {
   name: 'Dashboard',
   components: {
     ChartPage,
+    Side_bar,
   },
   mixins: [BaseMixin],
   data() {
@@ -123,7 +174,8 @@ export default {
       status: '1',              // 프로젝트 진행상태(1:진행/2:중지/3:완료)
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
-};
+      menu_show: false,
+    };
   },
   computed: {
     ...mapGetters(['is_logged']),
@@ -197,23 +249,7 @@ export default {
 </script>
 
 <style scoped>
-.layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding: 0;
-  flex: 1;
-  height: fit-content;
-}
-.layout2 {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  margin-top: 0px;
-}
-
-.grid_m.body {
+/* .grid_m.body {
   cursor: pointer;
 }
 .grid_m.body:hover {
@@ -222,14 +258,17 @@ export default {
 
 .grid_m.dashboard {
   grid-template-columns: 1fr 1fr 1fr 1fr;
-}
+} */
 
 .dashboard {
-  display: grid;
-  flex-wrap: wrap;
-  
+  width: 1140px;
+  display: flex;
+  flex-wrap: wrap; /*줄 바꿈*/  
 }
 
+.dashboard div{
+  /* margin: 0 38px 5px 0; */
+}
 /* .test.testc {
   grid-template-columns: 600px 600px;
 } */
@@ -247,4 +286,155 @@ export default {
   border-radius: 2px;
   box-shadow: 3px 3px 3px 3px lightgray;
 }
+.Rectangle_user {
+  width: 100%;
+  height: 100px;
+  margin: 0px 0 20px 0;
+  padding: 19px 0 19px 0;
+  border-radius: 10px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  background-color: #5f5f74;
+}
+.Rectangle_project {
+  width: 530px;
+  max-width: 530px;
+  height: 149px;
+  margin: 20px 40px 20px 0;
+  padding: 19px 0 0;
+  border-radius: 10px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  background-color: #fff;
+}
+.user_line {
+  width: 100%;
+  height: 1px;
+  margin: 0 0 0;
+  background-color: #77778f;
+}
+
+.user_line2 {
+  width: 1px;
+  height: 49px;
+  margin: 0 19px 0;
+  background-color: #77778f;
+}  
+
+.project_line {
+  width: 100%;
+  height: 1px;
+  /* margin: 9px 0 0; */
+  background-color: #bbb;
+}
+
+.project_line2 {
+  width: 1px;
+  height: 49px;
+  margin: 0px 19px 0;
+  background-color: #ddd;
+}
+.user_title {
+  width: 100px;
+  height: 14px;
+  margin: 0 153px 17px 20px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.project_title {
+  width: 200px;
+  height: 14px;
+  margin: 0 153px 17px 20px;
+  /* padding: 0 0 0 20px; */
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: left;
+  color: #444;
+}
+
+.user_content_title {
+  width: 250px;
+  height: 14px;
+  margin: 0 0 19px 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.69;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}  
+
+.project_content_title {
+  width: 250px;
+  height: 30px;
+  margin: 0 0 19px 19px;
+  padding: 12px 0 0 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.0;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+
+.user_content {
+  height: 14px;
+  margin: 0 0 20px 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.69;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+.project_content {
+  height: 14px;
+  margin: 0 15px 20px 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 3.69;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+.btn_more {
+  padding: 0 10px 5px 5px;
+  font-weight:600; 
+  font-size: 11pt;
+  line-height: 1;
+  color: #888;
+}
+.blue_circle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  background: #311b92;
+  text-align: center;;
+}
 </style>
+

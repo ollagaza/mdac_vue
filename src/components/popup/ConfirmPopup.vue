@@ -131,7 +131,7 @@ export default {
         this.is_complete = true;
         this.auto_close = false;
         if (is_error) {
-          this.popup_image = '/img/renewal/drive/mark.png';
+          this.popup_image = '/img/renewal/MDAC/mark.png';
         } else {
           this.popup_image = null;
         }

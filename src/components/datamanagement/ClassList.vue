@@ -10,36 +10,38 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="4"></Datalist_Left>
-        <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
-            클래스 리스트
+        <Side_bar v-bind:menu_id="5"></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Data Management
           </div>
-
+          <div class="sub_title">
+            Class Manager
+          </div>
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnClassList(1)">
+              <select class="text selbox" v-model="project_seq" style="width: 240px;" @change="fnClassList(1)">
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
 
-              <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnClassList(1)">
+              <select class="text selbox" v-model="is_used" style="width: 130px;" @change="fnClassList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">중지중</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
+              <select class="text selbox" v-model="search_type" style="width: 160px;">
                 <option value="class_name" selected=true>클래스명</option>
                 <option value="class_id">클래스코드</option>
               </select>
 
-              <input type="text" v-model="keyword" @keyup.enter="fnClassList(1)" />
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnClassDetail('')">등록</div>
+              <input type="text" class="search input" v-model="keyword" @keyup.enter="fnClassList(1)" />
+              <div class="btn deepgray" style="margin-left:5px;width:80px;" v-on:click="fnClassList(1)">검색</div>
+              <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="fnClassDetail('')">등록</div>
             </div>
           </div>
 
@@ -50,13 +52,13 @@
                 <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
               </div>
 
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('Y')">사용중</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('N')">사용중지</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="class_change('D')">삭제</div>
+              <div class="btn square navy" style="margin-left:5px;width:80px;" v-on:click="class_change('Y')">사용중</div>
+              <div class="btn square" style="margin-left:5px;width:80px;" v-on:click="class_change('N')">사용중지</div>
+              <div class="btn square red" style="margin-left:5px;width:80px;" v-on:click="class_change('D')">삭제</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="list_count" style="width: 120px;" @change="fnClassList(1)">
+                <select class="text selbox" v-model="list_count" style="width: 120px;height: 33px;" @change="fnClassList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -77,20 +79,20 @@
             </div>
 
             <template v-if="class_list.length === 0">
-              <div class="grid_m class nodata">
+              <div class="grid_m class nodata bottom">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="class_list.length > 0">
-              <template v-for="(pClass, seq) in class_list">
-                <div class="grid_m class body">
+              <template v-for="(pClass, index) in class_list">
+                <div class="grid_m class body" v-bind:class="{ bottom : class_list.length === index+1 }">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
                   <div class="check_box" v-bind:class="[{on: checkData[pClass.seq]}]" v-on:click="onCheckClick(pClass.seq)"></div>
                   <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.project_name }}</div>
                   <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.class_id }}</div>
                   <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.class_name }}</div>
-                  <div v-on:click="fnClassDetail(pClass.seq)"><div :class="{ 'process_progress' : pClass.is_used === 'Y', 'process_stop' : pClass.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnClassList(1)">{{ pClass.is_used_str }}</div></div>
+                  <div v-on:click="fnClassDetail(pClass.seq)"><div :class="{ 'process_work' : pClass.is_used === 'Y', 'process_stop' : pClass.is_used !== 'Y' }" style="margin-left:5px;width:60px;" v-on:click="fnClassList(1)">{{ pClass.is_used_str }}</div></div>
                   <div v-on:click="fnClassDetail(pClass.seq)">{{ pClass.reg_date_dt }}</div>
                 </div>
               </template>
@@ -120,14 +122,14 @@ import apiproject from '../../api/ApiProject';
 import ClassPopup from '../../components/popup/ClassPopup';
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
-import Datalist_Left from './Datalist_Left';
+import Side_bar from '../../components/Sidebar';
 import Pagination from '../../components/Pagination';
 
 export default {
   name: 'ClassList',
   components: {
     ClassPopup,
-    Datalist_Left,
+    Side_bar,
     Pagination,
   },
   mixins: [BaseMixin],
@@ -422,7 +424,7 @@ export default {
 
 <style scoped>
 .searchWrap {
-  border: 1px solid #888;
+  border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
   padding: 10px 10px 10px 10px;
@@ -430,16 +432,70 @@ export default {
   margin-top: 5px;
 }
 .searchWrap input {
-  width: 60%;
+  /* width: 60%;
   height: 36px;
   border-radius: 3px;
   padding: 0 10px;
-  border: 1px solid #888;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
 }
+
+.search.input{
+  background-image: url('/img/MDAC/search.png');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  outline: none;
+  padding-left: 40px
+}
+
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+.pagination {
+  margin: 20px 0 0 0;
+  text-align: center;
+}
+.first, .prev, .next, .last {
+  border: 0px solid #ccc;
+  margin: 0 5px;
+}
+.pagination span {
+  display: inline-block;
+  padding: 0 5px;
+  color: #333;
+}
+.pagination a {
+  text-decoration: none;
+  display: inline-blcok;
+  padding: 0 5px;
+  color: #666;
+}
+
 .grid_m.class {
-  grid-template-columns: 50px 250px 150px 250px 150px 150px;
+  grid-template-columns: 50px 300px 150px 300px 150px 150px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 1100px;
 }
 </style>

@@ -50,7 +50,6 @@
     extends: Bar, // 세로: HorizontalBar
     props: ['chartData','statistics_list','project_list', 'chart_title', 'tooltips_flag', 'search_seq', 'search_type', 'project_seq','start_date','end_date','worker','status'],
     mixins: [BaseMixin],
-
     
     data () {
       return {   

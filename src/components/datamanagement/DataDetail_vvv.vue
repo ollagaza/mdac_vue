@@ -38,8 +38,8 @@
         </div>
         <div></div>
       </div>
-      <template v-for="(subitem, subidx) of item.sublist">
-        <div class="grid_m datalist body" style="align-content: center; justify-content: center;">
+      <template v-for="(subitem, index) of item.sublist">
+        <div class="grid_m datalist body" v-bind:class="{ bottom : item.sublist.length === index+1 }" style="align-content: center; justify-content: center;">
           <template v-if="item.rf_seq !== ''">
             <div>
               <div class="check_wrapper" style="padding:0 10px 0 0;">
@@ -52,7 +52,8 @@
             </div>
             <div>{{getDateTimeToStr(subitem.rf_reg_date)}}</div>
             <div v-bind:class="{reject: subitem.reject_act==='R'}">
-              {{subitem.now_status !== null ? StatusToStr(subitem.now_status) : StatusToStr(subitem.status)}}
+              <div :class="{ 'process_work' : subitem.status.trim() === 'A0', 'process_stop' : subitem.status === '2', 'process_end' : subitem.status === '3' }">
+              {{subitem.now_status !== null ? StatusToStr(subitem.now_status) : StatusToStr(subitem.status)}}</div>
               <template v-if="subitem.reject_act==='R'">
                 <span style="font-size:9px">(재할당)</span>
               </template>
@@ -66,7 +67,7 @@
             <div>{{subitem.mb_name}}</div>
             <div>{{subitem.mc_name}}</div>
             <div>{{subitem.md_name}}</div>
-            <div><div class="btn" style="width: 80px; height: 25px;" v-on:click="onHisClick(subitem.view_seq+'_'+subitem.reject_seq+'_'+'_'+subitem.rf_file_type)">이력조회</div></div>
+            <div><div class="btn history" style="width: 80px;" v-on:click="onHisClick(subitem.view_seq+'_'+subitem.reject_seq+'_'+'_'+subitem.rf_file_type)">이력조회</div></div>
           </template>
           <template v-else>
             <div></div>

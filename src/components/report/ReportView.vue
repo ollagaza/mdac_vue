@@ -75,7 +75,7 @@
               <div class="div_sp_img">
                 <div>
                   <div style="flat:left; width:250px;">
-                    <img src="/img/datamanager/sample1.jpg" style="max-width: 1000px;">
+                    <img src="/img/MDAC/sample1.jpg" style="max-width: 1000px;">
                   </div>
                 </div>
               </div>
@@ -85,7 +85,7 @@
               <div class="div_sp_img">
                 <div>
                   <div style="flat:left; width:250px;">
-                    <img src="/img/datamanager/sample1.jpg" style="max-width: 1000px;">
+                    <img src="/img/MDAC/sample1.jpg" style="max-width: 1000px;">
                   </div>
                 </div>
               </div>

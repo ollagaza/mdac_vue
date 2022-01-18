@@ -433,7 +433,7 @@ export default {
         return;
       }
       // const options = {};
-      // options.popup_image = '/img/renewal/drive/mark.png';
+      // options.popup_image = '/img/renewal/MDAC/mark.png';
       const check = this.user_id.replace(/[a-zA-Z0-9]/gi, '');
       const user_id = this.user_id.replace(/[^a-zA-Z0-9]/gi, '');
       // alert(check + ',' +user_id);

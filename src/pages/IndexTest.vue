@@ -2,7 +2,7 @@
   <div class="layout">
     <div style="position:relative; width: 1200px; height:100%; left: 0px; padding-top: 10px;">
       <div style="height: 100%; background-color:#000;">
-          <img src='/img/datamanager/intro.jpg'>
+          <img src='/img/MDAC/intro.jpg'>
       </div>
     </div>
   </div>

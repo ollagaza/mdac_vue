@@ -10,32 +10,35 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="2"></Datalist_Left>
-        <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
-            프로젝트 리스트
+        <Side_bar v-bind:menu_id="3"></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Data Management
+          </div>
+          <div class="sub_title">
+            Project Manager
           </div>
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="status" style="width: 160px;height: 36px;" @change="fnProjectList(1)">
+              <select class="text selbox" v-model="status" style="width: 160px;" @change="fnProjectList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="1">진행중</option>
                 <option value="2">중지중</option>
                 <option value="3">종료</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 180px;height: 36px;">
+              <select class="text selbox" v-model="search_type" style="width: 180px;">
                 <option value="project_name" selected=true>프로젝트명</option>
                 <option value="LABELER">라벨러</option>
                 <option value="CHECKER">검수자</option>
               </select>
 
-              <input type="text" v-model="keyword" @keyup.enter="fnProjectList(1)" />
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnProjectList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:100px; height: 36px;" v-on:click="fnProjectDetail('')">프로젝트등록</div>
-              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="Menu3">분류관리</div>
-              <div class="btn navy" style="margin-left:5px;width:90px; height: 36px;" v-on:click="Menu4">클래스관리</div>
+              <input type="text" class="search input" v-model="keyword" @keyup.enter="fnProjectList(1)" />
+              <div class="btn deepgray" style="margin-left:5px;width:80px;" v-on:click="fnProjectList(1)">검색</div>
+              <div class="btn reg" style="margin-left:5px;width:100px;" v-on:click="fnProjectDetail('')">프로젝트등록</div>
+              <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="Menu3">분류관리</div>
+              <div class="btn reg" style="margin-left:5px;width:90px;" v-on:click="Menu4">클래스관리</div>
             </div>
           </div>
 
@@ -48,7 +51,7 @@
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="list_count" style="width: 120px;" @change="fnProjectList(1)">
+                <select class="text selbox" v-model="list_count" style="width: 120px;height: 33px;" @change="fnProjectList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -70,21 +73,21 @@
             </div>
 
             <template v-if="project_list.length === 0">
-              <div class="grid_m project nodata">
+              <div class="grid_m project nodata bottom">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="project_list.length > 0">
-              <template v-for="(project, seq) in project_list">
-                <div class="grid_m project body">
+              <template v-for="(project, index) in project_list">
+                <div class="grid_m project body" v-bind:class="{ bottom : project_list.length === index+1 }">
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.project_code }}</div>
                   <div style="align-items: left;justify-items: left !important;" v-on:click="fnProjectDetail(project.seq)">{{ project.project_name }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.labeler_str }}</div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.checker_str }}</div>
-                  <div v-on:click="fnProjectDetail(project.seq)"><div :class="{ 'process_progress' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnProjectList(1)">{{ project.status_str }}</div></div>
+                  <div v-on:click="fnProjectDetail(project.seq)"><div :class="{ 'process_work' : project.status === '1', 'process_stop' : project.status === '2', 'process_end' : project.status === '3' }" style="margin-left:5px;width:60px; height: 28px;" v-on:click="fnProjectList(1)">{{ project.status_str }}</div></div>
                   <div v-on:click="fnProjectDetail(project.seq)">{{ project.reg_date_dt }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(project.seq)">통계</div></div>
+                  <div><div class="btn history" style="margin-left:5px;width:60px; height: 28px;" v-on:click="statisticsGo(project.seq)">통계</div></div>
                 </div>
               </template>
             </template>
@@ -129,14 +132,15 @@ import apiproject from '../../api/ApiProject';      // API
 import ProjectPopup from '../../components/popup/ProjectPopup'; // 프로젝트 팝업
 import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
-import Datalist_Left from './Datalist_Left';
+// import Datalist_Left from './Datalist_Left';
+import Side_bar from '../../components/Sidebar';
 import Pagination from '../../components/Pagination';
 
 export default {
   name: 'ProjectList',
   components: {
     ProjectPopup,
-    Datalist_Left,
+    Side_bar,
     Pagination,
   },
   //props: ['page_navigation'],
@@ -400,7 +404,7 @@ export default {
 
 <style scoped>
 .searchWrap {
-  border: 1px solid #888;
+  border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
   padding: 10px 10px 10px 10px;
@@ -408,18 +412,52 @@ export default {
   margin-top: 5px;
 }
 .searchWrap input {
-  width: 60%;
+  /* width: 60%;
   height: 36px;
   border-radius: 3px;
   padding: 0 10px;
-  border: 1px solid #888;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
 }
+
+.search.input{
+  background-image: url('/img/MDAC/search.png');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  outline: none;
+  padding-left: 40px
+}
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+
 .pagination {
   margin: 20px 0 0 0;
   text-align: center;
 }
 .first, .prev, .next, .last {
-  border: 0px solid #666;
+  border: 0px solid #ccc;
   margin: 0 5px;
 }
 .pagination span {
@@ -435,9 +473,9 @@ export default {
 }
 
 .grid_m.project {
-  grid-template-columns: 100px 250px 150px 150px 150px 100px 100px;
+  grid-template-columns: 120px 300px 150px 150px 150px 130px 100px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 1100px;
 }
 </style>

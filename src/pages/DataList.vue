@@ -2,34 +2,37 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="1"></Datalist_Left>
-        <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
+        <Side_bar v-bind:menu_id="2" v-bind:menu_show=this.$route.params.menu_show></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Data Management
+          </div>
+          <div class="sub_title">
             Data Status
           </div>
           <div style="padding: 0 0 0 0 ;">
             <div style="display: flex;  flex-direction: row; width: 100%; height:20px;">
               <div style="flex: 2">
               </div>
-              <div style="font-size: 9px">
-                반려에서 재할당된 작업 갯수 포함
+              <div class="guide_title">
+                · 반려에서 재할당된 작업 갯수 포함
               </div>
 <!--              <div class="btn navy" style="right: 0; width:100px; height: 36px;">프로젝트 등록</div>-->
             </div>
-            <div class="grid_m datalist header" style="align-content: center; justify-content: center;">
-              <div>프로젝트</div>
+            <div class="grid_m datalist header" style="align-content: center;"><!--  justify-content: center; -->
+              <div style="margin-right: auto;margin-left:20px;">프로젝트</div>
               <div>총데이터</div>
-              <div>라벨링<span style="font-size: 10px" title="할당 - 비디오타입에서 라벨러에게 할당한 갯수 카운트합과 이미지타입에서 할당된 갯수합" class="item">(전체/<span class="ing">진행</span>/완료)</span></div>
+              <div>라벨링<span title="할당 - 비디오타입에서 라벨러에게 할당한 갯수 카운트합과 이미지타입에서 할당된 갯수합" class="item">(전체/<span class="ing">진행</span>/완료)</span></div>
               <div>라벨러</div>
-              <div>검수<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div>
+              <div>검수<span class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div>
               <!-- <div>검수2<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div> -->
               <!-- <div>검수3<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div> -->
               <div>완료</div>
               <div>상태</div>
             </div>
             <template v-for="item, index in c_list">
-              <div v-if="item.levels==='0'" class="grid_m datalist body" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)">
-                <div style="margin-right: auto;margin-left:5px;" v-html="item.project_name"></div>
+              <div v-if="item.levels==='0'" class="grid_m datalist body" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)">
+                <div style="margin-right: auto;margin-left:20px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
                 <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
@@ -38,13 +41,13 @@
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
                 <div class="item" v-html="item.sumdataE"></div>
                 <div>
-                  <div class="project_work" v-if="item.status === '1'">진행</div>
-                  <div class="project_stop" v-if="item.status === '2'">중지</div>
-                  <div class="project_end" v-if="item.status === '3'">종료</div>
+                  <div class="process_work" v-if="item.status === '1'">진행</div>
+                  <div class="process_stop" v-if="item.status === '2'">중지</div>
+                  <div class="process_end" v-if="item.status === '3'">종료</div>
                 </div>
               </div>
-              <div v-if="item.levels==='1' && mnuLevels >= 0 && pSeq1===item.seq" class="grid_m datalist body" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)">
-                <div style="margin-right: auto;margin-left:15px;" v-html="item.project_name"></div>
+              <div v-if="item.levels==='1' && mnuLevels >= 0 && pSeq1===item.seq" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }"  v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)">
+                <div style="margin-right: auto;margin-left:20px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
                 <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
@@ -56,7 +59,7 @@
                   
                 </div>
               </div>
-              <div v-if="item.levels==='2' && mnuLevels >= 1 && pSeq2===item.seq && item.cnt.indexOf(pItem2) > -1" class="grid_m datalist body" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level2" -->
+              <div v-if="item.levels==='2' && mnuLevels >= 1 && pSeq2===item.seq && item.cnt.indexOf(pItem2) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level2" -->
                 <div style="margin-right: auto;margin-left:30px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
                 <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
@@ -69,7 +72,7 @@
                   
                 </div>
               </div>
-              <div v-if="item.levels==='3' && mnuLevels >= 2 && pSeq3===item.seq && item.cnt.indexOf(pItem3) > -1" class="grid_m datalist body" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level3" -->
+              <div v-if="item.levels==='3' && mnuLevels >= 2 && pSeq3===item.seq && item.cnt.indexOf(pItem3) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level3" -->
                 <div style="margin-right: auto;margin-left:40px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
                 <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
@@ -82,7 +85,7 @@
                   
                 </div>
               </div>
-              <div v-if="item.levels==='4' && mnuLevels >= 3 && pSeq4===item.seq && item.cnt.indexOf(pItem4) > -1" class="grid_m datalist body" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level4" -->
+              <div v-if="item.levels==='4' && mnuLevels >= 3 && pSeq4===item.seq && item.cnt.indexOf(pItem4) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level4" -->
                 <div style="margin-right: auto;margin-left:40px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
                 <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
@@ -95,7 +98,7 @@
                   
                 </div>
               </div>
-              <div v-if="item.levels==='5' && mnuLevels >= 4 && pSeq5===item.seq && item.cnt.indexOf(pItem5) > -1" class="grid_m datalist body" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level5" -->
+              <div v-if="item.levels==='5' && mnuLevels >= 4 && pSeq5===item.seq && item.cnt.indexOf(pItem5) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level5" -->
                 <div style="margin-right: auto;margin-left:40px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
                 <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
@@ -119,13 +122,13 @@
 </template>
 
 <script>
-import Datalist_Left from '../components/datamanagement/Datalist_Left';
+import Side_bar from '../components/Sidebar';
 import ApiStatus from '../api/ApiStatus';
 
 export default {
   name: 'DataStatus',
   components: {
-    Datalist_Left,
+    Side_bar,
   },
   created() {
     this.load_data();
@@ -202,7 +205,7 @@ export default {
               ingAvg_Nm = 0;
               ingAvg = 0;
             }
-            sublist.sumdataA += ` <span style='width:10%;'>[ <img src='/img/datamanager/blue.png' style='width:${ingAvg}%;height:5px; vertical-align:middle;'> ${ingAvg_Nm}% ]</span>`;
+            sublist.sumdataA += ` <span style='width:10%;'>[ <img src='/img/MDAC/bar_blue.png' style='width:${ingAvg}%;height:6px; vertical-align:middle;'> ${ingAvg_Nm}% ]</span>`;
             // sublist.sumdataB = `${sublist.B} / <span class="ing">${sublist.B1}</span> / ${sublist.B2} / ${sublist.B5}`;
             // sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             // sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;
@@ -215,7 +218,7 @@ export default {
               ingAvg_Nm = 0;
               ingAvg = 0;
             }
-            sublist.sumdataCheck += ` [ <img src='/img/datamanager/blue.png' style='width:${ingAvg}%;height:5px; vertical-align:middle; '> ${ingAvg_Nm}% ]`;
+            sublist.sumdataCheck += ` [ <img src='/img/MDAC/bar_blue.png' style='width:${ingAvg}%;height:6px; vertical-align:middle;'> ${ingAvg_Nm}% ]`;
             sublist.sumdataCheck += `<br />${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             if(sublist.C2 > 0) {
               ingAvg_Nm = parseInt(sublist.C2 / sublist.C * 100,10);
@@ -224,7 +227,7 @@ export default {
               ingAvg_Nm = 0;
               ingAvg = 0;
             }
-            sublist.sumdataCheck += ` [ <img src='/img/datamanager/blue.png' style='width:${ingAvg}%;height:5px;  vertical-align:middle;'> ${ingAvg_Nm}% ]`;
+            sublist.sumdataCheck += ` [ <img src='/img/MDAC/bar_blue.png' style='width:${ingAvg}%;height:6px;  vertical-align:middle;'> ${ingAvg_Nm}% ]`;
             sublist.sumdataC = `${sublist.C} / <span class="ing">${sublist.C1}</span> / ${sublist.C2} / ${sublist.C5}`;
             sublist.sumdataD = `${sublist.D} / <span class="ing">${sublist.D1}</span> / ${sublist.D2} / ${sublist.D5}`;
             sublist.sumdataE = `${sublist.E2}`;
@@ -341,41 +344,9 @@ export default {
 
 <style>
 .grid_m.datalist {
-  grid-template-columns: 220px 90px 230px 90px 230px 60px 80px;
+  grid-template-columns: 290px 90px 240px 90px 240px 70px 80px;
 }
-.project_work {
-  border-radius: 12px;
-  border: 1px solid #1aabea;
-  width: 50px;
-  text-align: center;
-  background-color: #1aabea;
-  color: white;
-  height: 25px;
-  padding-top: 2px;
+.item .ing{
+  color: #6b70d6;
 }
-.project_stop {
-  border-radius: 12px;
-  border: 1px solid #f3873f;
-  width: 50px;
-  text-align: center;
-  background-color: #f3873f;
-  color: #fff;
-  height: 25px;
-  padding-top: 2px;
-}
-.project_end {
-  border-radius: 12px;
-  border: 1px solid #aaa297;
-  width: 50px;
-  text-align: center;
-  background-color: #aaa297;
-  color: #fff;
-  height: 25px;
-  padding-top: 2px;
-}
-
-.item >>> .ing{
-  color: #1AABEA;
-}
-
 </style>

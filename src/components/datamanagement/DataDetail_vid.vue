@@ -14,8 +14,8 @@
         작업/완료 검수1/완료/반려...완료
       </div>
     </div>
-    <template v-for="(item, idx) of c_file_list">
-      <div class="grid_m datalist body" style="align-content: center; justify-content: center;" v-on:click.stop="onListClick(item.seq)">
+    <template v-for="(item, index) of c_file_list">
+      <div class="grid_m datalist body" v-bind:class="{ bottom : c_file_list.length === index+1 }" style="align-content: center; justify-content: center;" v-on:click.stop="onListClick(item.seq)">
         <div v-bind:style="`grid-row: 1/${item.rowcount}`">
           <div class="check_wrapper" style="padding:0 10px 0 0;">
             <div class="check_box" v-bind:class="[{on: checkData[item.seq]}]" v-on:click.stop="onCheckClick(item.seq)"></div>
@@ -33,7 +33,7 @@
                    v-on:click.stop="onCheckSubClick(`${item.seq}_${subitem.job_seq}`)"></div>
             </div>
           </div>
-          <div v-bind:title="subitem.sumdata">{{StatusToStr(subitem.status)}}</div>
+          <div :class="{ 'process_work' : subitem.status.trim() === 'A0', 'process_stop' : subitem.status === '2', 'process_end' : subitem.status === '3' }"  v-bind:title="subitem.sumdata">{{StatusToStr(subitem.status)}}</div>
           <div>{{subitem.class_name}}</div>
           <div>{{subitem.user_name}}</div>
           <div>{{subitem.label_cnt}}</div>

@@ -7,18 +7,23 @@
             <div style="position: absolute;top: 99px; width:100%; height: 1px; border-bottom: 1px solid #ccc;"></div>
           </template>
           <div v-if="$route.name !== 'index'" class="" v-bind:class="{ page_div: $route.name !== 'index' }">
-            <Navigation :route_name="route_name" :navview="meta.navigation" :menu_id="meta.menu_id"></Navigation>
+            <!-- <Navigation :route_name="route_name" :navview="meta.navigation" :menu_id="meta.menu_id"></Navigation> -->
           </div>
-          <div class="" v-bind:class="{ page_div: $route.name !== 'index' }">
-            <router-view/>
+          <div>
+            <!-- use fixed <div style="float:left;">
+            <side-bar v-bind:menu_id=1 ></side-bar>
+            </div> -->
+            <div class="left_menu_size" style="background-color: #F7F7F7;min-width: 100%;">
+            <router-view />
+            </div>
           </div>
         </div>
-        <div class="page_bottom"></div>
+        <!-- <div class="page_bottom"></div> -->
       </template>
     </div>
-    <div v-if="$route.name !== 'index'">
+    <!-- <div v-if="$route.name !== 'index'">
     <Footer></Footer>
-    </div>
+    </div> -->
     <NowLoading v-show="is_nowLoading" :scaleData="nowLoading_scale" :comment="nowLoading_comment"></NowLoading>
     <AlertPopup ref="alertPopup"></AlertPopup>
     <ConfirmPopup ref="confirmPopup"></ConfirmPopup>
@@ -33,8 +38,10 @@ import './assets/css/app/popup.css';
 import './assets/css/app/buttons.css';
 import './assets/css/app/list.css';
 import './assets/css/app/table.css';
-import Navigation from './components/Navigation';
-import Footer from './components/Footer';
+import './assets/css/app/main.css';
+// import Navigation from './components/Navigation';
+// import SideBar from './components/SideBar'
+// import Footer from './components/Footer';
 import NowLoading from './components/popup/NowLoading';
 import AlertPopup from './components/popup/AlertPopup';
 import ConfirmPopup from './components/popup/ConfirmPopup';
@@ -47,9 +54,11 @@ import store from './vuex/store';
 export default {
   name: 'App',
   mixins: [EventBusFuncsMixin],
+  prop: ['menu_show'],
   components: {
-    Navigation,
-    Footer,
+    // Navigation,
+    // SideBar,
+    // Footer,
     NowLoading,
     AlertPopup,
     ConfirmPopup,
@@ -79,6 +88,8 @@ export default {
         this.meta = to.meta;
         this.$log.debug('watch meta : ', this.meta);
         this.meta.route_name = this.route_name;
+        this.meta.menu_id = this.menu_id;
+        this.meta.sub_menu_id = '';
         // const body = document.getElementsByTagName('body')[0];
         // body.className = this.theme_name;
       }
@@ -88,7 +99,7 @@ export default {
   computed: {},
   methods: {
     loadSystemData() {
-      document.title = 'Data Management System';
+      document.title = 'MDAC';
       this.is_data_load_complete = true;
     },
     appendFavicon() {
@@ -102,7 +113,7 @@ export default {
         link.rel = 'icon';
       }
 
-      link.href = '/img/datamanager/favicon.ico';
+      link.href = '/img/MDAC/favicon.ico';
 
       if (is_new) {
         document.head.appendChild(link);

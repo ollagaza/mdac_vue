@@ -7,30 +7,33 @@
 '	=====================================
 -->
 <template>
-  <div class="layout">
+  <div class="layout"><!-- float: left;position:absolute; -->
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Member_Left></Member_Left>
-        <div style="flex: 2; padding: 14px 0;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
-            작업자 리스트
+        <Side_bar v-bind:menu_id="10"></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Member
+          </div>
+          <div class="sub_title">
+            작업자 관리
           </div>
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="is_used" style="width: 100px;height: 36px;" @change="fnMemberList(1)">
+              <select class="text selbox" v-model="is_used" style="width: 10%;" @change="fnMemberList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">정지중</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 100px;height: 36px;">
+              <select class="text selbox" v-model="search_type" style="width: 10%;">
                 <option value="user_name" selected=true>이름</option>
                 <option value="user_id">아이디</option>
               </select>
 
-              <input type="text" v-model="keyword" @keyup.enter="fnMemberList(1)" />
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnMemberList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnMemberDetail('')">등록</div>
+              <input type="text" class="search input" v-model="keyword" @keyup.enter="fnMemberList(1)" style="width:60%;" />
+              <div class="btn deepgray" style="margin-left:5px;width: 10%;" v-on:click="fnMemberList(1)">검색</div>
+              <div class="btn reg" style="margin-left:5px;width:10%;" v-on:click="fnMemberDetail('')">등록</div>
             </div>
           </div>
 
@@ -41,13 +44,16 @@
                 <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
               </div>
 
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="member_change('Y')">사용중</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="member_change('N')">사용정지</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="member_change('D')">삭제</div>
+
+              <div class="btn square navy" style="margin-left:5px;width:80px;" v-on:click="member_change('Y')">사용중</div>
+              <div class="btn square" style="margin-left:5px;width:80px;" v-on:click="member_change('N')">사용정지</div>
+              <div class="btn square red" style="margin-left:5px;width:80px;" v-on:click="member_change('D')">삭제</div>
+
+              <div class="btn square pupple" style="margin-left:5px;width:80px;" v-on:click="python_go()">Python</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="list_count" style="width: 120px;" @change="fnMemberList(1)">
+                <select class="text selbox" v-model="list_count" style="width: 120px;height: 33px;" @change="fnMemberList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -71,14 +77,14 @@
             </div>
 
             <template v-if="member_list.length === 0">
-              <div class="grid_m member nodata">
+              <div class="grid_m member nodata bottom">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="member_list.length > 0">
-              <template v-for="(member, seq) in member_list">
-                <div class="grid_m member body">
+              <template v-for="(member, index) in member_list">
+                <div class="grid_m member body" v-bind:class="{ bottom : member_list.length === index+1 }">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
                   <template v-if="member.is_admin==='Y'">
                     관리자
@@ -90,10 +96,10 @@
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.user_id }}</div>
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.email }}</div>
                   <div v-on:click="fnMemberDetail(member.seq)">{{ member.phone }}</div>
-                  <div v-on:click="fnMemberDetail(member.seq)"><div :class="{ 'process_progress' : member.is_used === 'Y', 'process_stop' : member.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnMemberList(1)">{{ member.is_used_str }}</div></div>
+                  <div v-on:click="fnMemberDetail(member.seq)"><div :class="{ 'process_work' : member.is_used === 'Y', 'process_stop' : member.is_used !== 'Y' }" style="margin-left:5px;width:60px;" v-on:click="fnMemberList(1)">{{ member.is_used_str }}</div></div>
                   <div v-on:click="fnMemberDetail(member.seq)">{{ getDateToStr(member.reg_date) }}</div>
-                  <div><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click="statisticsGo(member.seq)">통계</div></div>
-                  <div v-on:click="getSelected"><div class="btn navy" style="margin-left:5px;width:60px; height: 25px;" v-on:click.stop="onHisClick(member.seq)">이력</div></div>
+                  <div><div class="btn history" style="margin-left:5px;width:60px;" v-on:click="statisticsGo(member.seq)">통계</div></div>
+                  <div v-on:click="getSelected"><div class="btn history" style="margin-left:5px;width:60px;" v-on:click.stop="onHisClick(member.seq)">이력</div></div>
                 </div>
               </template>
             </template>
@@ -114,7 +120,7 @@
             <a href="javascript:;" @click="fnPage(`${paging.total_page}`)" class="last">&gt;&gt;</a>
           </div> -->
 
-          <div style="margin: 20px 0 40px 0;">
+          <div style="margin: 20px 0 0 0;">
             <Pagination ref="Pagination"
                         :pageNationObj = "page_navigation"
                         v-on:onMovePage = "onMovePage"></Pagination>
@@ -142,6 +148,7 @@ import BaseMixin from '../../components/Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
 import Member_used_pop from './Member_used_pop';
 import Member_Left from './Member_Left';
+import Side_bar from '../../components/Sidebar';
 import Pagination from '../../components/Pagination';
 import ViewHisMemPopup from '../../components/popup/ViewHisMemPopup';
 import util from '../../utils/util';
@@ -154,6 +161,7 @@ export default {
     Member_Left,
     Pagination,
     ViewHisMemPopup,
+    Side_bar,
   },
   // props: ['page_navigation'],
   mixins: [BaseMixin],
@@ -212,6 +220,13 @@ export default {
     this.fnMemberList(1);
   },
   methods: {
+    python_go() {
+      apiuser.memtest().then((data) => {
+        // console.log(`data.error===${data.error}`)
+        console.log(data)
+        console.log(data.member_info.length)
+      });
+    },
     // 회원정보 조회
     fnMemberList(pg) {
       this.showLoading(true);
@@ -249,7 +264,7 @@ export default {
       apiuser.getUserInfos(data)
         .then((result) => {
 
-          //this.$log.debug(result);
+          this.$log.debug(result);
           if (result.member_info.length > 0) {
               //this.paging = 10;
               //this.no = 1;
@@ -470,10 +485,14 @@ export default {
 
 <style scoped>
 .grid_m.member {
-  grid-template-columns: 50px 100px 100px 200px 100px 100px 150px 100px 100px;
+  grid-template-columns: 50px 120px 130px 230px 120px 100px 150px 100px 100px;
+}
+
+.grid_m.nodata {
+  grid-template-columns: 1100px;
 }
 .searchWrap {
-  border: 1px solid #888;
+  border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
   padding: 10px 10px 10px 10px;
@@ -481,13 +500,46 @@ export default {
   margin-top: 5px;
 }
 .searchWrap input {
-  width: 60%;
+  /* width: 60%;
   height: 36px;
   border-radius: 3px;
   padding: 0 10px;
-  border: 1px solid #888;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
 }
 
+
+.search.input{
+  background-image: url('/img/MDAC/search.png');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  outline: none;
+  padding-left: 40px
+}
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
 .pagination {
   margin: 20px 0 0 0;
   text-align: center;
@@ -506,9 +558,5 @@ export default {
   display: inline-blcok;
   padding: 0 5px;
   color: #666;
-}
-
-.grid_m.nodata {
-  grid-template-columns: 1000px;
 }
 </style>

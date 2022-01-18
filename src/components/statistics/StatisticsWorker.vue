@@ -7,33 +7,35 @@
 '	=====================================
 -->
 <template>
-  <div class="layout">
+  <div class="layout"><!-- float: left;position:absolute; -->
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Statistics_Left v-bind:menu_id="1"></Statistics_Left>
-        <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
+        <Side_bar v-bind:menu_id="8"></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Statistics
+          </div>
+          <div class="sub_title">
             작업자 통계
           </div>
 
-
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnStatisticsList()">
+              <select class="text selbox" v-model="project_seq" style="width: 25%;" @change="fnStatisticsList()">
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
 
-              <select class="text" v-model="worker" style="width: 140px;height: 36px;" @change="fnStatisticsList()">
+              <select class="text selbox" v-model="worker" style="width: 15%" @change="fnStatisticsList()">
                 <option value="" selected=true>작업자(전체)</option>
                   <template v-for="(member) in member_list">
                     <option v-bind:value="member.seq" v-bind:class="{ colorRed: member.is_used !== 'Y' }">{{member.user_name}}({{ member.is_used_str }})</option>
                   </template>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 200px;height: 36px;" @change="fnStatisticsList()">
+              <select class="text selbox" v-model="search_type" style="width: 15%" @change="fnStatisticsList()">
                 <option value="NOW" selected=true>기간조회(완료)</option>
                 <option value="NOWW" selected=true>기간조회(진행)</option>
                 <option v-if="search_seq == '1'" value="SUM" selected=true>전체조회(반려제외)</option>
@@ -41,25 +43,25 @@
                 <option v-if="search_seq == '2'" value="SUM" selected=true>전체조회</option>
               </select>
 
-              <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+              <div class="datepicker_icon selbox" style="border: 1px solid #ccc;width: 15%;">
+                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
               <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
-              <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+              <div class="datepicker_icon selbox" style="border: 1px solid #ccc;width: 15%;">
+                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
 
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnStatisticsList()">조회</div>
+              <div class="btn deepgray" style="margin-left:5px;width:10%;" v-on:click="fnStatisticsList()">조회</div>
             </div>
           </div>
 
           <div>
             <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div class="btn" v-bind:class="{ deepgreen: search_seq === '1' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('1')">라벨러</div>
-              <div class="btn" v-bind:class="{ deepgreen: search_seq === '2' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('2')">검수자</div>
+              <div class="btn squareh check" v-bind:class="{ on: search_seq === '1' }" style="margin-left:5px;width:64px;" v-on:click="statisticsGo('1')">라벨러</div>
+              <div class="btn squareh check" v-bind:class="{ on: search_seq === '2' }" style="margin-left:5px;width:64px;" v-on:click="statisticsGo('2')">검수자</div>
               <div style="flex: 2"></div>
-              <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{tooltips_title}}</div>
-              <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="export_file()">Export to excel</div>
+              <div class="btn squareh" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
+              <div class="btn squareh pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
             </div>
           </div>
         
@@ -105,14 +107,14 @@
             </div>
 
             <template v-if="statistics_list.length === 0">
-              <div class="grid_m class nodata">
+              <div class="grid_m class nodata bottom">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="statistics_list.length > 0">
-              <template v-for="(pStatistics, seq) in statistics_list">
-                <div v-if="search_seq === '1' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m class_label body" v-on:click="one_chart(pStatistics)">
+              <div v-for="(pStatistics, index) in statistics_list">
+                <div v-if="search_seq === '1' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m class_label body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.label_total_all }}</div>
@@ -120,7 +122,7 @@
                   <div>{{ pStatistics.label_ing }}</div>
                   <div>{{ pStatistics.label_complete }}</div>
                 </div>
-                <div v-if="search_seq === '1' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m class_label_all body" v-on:click="one_chart(pStatistics)">
+                <div v-if="search_seq === '1' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m class_label_all body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.label_total_all }}</div>
@@ -130,7 +132,7 @@
                   <div>{{ pStatistics.label_reject }}</div>
                   <div>{{ pStatistics.label_avgReject }}</div>
                 </div>
-                <div v-if="search_seq === '2' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
+                <div v-if="search_seq === '2' && (search_type === 'NOW' || search_type === 'NOWW')" class="grid_m class_check body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.check_total_all }}</div>
@@ -139,7 +141,7 @@
                   <div>{{ pStatistics.check_complete }}</div>
                   <div>{{ pStatistics.check_reject }}</div>
                 </div>
-                <div v-if="search_seq === '2' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m class_check body" v-on:click="one_chart(pStatistics)">
+                <div v-if="search_seq === '2' && (search_type === 'SUM' || search_type === 'SUMC')" class="grid_m class_check body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.user_name }}</div>
                   <div>{{ pStatistics.check_total_all }}</div>
@@ -148,7 +150,7 @@
                   <div>{{ pStatistics.check_avgComplete }}</div>
                   <div>{{ pStatistics.check_reject }}</div>
                 </div>
-              </template>
+              </div>
             </template>
             
             <div v-if="search_seq === '1' && (search_type === 'NOW' || search_type === 'NOWW') && statistics_list.length > 0"  class="grid_m header class_label">
@@ -193,7 +195,7 @@
 
             <template>  
               <div style="height:20px;"></div>            
-              <ChartPage 
+              <ChartPage class="Rectangle_chart"
                 ref="chartpage" 
                 chartData="chartData" 
                 v-if="!chartLoading" 
@@ -223,7 +225,8 @@ import apiproject from '../../api/ApiProject';
 import apistatistics from '../../api/ApiStatistics';
 import apiuser from '../../api/ApiUser';
 import BaseMixin from '../Mixins/BaseMixin';
-import Statistics_Left from './Statistics_Left';
+// import Statistics_Left from './Statistics_Left';
+import Side_bar from '../../components/Sidebar'
 import { ko } from 'vuejs-datepicker/dist/locale';
 import moment from 'moment/moment';
 import Datepicker from 'vuejs-datepicker';
@@ -232,7 +235,7 @@ import ChartPage from './Chart.vue';
 export default {
   name: 'StatisticsWorker',
   components: {
-    Statistics_Left,
+    Side_bar,
     Datepicker,
     ChartPage,    
   },
@@ -514,7 +517,7 @@ export default {
 
 <style scoped>
 .searchWrap {
-  border: 1px solid #888;
+  border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
   padding: 10px 10px 10px 10px;
@@ -522,23 +525,49 @@ export default {
   margin-top: 5px;
 }
 .searchWrap input {
-  width: 60%;
+  /* width: 60%;
   height: 36px;
   border-radius: 3px;
   padding: 0 10px;
-  border: 1px solid #888;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+}
+
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
 }
 .grid_m.class_label {
-  grid-template-columns: 320px 130px 130px 140px 140px 140px;
-}
-.grid_m.class_label_all {
-  grid-template-columns: 260px 140px 100px 100px 100px 100px 100px 100px;
+  grid-template-columns: 320px 150px 150px 160px 160px 160px;
 }
 .grid_m.class_check {
-  grid-template-columns: 250px 150px 130px 120px 120px 130px 100px;
+  grid-template-columns: 250px 150px 150px 140px 140px 150px 120px;
+}
+.grid_m.class_label_all {
+  grid-template-columns: 260px 140px 120px 120px 120px 120px 120px 100px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 1100px;
 }
 .colorRed {
   color: red;

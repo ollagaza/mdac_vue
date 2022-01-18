@@ -7,46 +7,48 @@
 '	=====================================
 -->
 <template>
-  <div class="layout">
+  <div class="layout"><!-- float: left;position:absolute; -->
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Statistics_Left v-bind:menu_id="2"></Statistics_Left>
-        <div style="flex: 2; padding-top: 14px;">
-          <div style="font-weight: 600; font-size: 15pt; color: #333">
+        <Side_bar v-bind:menu_id="9"></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Statistics
+          </div>
+          <div class="sub_title">
             프로젝트 통계
           </div>
 
-
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="project_seq" style="width: 240px;height: 36px;" @change="fnStatisticsList()">
+              <select class="text selbox" v-model="project_seq" style="width: 30%;" @change="fnStatisticsList()">
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 220px;height: 36px;" @change="fnStatisticsList()">
+              <select class="text selbox" v-model="search_type" style="width: 25%;" @change="fnStatisticsList()">
                 <option value="NOW" selected=true>기간조회</option>
                 <option value="SUM" selected=true>전체조회(반려제외)</option>
                 <option value="SUMC" selected=true>전체조회(반려적용)</option>
               </select>
 
-              <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+              <div class="datepicker_icon selbox" style="border: 1px solid #ccc;width: 17%;">
+                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
               <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
-              <div class="datepicker_icon" style="border: 1px solid #ccc;">
-                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 8px 0 0 10px;height: 34px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+              <div class="datepicker_icon selbox" style="border: 1px solid #ccc;width: 17%;">
+                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 140px;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnStatisticsList()">조회</div>
+              <div class="btn deepgray" style="margin-left:5px;width:100px;" v-on:click="fnStatisticsList()">조회</div>
             </div>
           </div>
 
           <div>
             <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div class="btn" v-bind:class="{ deepgreen: search_seq === '3' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('3')">통합검수</div>
-              <div class="btn" v-bind:class="{ deepgreen: search_seq === '4' }" style="margin-left:5px;width:80px; height: 36px;" v-on:click="statisticsGo('4')">별도검수</div>
+              <div class="btn squareh check" v-bind:class="{ on: search_seq === '3' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('3')">통합검수</div>
+              <div class="btn squareh check" v-bind:class="{ on: search_seq === '4' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('4')">별도검수</div>
               <div style="flex: 2"></div>
               <div class="btn" style="margin-left:5px;width:120px; height: 36px;" v-on:click="viewTooltips()">{{tooltips_title}}</div>
               <div class="btn blue" style="margin-left:5px;width:120px; height: 36px;" v-on:click="export_file()">Export to excel</div>
@@ -106,14 +108,14 @@
             </div>
 
             <template v-if="statistics_list.length === 0">
-              <div class="grid_m nodata" v-bind:class="{class_check3: search_seq === '3', class_check4: search_seq === '4'}">
+              <div class="grid_m nodata bottom" v-bind:class="{class_check3: search_seq === '3', class_check4: search_seq === '4'}">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="statistics_list.length > 0">
-              <template v-for="(pStatistics, index) in statistics_list">
-                <div class="grid_m class_check3 body" v-if="search_seq === '3' && search_type === 'NOW'" v-on:click="one_chart(pStatistics)">
+              <div v-for="(pStatistics, index) in statistics_list">
+                <div class="grid_m class_check3 body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-if="search_seq === '3' && search_type === 'NOW'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_total }}</div>
@@ -124,7 +126,7 @@
                   <div>{{ pStatistics.check_ing }}</div>
                   <div>{{ pStatistics.check_complete }}</div>
                 </div>
-                <div class="grid_m class_check3_all body" v-if="search_seq === '3' && search_type !== 'NOW'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check3_all body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-if="search_seq === '3' && search_type !== 'NOW'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.label_total }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
@@ -138,7 +140,7 @@
                   <div>{{ pStatistics.check_avgComplete }}</div>
                 </div>
                 
-                <div class="grid_m class_check4 body" v-if="search_seq === '4' && search_type === 'NOW'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check4 body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-if="search_seq === '4' && search_type === 'NOW'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_total }}</div>
@@ -150,7 +152,7 @@
                   <div>{{ pStatistics.check3_total }} / {{ pStatistics.check3_ing }} / {{ pStatistics.check3_complete }}</div>
                 </div>
                 
-                <div class="grid_m class_check4_all body" v-if="search_seq === '4' && search_type !== 'NOW'" v-on:click="one_chart(pStatistics)">
+                <div class="grid_m class_check4_all body" v-bind:class="{ bottom : statistics_list.length === index+1 }" v-if="search_seq === '4' && search_type !== 'NOW'" v-on:click="one_chart(pStatistics)">
                   <div>{{ pStatistics.project_name }}</div>
                   <div>{{ pStatistics.label_total_all }}</div>
                   <div>{{ pStatistics.label_ing }}</div>
@@ -165,11 +167,11 @@
                   <div>{{ pStatistics.check3_total }} / {{ pStatistics.check3_ing }} / {{ pStatistics.check3_complete }}</div>
                   <div>{{ pStatistics.check3_avgComplete }}</div>
                 </div>
-              </template>
+              </div>
             </template>
             <template>  
               <div style="height:20px;"></div>            
-              <ChartPage 
+              <ChartPage class="Rectangle_chart"
                 ref="chartpage" 
                 chartData="chartData" 
                 v-bind:tooltips_flag="tooltips_flag"
@@ -197,7 +199,8 @@
 import apiproject from '../../api/ApiProject';
 import apistatistics from '../../api/ApiStatistics';
 import BaseMixin from '../../components/Mixins/BaseMixin';
-import Statistics_Left from './Statistics_Left';
+// import Statistics_Left from './Statistics_Left';
+import Side_bar from '../../components/Sidebar'
 import { ko } from 'vuejs-datepicker/dist/locale';
 import moment from 'moment/moment';
 import Datepicker from 'vuejs-datepicker';
@@ -206,7 +209,7 @@ import ChartPage from './Chart.vue';
 export default {
   name: 'StatisticsProject',
   components: {
-    Statistics_Left,
+    Side_bar,
     Datepicker,
     ChartPage,
   },
@@ -338,7 +341,7 @@ export default {
 
 <style scoped>
 .searchWrap {
-  border: 1px solid #888;
+  border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
   padding: 10px 10px 10px 10px;
@@ -346,26 +349,52 @@ export default {
   margin-top: 5px;
 }
 .searchWrap input {
-  width: 60%;
+  /* width: 60%;
   height: 36px;
   border-radius: 3px;
   padding: 0 10px;
-  border: 1px solid #888;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+}
+
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
 }
 .grid_m.class_check3 {
-  grid-template-columns: 200px 100px 100px 100px 100px 100px 100px 100px 100px;
+  grid-template-columns: 220px 110px 110px 110px 110px 110px 110px 110px 110px;
 }
 .grid_m.class_check3_all {
-  grid-template-columns: 200px 80px 80px 80px 80px 80px 80px 80px 80px 80px 80px;
+  grid-template-columns: 200px 90px 90px 90px 90px 90px 90px 90px 90px 90px 90px;
 }
 .grid_m.class_check4 {
-  grid-template-columns: 210px 80px 80px 80px 80px 80px 130px 130px 130px;
+  grid-template-columns: 230px 90px 90px 90px 90px 90px 140px 140px 140px;
 }
 .grid_m.class_check4_all {
-  grid-template-columns: 100px 60px 60px 60px 60px 60px 60px 120px 60px 120px 60px 120px 60px;
+  grid-template-columns: 170px 60px 60px 60px 60px 60px 60px 130px 60px 130px 60px 130px 60px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 1100px;
 }
 .colorLightgray {
   background-color: lightgray;

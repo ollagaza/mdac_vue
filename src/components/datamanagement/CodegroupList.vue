@@ -10,34 +10,36 @@
   <div class="layout">
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Datalist_Left v-bind:menu_id="'A' + this.ref_codegroup" ref="datalist_left" ></Datalist_Left>
-        <div style="flex: 2; padding-top: 14px;">
-          <div v-if="this.ref_codegroup === 0" style="font-weight: 600; font-size: 15pt; color: #333">
-            코드그룹 리스트
+        <Side_bar v-bind:menu_id="4" v-bind:sub_menu_id=this.$route.params.sub_menu_id></Side_bar>
+        <div class="content_layout">
+          <div class="main_title">
+            Data Management
           </div>
-          <div v-else style="font-weight: 600; font-size: 15pt; color: #333">
-            {{ this.codegroup_name }} 리스트
+          <div v-if="this.ref_codegroup === 0" class="sub_title">
+            Code Group Manager
           </div>
-
+          <div v-else  class="sub_title">
+            {{ this.codegroup_name }} 관리
+          </div>
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="is_used" style="width: 130px;height: 36px;" @change="fnCodegroupList(1)">
+              <select class="text selbox" v-model="is_used" style="width: 130px;" @change="fnCodegroupList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">중지중</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 160px;height: 36px;">
+              <select class="text selbox" v-model="search_type" style="width: 160px;">
                 <option v-if="this.ref_codegroup === 0" value="codegroup_name" selected=true>그룹명</option>
                 <option v-if="this.ref_codegroup === 0" value="codegroup_id">그룹코드</option>
                 <option v-if="this.ref_codegroup !== 0" value="codegroup_name" selected=true>{{ this.codegroup_name }}코드명</option>
                 <option v-if="this.ref_codegroup !== 0" value="codegroup_id">{{ this.codegroup_name }}코드</option>
               </select>
 
-              <input type="text" v-model="keyword" @keyup.enter="fnCodegroupList(1)" />
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnCodegroupList(1)">검색</div>
-              <div class="btn navy" style="margin-left:5px;width:80px; height: 36px;" v-on:click="fnCodegroupDetail('')">등록</div>
+              <input type="text" class="search input" v-model="keyword" @keyup.enter="fnCodegroupList(1)" />
+              <div class="btn deepgray" style="margin-left:5px;width:80px;" v-on:click="fnCodegroupList(1)">검색</div>
+              <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="fnCodegroupDetail('')">등록</div>
             </div>
           </div>
 
@@ -48,13 +50,13 @@
                 <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
               </div>
 
-              <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="codegroup_change('Y')">사용중</div>
-              <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="codegroup_change('N')">사용중지</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="codegroup_change('D')">삭제</div>
+              <div class="btn square navy" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('Y')">사용중</div>
+              <div class="btn square" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('N')">사용중지</div>
+              <div class="btn square red" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('D')">삭제</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text" v-model="list_count" style="width: 120px;" @change="fnCodegroupList(1)">
+                <select class="text selbox" v-model="list_count" style="width: 120px;height: 33px;" @change="fnCodegroupList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -83,20 +85,20 @@
             </div>
 
             <template v-if="codegroup_list.length === 0">
-              <div class="grid_m nodata" v-bind:class="{'codegroup': this.ref_codegroup.toString() === '0', 'code': this.ref_codegroup.toString() !== '0'}">
+              <div class="grid_m nodata bottom" v-bind:class="{'codegroup': this.ref_codegroup.toString() === '0', 'code': this.ref_codegroup.toString() !== '0'}">
                 <div style='align-items: center;'>등록된 데이터가 없습니다</div>
               </div>
             </template>
 
             <template v-if="codegroup_list.length > 0">
-              <template v-for="(item, seq) in codegroup_list">
-                <div class="grid_m body" v-bind:class="{'codegroup': item.ref_codegroup.toString() === '0', 'code': item.ref_codegroup.toString() !== '0'}">
+              <template v-for="(item, index) in codegroup_list">
+                <div class="grid_m body" v-bind:class="{'codegroup': item.ref_codegroup.toString() === '0', 'code': item.ref_codegroup.toString() !== '0', bottom : codegroup_list.length === index+1}">
                   <!-- <div><input type="checkbox" class="check_box" value="member.seq" :id="'check_' + member.seq" v-model="member.selected"  @change="selected($event)" v-bind:class="[{on: checkData[member.seq]}, {admin: member.used_admin === 'A'}]" v-on:click="onCheckClick(member.seq)"></div>v-model="checked_user"  -->
                   <div class="check_box" v-bind:class="[{on: checkData[item.seq]}]" v-on:click="onCheckClick(item.seq)"></div>
                   <div v-on:click="fnCodegroupDetail(item.seq)">{{ item.codegroup_id }}</div>
                   <div v-on:click="fnCodegroupDetail(item.seq)">{{ item.codegroup_name }}</div>
                   <div v-if="item.ref_codegroup.toString() === '0'" v-on:click="fnCodegroupDetail(item.seq)">{{ item.sort_no }}</div>
-                  <div v-on:click="fnCodegroupDetail(item.seq)"><div :class="{ 'process_progress' : item.is_used === 'Y', 'process_stop' : item.is_used !== 'Y' }" style="margin-left:5px;width:60px; height: 26px;" v-on:click="fnCodegroupList(1)">{{ item.is_used_str }}</div></div>
+                  <div v-on:click="fnCodegroupDetail(item.seq)"><div :class="{ 'process_work' : item.is_used === 'Y', 'process_stop' : item.is_used !== 'Y' }" style="margin-left:5px;width:60px;" v-on:click="fnCodegroupList(1)">{{ item.is_used_str }}</div></div>
                   <div v-on:click="fnCodegroupDetail(item.seq)">{{ item.reg_date_dt }}</div>
                 </div>
               </template>
@@ -128,14 +130,15 @@ import apiproject from '../../api/ApiProject';
 import CodegroupPopup from '../../components/popup/CodegroupPopup';
 import BaseMixin from '../Mixins/BaseMixin';
 import EventBus from '../../utils/eventbus';
-import Datalist_Left from './Datalist_Left';
+// import Side_bar from './Datalist_Left';
+import Side_bar from '../../components/Sidebar'
 import Pagination from '../../components/Pagination';
 
 export default {
   name: 'CodegroupList',
   components: {
     CodegroupPopup,
-    Datalist_Left,
+    Side_bar,
     Pagination,
   },
   mixins: [BaseMixin],
@@ -160,6 +163,7 @@ export default {
       allChecked: false,        // All check
       checkData: {},
       check_click: false,
+      sub_menu_id: '',
 
       page_navigation: {
         cur_page: 1,
@@ -268,7 +272,7 @@ export default {
           this.page_navigation = this.paging
         });
       this.showLoading(false);
-      this.$refs.datalist_left.category_menu();
+      // this.$refs.datalist_left.category_menu();
     },
     onMovePage(page) {
       this.fnPage(page);
@@ -438,8 +442,19 @@ export default {
 </script>
 
 <style scoped>
+.grid_m.codegroup {
+  grid-template-columns: 100px 200px 320px 100px 180px 200px;
+}
+.grid_m.code {
+  grid-template-columns: 100px 250px 250px 200px 200px;
+}
+.grid_m.nodata {
+  grid-template-columns: 1100px;
+}
+
+
 .searchWrap {
-  border: 1px solid #888;
+  border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
   padding: 10px 10px 10px 10px;
@@ -447,19 +462,63 @@ export default {
   margin-top: 5px;
 }
 .searchWrap input {
-  width: 60%;
+  /* width: 60%;
   height: 36px;
   border-radius: 3px;
   padding: 0 10px;
-  border: 1px solid #888;
+  border: 1px solid #888; */
+  /* width: 529px; */
+  width: 60%;
+  height: 45px;
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
 }
-.grid_m.codegroup {
-  grid-template-columns: 50px 250px 150px 250px 150px 150px;
+
+.search.input{
+  background-image: url('/img/MDAC/search.png');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  outline: none;
+  padding-left: 40px
 }
-.grid_m.code {
-  grid-template-columns: 100px 250px 250px 200px 200px;
+.selbox {
+  /* width: 140px; */
+  height: 45px;
+  /* margin: 39px 10px 30px 20px; */
+  /* padding: 15px 10px 15px 11px; */
+  border-radius: 6px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
 }
-.grid_m.nodata {
-  grid-template-columns: 1000px;
+.pagination {
+  margin: 20px 0 0 0;
+  text-align: center;
 }
+.first, .prev, .next, .last {
+  border: 0px solid #ccc;
+  margin: 0 5px;
+}
+.pagination span {
+  display: inline-block;
+  padding: 0 5px;
+  color: #333;
+}
+.pagination a {
+  text-decoration: none;
+  display: inline-blcok;
+  padding: 0 5px;
+  color: #666;
+}
+
 </style>

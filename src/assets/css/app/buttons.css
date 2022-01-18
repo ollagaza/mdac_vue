@@ -242,6 +242,72 @@
   background-color: #d73127;
 }
 
+.btn.deepgray {
+  font-weight: 400;
+  font-size: 13px;
+  color: #fff;
+  background-color: #636373;
+  text-align: center;
+  cursor: pointer;
+  height: 45px;
+}
+.btn.deepgray:hover {
+  opacity: 60%;
+}
+.btn.history {  
+  height: 28px;
+  /* margin: 57px 3px 33px 23px;
+  padding: 8px 20px 7px 19px; */
+  border-radius: 10px;
+  /* border: solid 1px #2e2e3c; */
+  background-color: #e7e7f0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #6b70d6;
+}
+
+.btn.history:hover {  
+  height: 28px;
+  /* margin: 57px 3px 33px 23px;
+  padding: 8px 20px 7px 19px; */
+  border-radius: 10px;
+  border: solid 1px #6b70d6;
+  background-color: #e7e7f0;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #6b70d6;
+
+}
+
+.btn.reg {
+  font-weight: 400;
+  font-size: 13px;
+  color: #fff;
+  background-color: #6b70d6;
+  text-align: center;
+  cursor: pointer;
+  height: 45px;
+}
+
+.btn.reg:hover {
+  opacity: 60%;
+}
+/* .btn.reg:hover {
+  background-color: #979ADB;
+} */
+
 .btn.navy {
   font-weight: 400;
   font-size: 13px;
@@ -481,12 +547,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/drive/bookmark_off.png");
+  background-image: url("/img/MDAC/bookmark_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .favorite_btn.on {
-  background-image: url("/img/drive/bookmark_on.png");
+  background-image: url("/img/MDAC/bookmark_on.png");
 }
 
 .share_btn {
@@ -494,12 +560,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/drive/share_off.png");
+  background-image: url("/img/MDAC/share_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .share_btn.on {
-  background-image: url("/img/drive/share_on.png");
+  background-image: url("/img/MDAC/share_on.png");
 }
 
 .delete_btn {
@@ -507,12 +573,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/drive/list_delete_off.png");
+  background-image: url("/img/MDAC/list_delete_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .delete_btn:hover {
-  background-image: url("/img/drive/list_delete_on.png");
+  background-image: url("/img/MDAC/list_delete_on.png");
 }
 
 .message_btn {
@@ -550,13 +616,13 @@
 .f_btn.add_btn {
   width: 25px;
   height: 25px;
-  background-image: url("/img/drive/layer_add.png");
+  background-image: url("/img/MDAC/layer_add.png");
 }
 
 .f_btn.trash_btn {
   width: 25px;
   height: 25px;
-  background-image: url("/img/drive/layer_bin.png");
+  background-image: url("/img/MDAC/layer_bin.png");
 }
 
 
@@ -574,32 +640,45 @@
 }
 
 .check_box {
-  display: block;
+  width: 20px;
+  height: 21px;
+  /* margin: 43px 9px 26px 20px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+
+  /* display: block;
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/datamanager/check_off.png");
+  background-image: url("/img/MDAC/check_off.png");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center; */
 }
 .check_box.on {
-  background-image: url("/img/datamanager/check_on.png");
+  width: 20px;
+  height: 20px;
+  background-color: #000;
+  background-image: url("/img/MDAC/report_arrow_white.png");
 }
 .check_box.over_image {
-  background-image: url("/img/datamanager/check_off.png");
+  background-image: url("/img/MDAC/check_off.png");
 }
 .check_box.over_image.on {
-  background-image: url("/img/datamanager/check_on.png");
+  background-image: url("/img/MDAC/check_on.png");
 }
 
 .verify_icon {
   width: 20px;
   height: 20px;
-  background-image: url('/img/drive/check_done.png');
+  background-image: url('/img/MDAC/check_done.png');
   margin-left: 10px;
 }
 .verify_icon.done {
-  background-image: url('/img/drive/check_confirm.png');
+  background-image: url('/img/MDAC/check_confirm.png');
 }
 .verify_text {
   padding: 5px 0 5px 10px;
@@ -615,12 +694,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/datamanager/check_off.png");
+  background-image: url("/img/MDAC/check_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .check_round.on {
-  background-image: url("/img/datamanager/check_on.png");
+  background-image: url("/img/MDAC/check_on.png");
   cursor: default;
 }
 .radio_box {
@@ -628,12 +707,12 @@
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/datamanager/check_off.png");
+  background-image: url("/img/MDAC/check_off.png");
   background-repeat: no-repeat;
   background-position: center;
 }
 .radio_box.on {
-  background-image: url("/img/datamanager/check_on_radio.png");
+  background-image: url("/img/MDAC/check_on_radio.png");
   cursor: default;
 }
 
@@ -778,7 +857,242 @@ input:checked + .toggle .toggle__handler{
   border-color: #ffffff;
 }
 
-.process_progress {
+/* square button */
+.btn.square {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #fff;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+
+.btn.square.navy {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  background-color: #3d3d4d;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.btn.square.pupple {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #6b70d6;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+.btn.square.red {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #fff;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #d01717;
+}
+
+.btn.square:hover {
+  opacity: 60%;
+}
+/* square button for other hover */
+.btn.squareh{
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #fff;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+
+.btn.squareh:hover {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #6b70d6;
+  background-color: #fff;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #464bba;
+}
+
+.btn.squareh.pupple {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #6b70d6;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+.btn.squareh.pupple:hover {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #464bba;
+  background-color: #464bba;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff;
+}
+
+/* square button for other hover */
+.btn.squareh.check{
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #ddd;
+  background-color: #fff;
+  background-image: url("/img/MDAC/checkbox_off.png");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  padding-left: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #888;
+}
+
+.btn.squareh.check:hover {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #6b70d6;
+  background-color: #fff;
+  background-image: url("/img/MDAC/checkbox_on.png");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  padding-left: 10px;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #464bba;
+}
+
+.btn.squareh.check.on {
+  width: 64px;
+  height: 33px;
+  /* margin: 1px 26px 20px 6px;
+  padding: 11px 15px 10px 16px; */
+  border-radius: 6px;
+  border: solid 1px #6b70d6;
+  background-color: #fff;
+  background-image: url("/img/MDAC/checkbox_on.png");
+  background-repeat: no-repeat;
+  background-position: 5px center;
+  padding-left: 10px;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #464bba;
+}
+
+/* .process_progress {
   display: flex;
   flex-direction: row;
   width: 60px;
@@ -829,11 +1143,102 @@ input:checked + .toggle .toggle__handler{
   border-radius: 12px;
   border: 1px solid rgba(75, 74, 74, 0.6);
   font-size: 13px;
-}
+} */
 
+/* 상태 버튼 */
 .process_progress.wait {
   border-color: #ddd;
   background-color: #f5f5f5;
   opacity: .5;
   color: #000;
+}
+.process_work {
+  border-radius: 14px;
+  width: 60px;
+  text-align: center;
+
+  /* border: 1px solid #1aabea;
+  background-color: #1aabea; */
+  border: solid 1px #707082;
+  background-color: #707082;
+  color: white;
+  height: 28px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 1px;
+  /* padding: 2px; */
+}
+.process_work:hover {
+  border-radius: 14px;
+  width: 60px;
+  text-align: center;
+
+  border: solid 1px #454564;
+  background-color: #454564;
+  color: white;
+  height: 28px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 1px;
+  /* padding: 2px; */
+}
+.process_stop {
+  border-radius: 14px;
+  width: 60px;
+  text-align: center;
+
+  /* border: 1px solid #1aabea;
+  background-color: #1aabea; */
+  border: solid 1px #e7e7f0;
+  background-color: #e7e7f0;
+  color: #898999;
+  height: 28px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 1px;
+  /* padding: 2px; */
+}
+.process_stop:hover {
+  border-radius: 14px;
+  width: 60px;
+  text-align: center;
+
+  border: solid 1px #9494a8;
+  background-color: #e7e7f0;
+  color: #898999;
+  height: 28px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 1px;
+  /* padding: 2px; */
+}
+.process_end {
+  border-radius: 14px;
+  width: 60px;
+  text-align: center;
+
+  /* border: 1px solid #1aabea;
+  background-color: #1aabea; */
+  border: solid 1px #6b70d6;
+  background-color: #6b70d6;
+  color: white;
+  height: 28px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 1px;
+  /* padding: 2px; */
+}
+.process_end:hover {
+  border-radius: 14px;
+  width: 60px;
+  text-align: center;
+
+  border: solid 1px #464bba;
+  background-color: #464bba;
+  color: white;
+  height: 28px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  padding-top: 1px;
+  /* padding: 2px; */
 }

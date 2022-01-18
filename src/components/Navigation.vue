@@ -7,14 +7,14 @@
     <template v-else-if="c_navview === 'center'">
       <nav class="navigation">
         <div>
-          <div v-on:click="routeMain" style="text-align: center;cursor: pointer; padding-top: 30px;"><img src="/img/datamanager/logo.png"></div>
+          <div v-on:click="routeMain" style="text-align: center;cursor: pointer; padding-top: 30px;"><img src="/img/MDAC/logo.png"></div>
         </div>
       </nav>
     </template>
     <template v-else>
       <nav class="navigation" >
         <div class="nav_box">
-          <div class="logo" v-on:click="routeMain"><img src="/MDC/main_logo.png"></div>
+          <div class="logo" v-on:click="routeMain"><img src="/img/MDAC/main_logo.png"></div>
           <div class="nav_sp">
             <div class="nav_menu" v-if="is_logged">
               <div class="nmenu" v-bind:class="{on: menu_id === '1'}" v-on:click="Menu1">Data Management</div>
