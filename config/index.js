@@ -14,7 +14,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     // assetsPublicPath: '/m2/',
     assetsPublicPath: '/d2/',
-    assetsPublicPath: '/',
+    // assetsPublicPath: '/',
     productionSourceMap: false,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
