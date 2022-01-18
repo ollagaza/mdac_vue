@@ -6,6 +6,12 @@ export default {
     method: 'get',
   }),
 
+  memtest: member_info => request({
+    url: '/users/memtest',
+    method: 'post',
+    data: member_info,
+  }),
+
   createUser: member_info => request({
     url: '/users/createuser',
     method: 'post',
