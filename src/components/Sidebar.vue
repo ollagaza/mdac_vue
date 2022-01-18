@@ -207,10 +207,10 @@ export default {
 // if(this.menu_id === 1 ) {
     //   this.menu_show = false;
     // }
-    console.log(`menu_id===${this.menu_id}`)
-    console.log(`sub_menu_id===${this.sub_menu_id}`)
-    console.log(`menu_show===${this.menu_show}`)
-    console.log(`rq===${ this.$route.params.menu_show}`)
+    // console.log(`menu_id===${this.menu_id}`)
+    // console.log(`sub_menu_id===${this.sub_menu_id}`)
+    // console.log(`menu_show===${this.menu_show}`)
+    // console.log(`rq===${ this.$route.params.menu_show}`)
   },
   watch: {
   },  
