@@ -149,6 +149,6 @@ export default {
 </script>
 <style scoped>
 .grid_m.datalist {
-  grid-template-columns: 50px 250px 100px 50px 80px 80px 70px 70px 250px;
+  grid-template-columns: 50px 250px 100px 50px 140px 100px 80px 80px 250px;
 }
 </style>

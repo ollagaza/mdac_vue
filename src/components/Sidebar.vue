@@ -198,6 +198,9 @@ export default {
     },
   },
   mounted() {
+    if (!this.is_logged) {
+      this.$router.push({ name: 'index' }).catch(() => {});
+    }
     this.category_menu();
     // this.menu_id = this.menu_id === undefined ? 1 : this.$route.params.menu_id
     // this.sub_menu_id = this.$route.params.sub_menu_id === undefined ? true : this.$route.params.sub_menu_id 
@@ -211,6 +214,7 @@ export default {
   },
   methods: {
     ...mapActions(['LogOut']),
+
     viewMenu() {
       this.menu_show = !this.menu_show;
     },

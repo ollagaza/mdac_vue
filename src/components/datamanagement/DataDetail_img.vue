@@ -133,7 +133,7 @@ export default {
 </script>
 <style scoped>
 .grid_m.datalist {
-  grid-template-columns: 50px 300px 110px 120px 80px 80px 80px 80px 100px;
+  grid-template-columns: 50px 300px 110px 140px 100px 100px 100px 100px 100px;
 }
 .reject {
   color: red;

@@ -3,7 +3,7 @@
  
   <body>
 	 <div class="wrapper">
-	<header>
+	<header class="main_header">
 		<div class="">
 			<h1>
 			<div style="margin:16px 0 0 320px">
@@ -285,7 +285,7 @@ export default {
   mounted() {
     // this.$log.debug(`Logged_Index :: ${this.is_logged}`);
     if (this.is_logged) {
-      this.$router.push({ name: 'dashboard', params: { menu_id: 1} });
+      this.$router.push({ name: 'dashboard', params: { menu_id: 1} }).catch(() => {});
     }
   },
 };

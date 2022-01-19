@@ -285,7 +285,7 @@ export default {
   mounted() {
     // this.$log.debug(`Logged_Index :: ${this.is_logged}`);
     if (this.is_logged) {
-      this.$router.push({ name: 'dashboard', params: { menu_id: 1} });
+      this.$router.push({ name: 'dashboard', params: { menu_id: 1} }).catch(() => {});
     }
   },
 };

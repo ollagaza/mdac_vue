@@ -925,7 +925,7 @@ export default {
       const query = {}
       query.div_seq = this.category_seq;
       query.pro_seq = this.pro_seq;
-      this.$router.push({ name: 'datadetail', params, query });            
+      this.$router.push({ name: 'datadetail', params, query }).catch(() => {});       
     },
   },
 };
@@ -933,7 +933,7 @@ export default {
 
 <style scoped>
 .grid_m.datalist {
-  grid-template-columns: 50px 250px 100px 100px 100px 100px 100px 100px 100px;
+  grid-template-columns: 50px 310px 120px 120px 100px 100px 100px 100px 100px;
 }
 
 .searchWrap {

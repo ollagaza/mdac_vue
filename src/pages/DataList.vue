@@ -22,9 +22,9 @@
             <div class="grid_m datalist header" style="align-content: center;"><!--  justify-content: center; -->
               <div style="margin-right: auto;margin-left:20px;">프로젝트</div>
               <div>총데이터</div>
-              <div>라벨링<span title="할당 - 비디오타입에서 라벨러에게 할당한 갯수 카운트합과 이미지타입에서 할당된 갯수합" class="item">(전체/<span class="ing">진행</span>/완료)</span></div>
+              <div>라벨링<span title="할당 - 비디오타입에서 라벨러에게 할당한 갯수 카운트합과 이미지타입에서 할당된 갯수합">(전체/<span class="ing">진행</span>/완료)</span></div>
               <div>라벨러</div>
-              <div>검수<span class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div>
+              <div>검수<span>(전체/<span class="ing">진행</span>/완료/반려)</span></div>
               <!-- <div>검수2<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div> -->
               <!-- <div>검수3<span style="font-size: 10px" class="item">(전체/<span class="ing">진행</span>/완료/반려)</span></div> -->
               <div>완료</div>
@@ -34,12 +34,12 @@
               <div v-if="item.levels==='0'" class="grid_m datalist body" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)">
                 <div style="margin-right: auto;margin-left:20px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
                 <!-- <div class="item" v-html="item.sumdataC"></div> -->
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
-                <div class="item" v-html="item.sumdataE"></div>
+                <div v-html="item.sumdataE"></div>
                 <div>
                   <div class="process_work" v-if="item.status === '1'">진행</div>
                   <div class="process_stop" v-if="item.status === '2'">중지</div>
@@ -49,12 +49,12 @@
               <div v-if="item.levels==='1' && mnuLevels >= 0 && pSeq1===item.seq" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }"  v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)">
                 <div style="margin-right: auto;margin-left:20px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
                 <!-- <div class="item" v-html="item.sumdataC"></div> -->
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
-                <div class="item" v-html="item.sumdataE"></div>
+                <div v-html="item.sumdataE"></div>
                 <div>
                   
                 </div>
@@ -62,12 +62,12 @@
               <div v-if="item.levels==='2' && mnuLevels >= 1 && pSeq2===item.seq && item.cnt.indexOf(pItem2) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level2" -->
                 <div style="margin-right: auto;margin-left:30px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
                 <!-- <div class="item" v-html="item.sumdataC"></div> -->
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
-                <div class="item" v-html="item.sumdataE"></div>
+                <div v-html="item.sumdataE"></div>
                 <div>
                   
                 </div>
@@ -75,12 +75,12 @@
               <div v-if="item.levels==='3' && mnuLevels >= 2 && pSeq3===item.seq && item.cnt.indexOf(pItem3) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level3" -->
                 <div style="margin-right: auto;margin-left:40px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
                 <!-- <div class="item" v-html="item.sumdataC"></div> -->
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
-                <div class="item" v-html="item.sumdataE"></div>
+                <div v-html="item.sumdataE"></div>
                 <div>
                   
                 </div>
@@ -88,12 +88,12 @@
               <div v-if="item.levels==='4' && mnuLevels >= 3 && pSeq4===item.seq && item.cnt.indexOf(pItem4) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level4" -->
                 <div style="margin-right: auto;margin-left:40px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명 </div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
                 <!-- <div class="item" v-html="item.sumdataC"></div> -->
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
-                <div class="item" v-html="item.sumdataE"></div>
+                <div v-html="item.sumdataE"></div>
                 <div>
                   
                 </div>
@@ -101,12 +101,12 @@
               <div v-if="item.levels==='5' && mnuLevels >= 4 && pSeq5===item.seq && item.cnt.indexOf(pItem5) > -1" class="grid_m datalist body subbody" v-bind:class="{ bottom : c_list.length === index+1 }" v-on:click="onListClick(item.seq, item.levels, item.depth_cnt, item.cnt, item.category_seq)"><!--  v-show="level5" -->
                 <div style="margin-right: auto;margin-left:40px;" v-html="item.project_name"></div>
                 <div>{{item.file_cnt}} 개</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataA"></div>
                 <div>{{item.labler_co}} 명</div>
-                <div class="item" style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
+                <div style='text-align:center;width:230px;' v-html="item.sumdataCheck"></div>
                 <!-- <div class="item" v-html="item.sumdataC"></div> -->
                 <!-- <div class="item" v-html="item.sumdataD"></div> -->
-                <div class="item" v-html="item.sumdataE"></div>
+                <div v-html="item.sumdataE"></div>
                 <div>
                   
                 </div>
@@ -244,13 +244,13 @@ export default {
       const query = {};
       query.seq = seq;
       const params = {};
-      console.log(`==================`)
-      console.log(`seq=${seq}`)
-      console.log(`levels=${levels}`)
-      console.log(`depth_cnt=${depth_cnt}`)
-      console.log(`itemNm=${itemNm}`)
-      console.log(`category_seq=${category_seq}`)
-      console.log(`this.mnuLevels=${this.mnuLevels}`)
+      // console.log(`==================`)
+      // console.log(`seq=${seq}`)
+      // console.log(`levels=${levels}`)
+      // console.log(`depth_cnt=${depth_cnt}`)
+      // console.log(`itemNm=${itemNm}`)
+      // console.log(`category_seq=${category_seq}`)
+      // console.log(`this.mnuLevels=${this.mnuLevels}`)
       this.mnuLevels = levels
 
       // if(levels.toString() === '0' && depth_cnt.toString() === '0')
@@ -335,7 +335,7 @@ export default {
 
       query.div_seq = category_seq;
       query.pro_seq = seq;
-      this.$router.push({ name: 'datadetail', params, query });      
+      this.$router.push({ name: 'datadetail', params, query }).catch(() => {});
     },
     
   },
@@ -346,7 +346,7 @@ export default {
 .grid_m.datalist {
   grid-template-columns: 290px 90px 240px 90px 240px 70px 80px;
 }
-.item .ing{
+.ing{
   color: #6b70d6;
 }
 </style>

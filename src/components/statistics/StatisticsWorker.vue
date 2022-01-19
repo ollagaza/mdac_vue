@@ -61,7 +61,7 @@
               <div class="btn squareh check" v-bind:class="{ on: search_seq === '2' }" style="margin-left:5px;width:64px;" v-on:click="statisticsGo('2')">검수자</div>
               <div style="flex: 2"></div>
               <div class="btn squareh" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
-              <div class="btn squareh pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/datamanager/download_icon.png">Export to excel</div>
+              <div class="btn squareh pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
             </div>
           </div>
         
