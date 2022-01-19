@@ -25,14 +25,14 @@
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
 
-              <select class="text selbox" v-model="project_seq" style="width: 240px;" @change="fnBoardList(1)">
+              <select class="text" v-model="project_seq" style="width: 240px;" @change="fnBoardList(1)">
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
 
-              <select class="text selbox" v-model="search_type" style="width: 160px;">
+              <select class="text" v-model="search_type" style="width: 160px;">
                 <option value="subject" selected=true>제목</option>
                 <option value="content">내용</option>
               </select>
@@ -56,7 +56,7 @@
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text selbox" v-model="list_count" style="width: 120px;height: 33px;" @change="fnBoardList(1)">
+                <select class="text" v-model="list_count" style="width: 120px;height: 33px;" @change="fnBoardList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -382,54 +382,6 @@ export default {
 </script>
 
 <style scoped>
-.searchWrap {
-  border: 0px solid #888;
-  border-radius: 5px;
-  text-align: center;
-  padding: 10px 10px 10px 10px;
-  margin-bottom: 10px;
-  margin-top: 5px;
-}
-.searchWrap input {
-  /* width: 60%;
-  height: 36px;
-  border-radius: 3px;
-  padding: 0 10px;
-  border: 1px solid #888; */
-  /* width: 529px; */
-  width: 60%;
-  height: 45px;
-  border-radius: 6px;
-  box-shadow: 0px 2px 0 0 #e8e8e8;
-  border: solid 1px #ddd;
-  background-color: #fff;
-}
-
-.search.input{
-  background-image: url('/img/MDAC/search.png');
-  background-repeat: no-repeat;
-  background-position: 10px center;
-  outline: none;
-  padding-left: 40px
-}
-.selbox {
-  /* width: 140px; */
-  height: 45px;
-  /* margin: 39px 10px 30px 20px; */
-  /* padding: 15px 10px 15px 11px; */
-  border-radius: 6px;
-  box-shadow: 0px 2px 0 0 #e8e8e8;
-  border: solid 1px #ddd;
-  background-color: #fff;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 13px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #888;
-}
 .grid_m.class {
   grid-template-columns: 50px 200px 400px 150px 150px 150px;
 }

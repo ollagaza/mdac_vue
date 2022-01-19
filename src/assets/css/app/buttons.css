@@ -1001,10 +1001,9 @@ input:checked + .toggle .toggle__handler{
 }
 
 .btn.squareh.pupple:hover {
-  width: 64px;
+  opacity: 60%;
+  /* width: 64px;
   height: 33px;
-  /* margin: 1px 26px 20px 6px;
-  padding: 11px 15px 10px 16px; */
   border-radius: 6px;
   border: solid 1px #464bba;
   background-color: #464bba;
@@ -1017,7 +1016,7 @@ input:checked + .toggle .toggle__handler{
   line-height: 4;
   letter-spacing: normal;
   text-align: left;
-  color: #fff;
+  color: #fff; */
 }
 
 /* square button for other hover */

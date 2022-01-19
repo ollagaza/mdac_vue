@@ -19,7 +19,7 @@
             작업자 통계
           </div>
 
-          <div class="searchWrap">
+          <div class="searchWrap2">
             <div style="display: flex; flex-direction: row; justify-content: center;">
               <select class="text selbox" v-model="project_seq" style="width: 25%;" @change="fnStatisticsList()">
                 <option value="" selected=true>전체프로젝트</option>
@@ -61,7 +61,7 @@
               <div class="btn squareh check" v-bind:class="{ on: search_seq === '2' }" style="margin-left:5px;width:64px;" v-on:click="statisticsGo('2')">검수자</div>
               <div style="flex: 2"></div>
               <div class="btn squareh" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
-              <div class="btn squareh pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
+              <div class="btn squareh pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/datamanager/download_icon.png">Export to excel</div>
             </div>
           </div>
         
@@ -516,7 +516,7 @@ export default {
 </script>
 
 <style scoped>
-.searchWrap {
+.searchWrap2 {
   border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
@@ -524,7 +524,7 @@ export default {
   margin-bottom: 10px;
   margin-top: 5px;
 }
-.searchWrap input {
+.searchWrap2 input {
   /* width: 60%;
   height: 36px;
   border-radius: 3px;
@@ -535,7 +535,6 @@ export default {
   height: 45px;
   border-radius: 6px;
   box-shadow: 0px 2px 0 0 #e8e8e8;
-  border: solid 1px #ddd;
   background-color: #fff;
 }
 

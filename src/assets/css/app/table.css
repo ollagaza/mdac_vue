@@ -1,7 +1,13 @@
 .table_title {
+	font-family: "Noto Sans KR", Arial, "sans-serif";
   font-weight: 600;
-  font-size: 27px;
-  color: #030303;
+  font-size: 22px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 2.18;
+  /* color: #030303; */
+  color: #3d3d4d;
   letter-spacing: -1px;
 }
 

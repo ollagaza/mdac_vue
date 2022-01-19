@@ -21,14 +21,14 @@
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text selbox" v-model="status" style="width: 160px;" @change="fnProjectList(1)">
+              <select class="text" v-model="status" style="width: 190px;" @change="fnProjectList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="1">진행중</option>
                 <option value="2">중지중</option>
                 <option value="3">종료</option>
               </select>
 
-              <select class="text selbox" v-model="search_type" style="width: 180px;">
+              <select class="text" v-model="search_type" style="width: 200px;">
                 <option value="project_name" selected=true>프로젝트명</option>
                 <option value="LABELER">라벨러</option>
                 <option value="CHECKER">검수자</option>
@@ -51,7 +51,7 @@
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
-                <select class="text selbox" v-model="list_count" style="width: 120px;height: 33px;" @change="fnProjectList(1)">
+                <select class="text" v-model="list_count" style="width: 120px;height: 33px;" @change="fnProjectList(1)">
                   <option value="20" selected=true>20개씩 보기</option>
                   <option value="30">30개씩 보기</option>
                   <option value="50">50개씩 보기</option>
@@ -403,55 +403,6 @@ export default {
 </script>
 
 <style scoped>
-.searchWrap {
-  border: 0px solid #888;
-  border-radius: 5px;
-  text-align: center;
-  padding: 10px 10px 10px 10px;
-  margin-bottom: 10px;
-  margin-top: 5px;
-}
-.searchWrap input {
-  /* width: 60%;
-  height: 36px;
-  border-radius: 3px;
-  padding: 0 10px;
-  border: 1px solid #888; */
-  /* width: 529px; */
-  width: 60%;
-  height: 45px;
-  border-radius: 6px;
-  box-shadow: 0px 2px 0 0 #e8e8e8;
-  border: solid 1px #ddd;
-  background-color: #fff;
-}
-
-.search.input{
-  background-image: url('/img/MDAC/search.png');
-  background-repeat: no-repeat;
-  background-position: 10px center;
-  outline: none;
-  padding-left: 40px
-}
-.selbox {
-  /* width: 140px; */
-  height: 45px;
-  /* margin: 39px 10px 30px 20px; */
-  /* padding: 15px 10px 15px 11px; */
-  border-radius: 6px;
-  box-shadow: 0px 2px 0 0 #e8e8e8;
-  border: solid 1px #ddd;
-  background-color: #fff;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 13px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  letter-spacing: normal;
-  text-align: left;
-  color: #888;
-}
-
 .pagination {
   margin: 20px 0 0 0;
   text-align: center;

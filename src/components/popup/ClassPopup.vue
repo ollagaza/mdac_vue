@@ -24,7 +24,7 @@
           <div class="item">프로젝트</div>
           <div>
             <select
-              class="text"
+              class="selbox_popup"
               v-model="project_seq"
               style="width: 380px; padding-right: 5px"
               :disabled="c_modeType === 'e' ? true : false">
@@ -67,7 +67,7 @@
           <div class="item">상태</div>
           <div>
             <select
-              class="text"
+              class="selbox_popup"
               v-model="is_used"
               style="width: 200px; padding-right: 5px">
               <option value="Y">사용</option>
@@ -82,24 +82,22 @@
 
           <template v-if="c_modeType === 'c'">
             <div
-              class="btn navy"
-              style="width: 160px; height: 50px"
+              class="btn squareh pupple"
               v-on:click="onVerify">
               등록
             </div>
           </template>
           <template v-else>
             <div
-              class="btn navy"
-              style="width: 160px; height: 50px"
+              class="btn squareh pupple"
               v-on:click="onModify">
               수정
             </div>
           </template>
 
           <div
-            class="btn_cancel"
-            style="width: 160px; height: 50px"
+            class="btn squareh"
+            style="margin: 0 0 0 5px;"
             v-on:click="onCancel">
             취소
           </div>
@@ -345,19 +343,6 @@ input {
 
 input::placeholder {
   color: #aaa297;
-}
-.item {
-  width: 100px;
-  font-weight: 400;
-  font-size: 14px;
-  color: #504637;
-  letter-spacing: -0.5px;
-  padding-top: 12px;
-}
-.item_title {
-  display: flex;
-  flex-direction: row;
-  padding-top: 10px;
 }
 .btn_idauth {
   width: 120px;

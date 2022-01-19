@@ -216,41 +216,41 @@ export default {
     },
 
     Menu1() {
-      this.$router.push({ name: 'dashboard', params: { menu_id: 1, menu_show: this.menu_show } });
+      this.$router.push({ name: 'dashboard', params: { menu_id: 1, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu2() {
-      this.$router.push({ name: 'datastatus', params: { menu_id: 2, menu_show: this.menu_show } });
+      this.$router.push({ name: 'datastatus', params: { menu_id: 2, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu3() {
-      this.$router.push({ name: 'project', params: { menu_id: 3, menu_show: this.menu_show } });
+      this.$router.push({ name: 'project', params: { menu_id: 3, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu4() {
-      this.$router.push({ name: 'codegroup', params: { ref_codegroup: 0, menu_id: 4, menu_show: this.menu_show } });
+      this.$router.push({ name: 'codegroup', params: { ref_codegroup: 0, menu_id: 4, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu5() {
-      this.$router.push({ name: 'class', params: { menu_id: 5, menu_show: this.menu_show } });
+      this.$router.push({ name: 'class', params: { menu_id: 5, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu6() {
-      this.$router.push({ name: 'board', params: { board_code: '1', menu_id: 6, menu_show: this.menu_show } });
+      this.$router.push({ name: 'board', params: { board_code: '1', menu_id: 6, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu7() {
-      this.$router.push({ name: 'board', params: { board_code: '2', menu_id: 7, menu_show: this.menu_show } });
+      this.$router.push({ name: 'board', params: { board_code: '2', menu_id: 7, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu8() {
-      this.$router.push({ name: 'statisticsworker', params: { search_seq: 1, menu_id: 8, menu_show: this.menu_show } });
+      this.$router.push({ name: 'statisticsworker', params: { search_seq: 1, menu_id: 8, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu9() {
-      this.$router.push({ name: 'statisticsproject', params: { search_seq: 3 , menu_id: 9, menu_show: this.menu_show } });
+      this.$router.push({ name: 'statisticsproject', params: { search_seq: 3 , menu_id: 9, menu_show: this.menu_show } }).catch(() => {});
     },
     Menu10() {
-      this.$router.push({ name: 'member', params: { menu_id: 10, menu_show: this.menu_show } });
+      this.$router.push({ name: 'member', params: { menu_id: 10, menu_show: this.menu_show } }).catch(() => {});
     },
     routeMain() {
-      this.$router.push({ name: 'index', params: { menu_id: 1, menu_show: this.menu_show } });
+      this.$router.push({ name: 'index', params: { menu_id: 1, menu_show: this.menu_show } }).catch(() => {});
     },    
     Menu_codegroup(seq, codegroup_title) {
       // console.log(seq)
-      this.$router.push({ name: 'codegroup', params: { ref_codegroup: seq, codegroup_title: codegroup_title, menu_id: 4, sub_menu_id: 'A' + seq, menu_show: this.menu_show } });
+      this.$router.push({ name: 'codegroup', params: { ref_codegroup: seq, codegroup_title: codegroup_title, menu_id: 4, sub_menu_id: 'A' + seq, menu_show: this.menu_show } }).catch(() => {});
     },
     category_menu() {
       // code group Menu API 호출
@@ -268,10 +268,10 @@ export default {
     logout() {
       this.LogOut()
        .then(() => {
-          this.$router.push({ name: 'index', params: { menu_id: 1 } });
+          this.$router.push({ name: 'index', params: { menu_id: 1 } }).catch(() => {});
         })
         .catch((error) => {
-          this.$router.push({ name: 'index', params: { menu_id: 1 } });
+          this.$router.push({ name: 'index', params: { menu_id: 1 } }).catch(() => {});
           this.$log.error(error);
         })
 

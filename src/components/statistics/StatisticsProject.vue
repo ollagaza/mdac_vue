@@ -19,16 +19,16 @@
             프로젝트 통계
           </div>
 
-          <div class="searchWrap">
+          <div class="searchWrap2">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text selbox" v-model="project_seq" style="width: 30%;" @change="fnStatisticsList()">
+              <select class="text" v-model="project_seq" style="width: 30%;" @change="fnStatisticsList()">
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
 
-              <select class="text selbox" v-model="search_type" style="width: 25%;" @change="fnStatisticsList()">
+              <select class="text" v-model="search_type" style="width: 25%;" @change="fnStatisticsList()">
                 <option value="NOW" selected=true>기간조회</option>
                 <option value="SUM" selected=true>전체조회(반려제외)</option>
                 <option value="SUMC" selected=true>전체조회(반려적용)</option>
@@ -340,7 +340,7 @@ export default {
 </script>
 
 <style scoped>
-.searchWrap {
+.searchWrap2 {
   border: 0px solid #888;
   border-radius: 5px;
   text-align: center;
@@ -348,7 +348,7 @@ export default {
   margin-bottom: 10px;
   margin-top: 5px;
 }
-.searchWrap input {
+.searchWrap2 input {
   /* width: 60%;
   height: 36px;
   border-radius: 3px;
@@ -359,7 +359,6 @@ export default {
   height: 45px;
   border-radius: 6px;
   box-shadow: 0px 2px 0 0 #e8e8e8;
-  border: solid 1px #ddd;
   background-color: #fff;
 }
 

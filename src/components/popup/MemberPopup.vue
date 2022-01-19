@@ -64,7 +64,7 @@
         <div class="item_title">
           <div class="item">상태</div>
           <div>
-            <select class="text" v-model="is_used" style="width: 200px; padding-right: 5px;">
+            <select class="selbox_popup" v-model="is_used" style="width: 200px; padding-right: 5px;">
               <option value="Y">사용중</option>
               <option value="N">정지중</option>
             </select>
@@ -82,13 +82,13 @@
           <div style="flex: 1"></div>
 
           <template v-if="c_modeType === 'c'">
-            <div class="btn navy" style="width:160px; height: 50px;" v-on:click="onVerify">등록</div>
+            <div class="btn squareh pupple" v-on:click="onVerify">등록</div>
           </template>
           <template v-else>
-            <div class="btn navy" style="width:160px; height: 50px;" v-on:click="onModify">수정</div>
+            <div class="btn squareh pupple" v-on:click="onModify">수정</div>
           </template>
                     
-          <div class="btn_cancel" style="width:160px; height: 50px;" v-on:click="onCancel">취소</div>
+          <div class="btn squareh" style="margin: 0 0 0 5px;" v-on:click="onCancel">취소</div>
           <div style="flex: 1"></div>
         </div>
       </div>
@@ -493,12 +493,6 @@ input{
 
 input::placeholder{
   color:#aaa297;
-}
-.item{
-  width:100px;font-weight: 400; font-size: 14px; color: #504637; letter-spacing: -0.5px; padding-top: 12px;
-}
-.item_title{
-  display: flex; flex-direction: row; padding-top: 10px;
 }
 .btn_idauth{
   width: 120px;
