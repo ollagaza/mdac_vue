@@ -204,13 +204,6 @@ export default {
     // this.menu_show = this.$route.params.menu_show === undefined ? true : this.$route.params.menu_show
     // this.board_code = this.$route.params.board_code === '' || this.$route.params.board_code === undefined ? '1' : this.$route.params.board_code  
 
-// if(this.menu_id === 1 ) {
-    //   this.menu_show = false;
-    // }
-    // console.log(`menu_id===${this.menu_id}`)
-    // console.log(`sub_menu_id===${this.sub_menu_id}`)
-    // console.log(`menu_show===${this.menu_show}`)
-    // console.log(`rq===${ this.$route.params.menu_show}`)
   },
   watch: {
   },  
@@ -223,15 +216,12 @@ export default {
     },
 
     Menu1() {
-      console.log(`menu1===${this.menu_show}`)
       this.$router.push({ name: 'dashboard', params: { menu_id: 1, menu_show: this.menu_show } });
     },
     Menu2() {
-      console.log(`menu2===${this.menu_show}`)
       this.$router.push({ name: 'datastatus', params: { menu_id: 2, menu_show: this.menu_show } });
     },
     Menu3() {
-      console.log(`menu3===${this.menu_show}`)
       this.$router.push({ name: 'project', params: { menu_id: 3, menu_show: this.menu_show } });
     },
     Menu4() {
