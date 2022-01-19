@@ -12,9 +12,9 @@ module.exports = {
     index: path.resolve(__dirname, '../dist/index.html'),
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-    // assetsPublicPath: '/m2/',
-    // assetsPublicPath: '/d2/',
-    assetsPublicPath: '/',
+    // assetsPublicPath: '/m2/', // script 생성되는 path
+    assetsPublicPath: '/d2/',
+    // assetsPublicPath: '/',
     productionSourceMap: false,
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],

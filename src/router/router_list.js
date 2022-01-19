@@ -112,11 +112,6 @@ const router_list = [
     component: DataDetail,
     meta: { navigation: '', border_line: '', menu_id: '0', no_pad: true, guest: true, login: true, helpCode: 'main' },
   },  
-  {
-    path: '*',
-    redirect: '/',
-   
-  }
 ];
 
 
