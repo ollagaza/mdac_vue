@@ -2,7 +2,7 @@
   <div class="popup_dim" v-bind:class="{ hide: !is_open }">
     <div class="popup login_popup" v-on:click.stop="() => false" v-on:mousedown.stop="() => false">
       <div class="popup_title_top">
-        <span>{{ c_title }}</span>
+        <span class="table_title">{{ c_title }}</span>
         <span class="delete_btn" v-on:click.stop="closePopup"></span>
       </div>
       <div class="popup_contents">
@@ -12,13 +12,13 @@
             <div class="find_result_email" v-html="c_find_id"></div>
           </template>
           <template v-if="visible.login">
-            <div class="input_title m30">아이디</div>
+            <div class="input_title m30 item">아이디</div>
             <div class="input_row">
               <div class="input_wra">
                 <input type="text" v-model="login.user_id" ref="login_id" v-on:keypress="onLoginKeyPress($event)" placeholder="아이디를 입력하세요." autocomplete="username" spellcheck="false">
               </div>
             </div>
-            <div class="input_title m20">비밀번호</div>
+            <div class="input_title m20 item">비밀번호</div>
             <div class="input_row">
                 <div class="input_wra">
                   <input type="password" v-model="login.password" ref="login_password" v-on:keypress="onLoginKeyPress($event)" placeholder="비밀번호를 입력하세요." autocomplete="current-password" spellcheck="false">
@@ -856,12 +856,14 @@ input::placeholder{
   width: 20px;
   height: 20px;
   cursor: pointer;
-  background-image: url("/img/MDAC/check_off.png");
+  /* background-image: url("/img/MDAC/check_off.png");
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center; */
 }
 .check .check_box.on {
-  background-image: url("/img/MDAC/check_on.png");
+  /* background-image: url("/img/MDAC/check_on.png"); */
+  background-image: url("/img/MDAC/report_arrow_white.png");
+  background-size: 10px;
 }
 
 .login_popup .check .check_wrapper {
