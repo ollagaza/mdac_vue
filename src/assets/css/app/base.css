@@ -92,9 +92,9 @@ footer, .page_bottom {
 .search.input{
   background-image: url('/img/MDAC/search.png');
   background-repeat: no-repeat;
-  background-position: 10px center;
+  background-position: 12px center;
   outline: none;
-  padding-left: 40px
+  padding-left: 50px
 }
 
 input, textarea {
@@ -186,7 +186,7 @@ select.text {
 .datepicker_icon::before {
   position: absolute;
   content: '';
-  right: 5px;
+  right: 10px;
   top: calc(50% - 9px);
   width: 16px;
   height: 18px;

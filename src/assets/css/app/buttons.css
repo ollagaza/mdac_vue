@@ -140,6 +140,9 @@
 .btn.w60 {
   width: 60px;
 }
+.btn.w64 {
+  width: 64px;
+}
 .btn.w80 {
   width: 80px;
 }
@@ -663,6 +666,7 @@
   height: 20px;
   background-color: #000;
   background-image: url("/img/MDAC/report_arrow_white.png");
+  background-size: 10px;
 }
 .check_box.over_image {
   background-image: url("/img/MDAC/check_off.png");
@@ -898,7 +902,7 @@ input:checked + .toggle .toggle__handler{
 }
 
 .btn.square.pupple {
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -917,7 +921,7 @@ input:checked + .toggle .toggle__handler{
   color: #fff;
 }
 .btn.square.red {
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -941,7 +945,7 @@ input:checked + .toggle .toggle__handler{
 }
 /* square button for other hover */
 .btn.squareh{
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -961,7 +965,7 @@ input:checked + .toggle .toggle__handler{
 }
 
 .btn.squareh:hover {
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -981,7 +985,7 @@ input:checked + .toggle .toggle__handler{
 }
 
 .btn.squareh.pupple {
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -1021,7 +1025,7 @@ input:checked + .toggle .toggle__handler{
 
 /* square button for other hover */
 .btn.squareh.check{
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -1044,7 +1048,7 @@ input:checked + .toggle .toggle__handler{
 }
 
 .btn.squareh.check:hover {
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -1068,7 +1072,7 @@ input:checked + .toggle .toggle__handler{
 }
 
 .btn.squareh.check.on {
-  width: 64px;
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */

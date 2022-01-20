@@ -82,21 +82,21 @@
 
           <template v-if="c_modeType === 'c'">
             <div
-              class="btn squareh pupple"
+              class="btn squareh pupple w64"
               v-on:click="onVerify">
               등록
             </div>
           </template>
           <template v-else>
             <div
-              class="btn squareh pupple"
+              class="btn squareh pupple w64"
               v-on:click="onModify">
               수정
             </div>
           </template>
 
           <div
-            class="btn squareh"
+            class="btn squareh w64"
             style="margin: 0 0 0 5px;"
             v-on:click="onCancel">
             취소

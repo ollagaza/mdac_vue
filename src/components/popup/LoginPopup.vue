@@ -39,7 +39,7 @@
                 <div class="lds-facebook"><div></div><div></div><div></div></div>
               </template>
               <template v-else>
-                <div class="btn navy login"  v-on:click="onLoginClick"><span>로그인</span></div>
+                <div class="btn squareh pupple login w100p" v-on:click="onLoginClick"><span>로그인</span></div>
               </template>
             </div>
           </template>
