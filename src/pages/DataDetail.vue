@@ -77,10 +77,10 @@
                   <input class="text" type="text" v-model="label_cnt" style="border: 1px solid #ccc;width: 60px; height: 33px;" v-on:keypress="onlyNumber">
                 </div>
                 <div style="width: 80px;">
-                  <div class="btn square navy" style="width: 70px; height: 33px;" v-on:click="onApplyClick()">작업추가</div>
+                  <div class="btn square_basic navy" style="width: 70px; height: 33px;" v-on:click="onApplyClick()">작업추가</div>
                 </div>
                 <div style="width: 80px;">
-                  <div class="btn square red" style="width: 70px; height: 33px;" v-on:click="deleteWork">작업삭제</div>
+                  <div class="btn square_basic red" style="width: 70px; height: 33px;" v-on:click="deleteWork">작업삭제</div>
                 </div>
               </div>
               <div style="display: flex;  flex-direction: row; justify-content: right;">
@@ -314,7 +314,7 @@ export default {
       const query = this.getQuery();
       query.view_type = 'l';
       const params = {};
-      this.$router.push({ name: 'datadetail', params, query });
+      this.$router.push({ name: 'datadetail', params, query }).catch(() => {});
     },
     onListClick(seq) {
       if (this.file_type === 'i') {
@@ -325,7 +325,7 @@ export default {
       query.view_type = 'v';
       query.file_seq = seq;
       const params = {};
-      this.$router.push({ name: 'datadetail', params, query });
+      this.$router.push({ name: 'datadetail', params, query }).catch(() => {});
     },
     async onSearch() {
       this.page_navigation.cur_page = 1;
@@ -645,7 +645,7 @@ export default {
       query.div_seq = this.div_seq;
       query.file_type = this.file_type;
       const params = {};
-      this.$router.push({ name: 'datadetail', params, query });
+      this.$router.push({ name: 'datadetail', params, query }).catch(() => {});
     },
     st_change() {
     },

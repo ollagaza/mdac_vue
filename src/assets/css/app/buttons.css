@@ -862,8 +862,8 @@ input:checked + .toggle .toggle__handler{
 }
 
 /* square button */
-.btn.square {
-  width: 64px;
+.btn.square_basic {
+  /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
   padding: 11px 15px 10px 16px; */
@@ -882,7 +882,7 @@ input:checked + .toggle .toggle__handler{
   color: #888;
 }
 
-.btn.square.navy {
+.btn.square_basic.navy {
   width: 64px;
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -901,7 +901,7 @@ input:checked + .toggle .toggle__handler{
   color: #fff;
 }
 
-.btn.square.pupple {
+.btn.square_basic.pupple {
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -920,7 +920,7 @@ input:checked + .toggle .toggle__handler{
   text-align: left;
   color: #fff;
 }
-.btn.square.red {
+.btn.square_basic.red {
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -940,11 +940,11 @@ input:checked + .toggle .toggle__handler{
   color: #d01717;
 }
 
-.btn.square:hover {
+.btn.square_basic:hover {
   opacity: 60%;
 }
 /* square button for other hover */
-.btn.squareh{
+.btn.square{
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -964,7 +964,7 @@ input:checked + .toggle .toggle__handler{
   color: #888;
 }
 
-.btn.squareh:hover {
+.btn.square:hover {
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -984,7 +984,7 @@ input:checked + .toggle .toggle__handler{
   color: #464bba;
 }
 
-.btn.squareh.pupple {
+.btn.square.pupple {
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -1004,12 +1004,27 @@ input:checked + .toggle .toggle__handler{
   color: #fff;
 }
 
-.btn.squareh.pupple:hover {
+.btn.square.pupple:hover {
   opacity: 60%;
+  /* width: 64px;
+  height: 33px;
+  border-radius: 6px;
+  border: solid 1px #464bba;
+  background-color: #464bba;
+
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 4;
+  letter-spacing: normal;
+  text-align: left;
+  color: #fff; */
 }
 
 /* square button for other hover */
-.btn.squareh.check{
+.btn.square.check{
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -1032,7 +1047,7 @@ input:checked + .toggle .toggle__handler{
   color: #888;
 }
 
-.btn.squareh.check:hover {
+.btn.square.check:hover {
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;
@@ -1056,7 +1071,7 @@ input:checked + .toggle .toggle__handler{
   color: #464bba;
 }
 
-.btn.squareh.check.on {
+.btn.square.check.on {
   /* width: 64px; */
   height: 33px;
   /* margin: 1px 26px 20px 6px;

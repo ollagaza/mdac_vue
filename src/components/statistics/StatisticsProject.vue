@@ -47,11 +47,11 @@
 
           <div>
             <div style="height: fit-content;display: flex; flex-direction: row;">
-              <div class="btn squareh check" v-bind:class="{ on: search_seq === '3' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('3')">통합검수</div>
-              <div class="btn squareh check" v-bind:class="{ on: search_seq === '4' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('4')">별도검수</div>
+              <div class="btn square check" v-bind:class="{ on: search_seq === '3' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('3')">통합검수</div>
+              <div class="btn square check" v-bind:class="{ on: search_seq === '4' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('4')">별도검수</div>
               <div style="flex: 2"></div>
-              <div class="btn squareh" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
-              <div class="btn squareh pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
+              <div class="btn square" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
+              <div class="btn square_basic pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
             </div>
           </div>
 
