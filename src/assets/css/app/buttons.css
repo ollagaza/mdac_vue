@@ -991,7 +991,7 @@ input:checked + .toggle .toggle__handler{
   padding: 11px 15px 10px 16px; */
   border-radius: 6px;
   border: solid 1px #ddd;
-  background-color: #6b70d6;
+  background-color: #6b70d6;  
 
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 12px;
@@ -1006,21 +1006,6 @@ input:checked + .toggle .toggle__handler{
 
 .btn.squareh.pupple:hover {
   opacity: 60%;
-  /* width: 64px;
-  height: 33px;
-  border-radius: 6px;
-  border: solid 1px #464bba;
-  background-color: #464bba;
-
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff; */
 }
 
 /* square button for other hover */
