@@ -561,10 +561,17 @@ select.text {
 
 .fade_in {
   display: inline-block;
-  animation: fadein 2s;
-  -moz-animation: fadein 2s; /* Firefox */
-  -webkit-animation: fadein 2s; /* Safari and Chrome */
-  -o-animation: fadein 2s; /* Opera */
+  animation: fadein 1.5s;
+  -moz-animation: fadein 1.5s; /* Firefox */
+  -webkit-animation: fadein 1.5s; /* Safari and Chrome */
+  -o-animation: fadein 1.5s; /* Opera */
+}
+.fade_in_3 {
+  display: inline-block;
+  animation: fadein 3s;
+  -moz-animation: fadein 3s; /* Firefox */
+  -webkit-animation: fadein 3s; /* Safari and Chrome */
+  -o-animation: fadein 3s; /* Opera */
 }
 @keyframes fadein {
   from {
@@ -599,13 +606,13 @@ select.text {
   }
 }
 .fade_out {
-  display: none;
-  /* display: inline-block; */
-  /* animation: fadeout 0.5s; */
-  /* -moz-animation: fadeout 0.5s; Firefox */
-  /* -webkit-animation: fadeout 0.5s; Safari and Chrome */
-  /* -o-animation: fadeout 0.5s; Opera */
-  /* animation-fill-mode: forwards; */
+  /* display: none; */
+  display: inline-block;
+  animation: fadeout 0.5s;
+  -moz-animation: fadeout 0.5s; /* Firefox */
+  -webkit-animation: fadeout 0.5s; /* Safari and Chrome */
+  -o-animation: fadeout 0.5s; /* Opera */
+  animation-fill-mode: forwards;
 }
 @keyframes fadeout {
   from {

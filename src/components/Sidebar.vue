@@ -5,9 +5,9 @@
         <span><img v-show="menu_show" v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show}" src="/img/MDAC/footer_logo.png" style="width:94px;20px;cursor:pointer;" v-on:click="routeMain"></span>
         <span>
         <img v-show="!menu_show" v-bind:class="{ fade_in : !this.menu_show, fade_out : this.menu_show }" src="/img/MDAC/logo_visual.png" style="width:36px;20px;cursor:pointer;" v-on:click="viewMenu"></span>
-        <span style="padding: 0 0 0 0;float:right;" class="pointer"><img v-show="menu_show" v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" src="/img/MDAC/mene.png" v-on:click="viewMenu"></span>
+        <span style="padding: 0 0 0 0;float:right;" class="pointer"><img v-show="menu_show" v-bind:class="{ fade_in_3 : this.menu_show, fade_out : !this.menu_show }" src="/img/MDAC/mene.png" v-on:click="viewMenu"></span>
       </div>
-      <div v-bind:class="[{ left_line : this.menu_show, left_line_s : !this.menu_show }, { fade_in : this.menu_show, fade_out : !this.menu_show }]" ></div>
+      <div v-bind:class="[{ left_line : this.menu_show, left_line_s : !this.menu_show }, { fade_in_3 : this.menu_show, fade_out : !this.menu_show }]" ></div>
         <div class="left_head mainmenu" v-on:click="Menu1">
           <div v-bind:class="{ select: menu_id === 1 || menu_id === '' }">
             <div>
@@ -142,10 +142,15 @@
 
       <div v-bind:class="{ left_user : this.menu_show, left_user_s : !this.menu_show }" >
         <span><img src="/img/MDAC/profile.png" style="float:left;"></span>
+        <!-- big menu -->
         <span v-show="menu_show" v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" class="left_name"><span style="color:#9fa4ea">{{c_usrname}}</span>님 환영합니다.</span>
-        <span v-show="!menu_show" v-bind:class="{ fade_in : !this.menu_show, fade_out : this.menu_show }" class="left_name" style="margin-left:-14px;"><span style="color:#9fa4ea">홍길동</span>님</span>
-        <span class="left_logout pointer" v-on:click="logout">로그아웃</span>
+        <span v-show="menu_show" v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" class="left_logout pointer" v-on:click="logout">로그아웃</span>
+
+        <!-- small menu -->
+        <span v-show="!menu_show" v-bind:class="{ fade_in_3 : !this.menu_show, fade_out : this.menu_show }" class="left_name" style="margin-left:-14px;"><span style="color:#9fa4ea">홍길동</span>님</span>
+        <span v-show="!menu_show" v-bind:class="{ fade_in_3 : !this.menu_show, fade_out : this.menu_show }" class="left_logout pointer" v-on:click="logout">로그아웃</span>
       </div>
+      
       <div v-show="menu_show" v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }"  class="left_bottom">
           <span>서울특별시 마포구 성암로 330 DMC첨단산업센터 516<br />
           support@mteg.co.kr<br />
