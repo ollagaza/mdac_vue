@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div v-show="menu_id >= 2 && menu_id <= 7">
+      <div v-show="menu_id >= 2 && menu_id <= 7 && menu_show">
         <div class="left_head mainmenu">
           <div v-bind:class="{ select: menu_id === 2 }">
             <span v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" class="left_sub txt" v-on:click="Menu2">Data Status</span>
@@ -101,7 +101,7 @@
         </div>
       </div>
 
-      <div v-show="menu_id === 8 || menu_id === 9">
+      <div v-show="(menu_id === 8 || menu_id === 9) && menu_show">
         <div class="left_head mainmenu">
           <div v-bind:class="{ select: menu_id === 8 }">
             <span v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" class="left_sub txt" v-on:click="Menu8">작업자 통계</span>
@@ -132,7 +132,7 @@
         </div>
       </div>
       
-      <div v-show="menu_id === 10">
+      <div v-show="menu_id === 10 && menu_show">
         <div class="mainmenu">
           <div v-bind:class="{ select: menu_id === 10 }">
             <span v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" class="left_sub txt" v-on:click="Menu10">작업자 관리</span>
