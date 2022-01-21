@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="popup_buttons">
-        <div class="btn blue w100" v-on:click="closePopup"><span>{{ btn_message }}</span></div>
+        <div class="btn blue w100" v-on:click="closePopup"><span >{{ btn_message }}</span></div>
       </div>
       <div class="warring" v-if="warring" v-html="warring"></div>
     </div>
