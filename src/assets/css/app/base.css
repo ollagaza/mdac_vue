@@ -142,12 +142,17 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url("/img/MDAC/dropbox_arrow.png");
+  background: url('/img/MDAC/group_arrow.png') calc(100% - 7px) center no-repeat;
   margin-right: 10px;
-  background-position: 95% center;
+  background-position: 93% center;
   background-repeat: no-repeat;
+  text-emphasis-color: red;
 }
-
+select option {
+  /* background: black;
+  color: red; */
+  padding: 3px 0;
+}
 select.text {
   /* padding-left: 10px;
   padding-right: 10px;

@@ -44,11 +44,11 @@
               </select>
 
               <div class="datepicker_icon selbox" style="border: 1px solid #ccc;width: 15%;">
-                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+                <datepicker v-model="start_date" :language="date_locale_ko" :format="dateFormatter" style="width: 100%;height: 100%;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
               <div style="line-height: 34px;">&nbsp;~&nbsp;</div>
               <div class="datepicker_icon selbox" style="border: 1px solid #ccc;width: 15%;">
-                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 120px;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
+                <datepicker v-model="end_date" :language="date_locale_ko" :format="dateFormatter" style="width: 100%;height: 100%;padding: 12px 0 0 10px;" :disabled="this.search_type === 'SUM' || search_type === 'SUMC'" v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' }"></datepicker>
               </div>
 
               <div class="btn deepgray" style="margin-left:5px;width:10%;" v-on:click="fnStatisticsList()">조회</div>

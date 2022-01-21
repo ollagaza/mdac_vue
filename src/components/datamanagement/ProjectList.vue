@@ -21,24 +21,24 @@
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="status" style="width: 190px;" @change="fnProjectList(1)">
+              <select class="text" v-model="status" style="width: 23%;" @change="fnProjectList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="1">진행중</option>
                 <option value="2">중지중</option>
                 <option value="3">종료</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 200px;">
+              <select class="text" v-model="search_type" style="width: 25%;">
                 <option value="project_name" selected=true>프로젝트명</option>
                 <option value="LABELER">라벨러</option>
                 <option value="CHECKER">검수자</option>
               </select>
 
               <input type="text" class="search input" v-model="keyword" @keyup.enter="fnProjectList(1)" />
-              <div class="btn deepgray" style="margin-left:5px;width:80px;" v-on:click="fnProjectList(1)">검색</div>
+              <div class="btn deepgray" style="margin-left:5px;width:100px;" v-on:click="fnProjectList(1)">검색</div>
               <div class="btn reg" style="margin-left:5px;width:100px;" v-on:click="fnProjectDetail('')">프로젝트등록</div>
-              <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="Menu3">분류관리</div>
-              <div class="btn reg" style="margin-left:5px;width:90px;" v-on:click="Menu4">클래스관리</div>
+              <!-- <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="Menu3">분류관리</div> -->
+              <div class="btn reg" style="margin-left:5px;width:100px;" v-on:click="Menu4">클래스관리</div>
             </div>
           </div>
 

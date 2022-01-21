@@ -21,27 +21,27 @@
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="project_seq" style="width: 300px;" @change="fnClassList(1)">
+              <select class="text" v-model="project_seq" style="width: 45%;" @change="fnClassList(1)">
                 <option value="" selected=true>전체프로젝트</option>
                   <template v-for="(project, seq) in project_list">
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
 
-              <select class="text" v-model="is_used" style="width: 180px;" @change="fnClassList(1)">
+              <select class="text" v-model="is_used" style="width: 22%;" @change="fnClassList(1)">
                 <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">중지중</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 180px;">
+              <select class="text" v-model="search_type" style="width: 22%;">
                 <option value="class_name" selected=true>클래스명</option>
                 <option value="class_id">클래스코드</option>
               </select>
 
               <input type="text" class="search input" v-model="keyword" @keyup.enter="fnClassList(1)" />
-              <div class="btn deepgray" style="margin-left:5px;width:80px;" v-on:click="fnClassList(1)">검색</div>
-              <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="fnClassDetail('')">등록</div>
+              <div class="btn deepgray" style="margin-left:5px;width:100px;" v-on:click="fnClassList(1)">검색</div>
+              <div class="btn reg" style="margin-left:5px;width:100px;" v-on:click="fnClassDetail('')">등록</div>
             </div>
           </div>
 

@@ -24,13 +24,13 @@
 
           <div class="searchWrap">
             <div style="display: flex; flex-direction: row; justify-content: center;">
-              <select class="text" v-model="is_used" style="width: 150px;" @change="fnCodegroupList(1)">
-                <option value="" selected=true>상태(전체){{ this.ref_codegroup }}</option>
+              <select class="text" v-model="is_used" style="width: 20%;" @change="fnCodegroupList(1)">
+                <option value="" selected=true>상태(전체)</option>
                 <option value="Y" selected=true>사용중</option>
                 <option value="N">중지중</option>
               </select>
 
-              <select class="text" v-model="search_type" style="width: 160px;">
+              <select class="text" v-model="search_type" style="width: 30%;">
                 <option v-if="this.ref_codegroup === 0" value="codegroup_name" selected=true>그룹명</option>
                 <option v-if="this.ref_codegroup === 0" value="codegroup_id">그룹코드</option>
                 <option v-if="this.ref_codegroup !== 0" value="codegroup_name" selected=true>{{ this.codegroup_name }}코드명</option>
@@ -38,8 +38,8 @@
               </select>
 
               <input type="text" class="search input" v-model="keyword" @keyup.enter="fnCodegroupList(1)" />
-              <div class="btn deepgray" style="margin-left:5px;width:80px;" v-on:click="fnCodegroupList(1)">검색</div>
-              <div class="btn reg" style="margin-left:5px;width:80px;" v-on:click="fnCodegroupDetail('')">등록</div>
+              <div class="btn deepgray" style="margin-left:5px;width:100px;" v-on:click="fnCodegroupList(1)">검색</div>
+              <div class="btn reg" style="margin-left:5px;width:100px;" v-on:click="fnCodegroupDetail('')">등록</div>
             </div>
           </div>
 
