@@ -10,7 +10,7 @@
   <div class="layout"><!-- float: left;position:absolute; -->
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Side_bar v-bind:menu_id="9"></Side_bar>
+        <Side_bar v-bind:menu_id="9" @viewMenu="viewMenu"></Side_bar>
         <div class="content_layout">
           <div class="main_title">
             Statistics
@@ -19,7 +19,7 @@
             프로젝트 통계
           </div>
 
-          <div class="searchWrap2">
+          <div id="aaaaa" class="searchWrap2">
             <div style="display: flex; flex-direction: row; justify-content: center;">
               <select class="text" v-model="project_seq" style="width: 30%;" @change="fnStatisticsList()">
                 <option value="" selected=true>전체프로젝트</option>
@@ -27,7 +27,6 @@
                     <option v-bind:value="project.seq">{{project.project_name}}</option>
                   </template>
               </select>
-
               <select class="text" v-model="search_type" style="width: 25%;" @change="fnStatisticsList()">
                 <option value="NOW" selected=true>기간조회</option>
                 <option value="SUM" selected=true>전체조회(반려제외)</option>
@@ -51,7 +50,7 @@
               <div class="btn square check" v-bind:class="{ on: search_seq === '4' }" style="margin-left:5px;width:80px;" v-on:click="statisticsGo('4')">별도검수</div>
               <div style="flex: 2"></div>
               <div class="btn square" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
-              <div class="btn square_basic pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
+              <div class="btn purple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
             </div>
           </div>
 
@@ -229,15 +228,26 @@ export default {
       end_date: moment().format('YYYY-MM-DD'),    // 종료일
       chartLoading: false,      // 데이터를 불러오기 전까지는 progress circle을 사용
       chartData: [],
+      menuSize: 0, 
+      showmm: false,
+      menu_show: true,
     };
   },
   watch: {
+    // this.menuSize = document.getElementById("aaaaa").getBoundingClientRect().width
+
+    showmm: {
+      handler: function () {
+        // console.log('yyy')
+      },
+      deep: true
+    },
     '$route': function(){
       this.search_seq = this.$route.params.search_seq ? this.$route.params.search_seq: '3';
       this.tooltips_title = '차트데이터보이기'
       this.tooltips_flag = 'N'
       this.fnStatisticsList();    
-    }
+    },
   },  
   computed: {
     cis_data() {
@@ -261,8 +271,32 @@ export default {
   },
   mounted() {
     this.fnStatisticsList();    
+    this.menuSize = document.getElementById("aaaaa").getBoundingClientRect().width
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   },
   methods: {
+    viewMenu(menu_show) {
+      this.menu_show = menu_show
+
+      if(menu_show)
+      {
+        setTimeout(() => {
+          this.init()
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          this.init()
+        }, 1000);
+      }
+    },
+    handleResize(event) { // 사이즈 변경시 처리
+      // console.log('aa')
+    },
     // 통계 조회
     fnStatisticsList() {
       this.chart_title = `프로젝트 통계 ( ${moment(this.start_date).format('YYYY-MM-DD')} ~ ${moment(this.end_date).format('YYYY-MM-DD')} )`
@@ -381,19 +415,23 @@ export default {
   color: #888;
 }
 .grid_m.class_check3 {
-  grid-template-columns: 220px 110px 110px 110px 110px 110px 110px 110px 110px;
+  /* grid-template-columns: 220px 110px 110px 110px 110px 110px 110px 110px 110px; */
+  grid-template-columns: 20% 10% 10% 10% 10% 10% 10% 10% 10%;
 }
 .grid_m.class_check3_all {
-  grid-template-columns: 200px 90px 90px 90px 90px 90px 90px 90px 90px 90px 90px;
+  /* grid-template-columns: 200px 90px 90px 90px 90px 90px 90px 90px 90px 90px 90px; */
+  grid-template-columns: 20% 8% 8% 8% 8% 8% 8% 8% 8% 8% 8%;
 }
 .grid_m.class_check4 {
-  grid-template-columns: 230px 90px 90px 90px 90px 90px 140px 140px 140px;
+  /* grid-template-columns: 230px 90px 90px 90px 90px 90px 140px 140px 140px; */
+  grid-template-columns: 21% 8% 8% 8% 8% 8% 13% 13% 13%;
 }
 .grid_m.class_check4_all {
-  grid-template-columns: 170px 60px 60px 60px 60px 60px 60px 130px 60px 130px 60px 130px 60px;
+  /* grid-template-columns: 170px 60px 60px 60px 60px 60px 60px 130px 60px 130px 60px 130px 60px; */
+  grid-template-columns: 15% 6% 6% 6% 6% 5% 5% 12% 5% 12% 5% 12% 5%;
 }
 .grid_m.nodata {
-  grid-template-columns: 1100px;
+  grid-template-columns: 100%;
 }
 .colorLightgray {
   background-color: lightgray;

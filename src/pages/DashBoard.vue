@@ -36,7 +36,7 @@
                 <div class="user_content">{{ member_count[0].labeler }}</div>
                 <div class="user_line2"></div>
                 <div class="user_content_title">검수자</div>
-                <div class="user_content" style="margin: 0 15px 20px 0;" >{{ member_count[0].checker }}</div>
+                <div class="user_content" style="float:right;margin: 0 15px 20px 0;" >{{ member_count[0].checker }}</div>
               </div>
               <!-- <div class="grid_m dashboard header">
                 <div>총작업자</div>
@@ -57,7 +57,7 @@
           <!-- project dashboard -->
           <div v-if="statistics_list.length > 0" class="dashboard">
           <template v-for="(pStatistics, index) in statistics_list">
-            <div v-if="member_count.length > 0" style="flex: 2; margin-top:10px;" class="Rectangle_project">
+            <div v-if="statistics_list.length > 0" style="flex: 2; margin-top:10px;" class="Rectangle_project" v-bind:class="{ right: index % 2 === 1, left: index % 2 === 0, none: index + 1 === statistics_list.length }">
               <div><!--  v-bind:class="{ colorLightgray : this.search_type === 'SUM' || search_type === 'SUMC' } -->
                 <div style="height: fit-content;display: flex; flex-direction: row;">
                   <div class="project_title">{{ pStatistics.project_name }}</div>
@@ -80,6 +80,7 @@
                   <div class="project_content_title" style="margin: 0 0 19px 0px;"><span style="color:#311b92;font-size:12px;padding-right:5px;">●</span> 검수완료</div>
                   <div class="project_content" >{{ pStatistics.check_complete }}</div>
                 </div>
+                <div style="float:left;"></div>
                 <!-- <div class="grid_m dashboard header">
                   <div>총작업자</div>
                   <div class="grid_m worker_value">{{ member_count[0].total }}</div>
@@ -261,17 +262,11 @@ export default {
 } */
 
 .dashboard {
-  width: 1140px;
+  width: 100%;
+  /* min-width: 1100px; */
   display: flex;
   flex-wrap: wrap; /*줄 바꿈*/  
 }
-
-.dashboard div{
-  /* margin: 0 38px 5px 0; */
-}
-/* .test.testc {
-  grid-template-columns: 600px 600px;
-} */
 
 .grid_m.project_value {
   background-color: #fff;
@@ -296,15 +291,26 @@ export default {
   background-color: #5f5f74;
 }
 .Rectangle_project {
-  width: 530px;
-  max-width: 530px;
+  /* width: 530px;
+  max-width: 530px; */
   height: 149px;
-  margin: 20px 40px 20px 0;
   padding: 19px 0 0;
   border-radius: 10px;
   box-shadow: 0px 2px 0 0 #e8e8e8;
   background-color: #fff;
 }
+.Rectangle_project.left {
+  margin: 20px 20px 20px 0;
+  float: left;
+}
+.Rectangle_project.right {
+  margin: 20px 0px 20px 20px;
+  float: right;
+}
+.Rectangle_project.none {
+  margin: 20px 0px 20px 0px !important;
+}
+
 .user_line {
   width: 100%;
   height: 1px;
@@ -348,9 +354,9 @@ export default {
 }
 
 .project_title {
-  width: 200px;
+  width: 350px;
   height: 14px;
-  margin: 0 153px 17px 20px;
+  margin: 0 100px 17px 20px;
   /* padding: 0 0 0 20px; */
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 14px;
@@ -364,7 +370,8 @@ export default {
 }
 
 .user_content_title {
-  width: 250px;
+  /* width: 250px; */
+  width: 25%;
   height: 14px;
   margin: 0 0 19px 0;
   font-family: 'Noto Sans KR', sans-serif;
@@ -379,7 +386,8 @@ export default {
 }  
 
 .project_content_title {
-  width: 250px;
+  /* width: 250px; */
+  width: 50%;
   height: 30px;
   margin: 0 0 19px 19px;
   padding: 12px 0 0 0;
@@ -427,14 +435,6 @@ export default {
   line-height: 1;
   color: #888;
 }
-.blue_circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  -webkit-border-radius: 50%;
-  -moz-border-radius: 50%;
-  background: #311b92;
-  text-align: center;;
-}
+
 </style>
 

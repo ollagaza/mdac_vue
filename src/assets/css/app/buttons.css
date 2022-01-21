@@ -82,6 +82,7 @@
   flex-grow: 0;
   font-weight: 400;
 }
+
 .btn {
   position: relative;
   display: flex;
@@ -89,24 +90,27 @@
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  border-radius: 5px;
-  height: 30px;
-  font-size: 13px;
+  border-radius: 6px;
+  height: 33px;
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  
   outline: none;
   user-select: none;
   background-position: center center;
   background-repeat: no-repeat;
-  color: #555555;
+  color: #888;
   background-color: #ffffff;
-  border: 1px solid #dddddd;
+  border: 1px solid #ddd;
   overflow: hidden;
   flex-shrink: 0;
   flex-grow: 0;
   font-weight: 400;
 }
 .btn:hover {
-  background-color: #f5f5f5;
-  border: 1px solid #aaaaaa;
+  background-color: #fff;
+  border: 1px solid #888;
+  color: #B5B5B5;
 }
 
 .btn.fw300 {
@@ -246,8 +250,10 @@
 }
 
 .btn.deepgray {
+  box-shadow: 0px 2px 0 0 #e8e8e8;
   font-weight: 400;
   font-size: 13px;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #fff;
   background-color: #636373;
   text-align: center;
@@ -255,7 +261,7 @@
   height: 45px;
 }
 .btn.deepgray:hover {
-  opacity: 60%;
+  background-color: #82828E;
 }
 .btn.history {  
   height: 28px;
@@ -297,6 +303,9 @@
 .btn.reg {
   font-weight: 400;
   font-size: 13px;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
+  border-radius: 6px;
+  font-family: 'Noto Sans KR', sans-serif;
   color: #fff;
   background-color: #6b70d6;
   text-align: center;
@@ -305,22 +314,7 @@
 }
 
 .btn.reg:hover {
-  opacity: 60%;
-}
-/* .btn.reg:hover {
-  background-color: #979ADB;
-} */
-
-.btn.navy {
-  font-weight: 400;
-  font-size: 13px;
-  color: #fff;
-  background-color: #1C3048;
-  text-align: center;
-  cursor: pointer;
-}
-.btn.navy:hover {
-  background-color: #415771;
+  background-color: #888CDE;
 }
 
 .btn.deepgreen {
@@ -445,12 +439,34 @@
 
 .btn.purple {
   color: #ffffff;
-  background-color: #6d51b0;
-  border: 1px solid #6d51b0;
+  background-color: #6b70d6;
+  border: 1px solid #6b70d6;
 }
 .btn.purple:hover {
-  background-color: #9073d5;
-  border: 1px solid #9073d5;
+  /* opacity: 60%; */
+  background-color: #888CDE;
+  border: 1px solid #888CDE;
+}
+
+.btn.navy {
+  color: #ffffff;
+  background-color: #3d3d4d;
+  border: 1px solid #3d3d4d;
+}
+.btn.navy:hover {
+  /* opacity: 60%; */
+  background-color: #888892;
+  border: 1px solid #888892;
+}
+.btn.redfont {
+  border: solid 1px #ddd;
+  background-color: #fff;
+  color: #d01717;
+}
+.btn.redfont:hover {
+  border: solid 1px #888;
+  background-color: #fff;
+  color: #E17272;
 }
 
 .btn.red {
@@ -861,88 +877,6 @@ input:checked + .toggle .toggle__handler{
   border-color: #ffffff;
 }
 
-/* square button */
-.btn.square_basic {
-  /* width: 64px; */
-  height: 33px;
-  /* margin: 1px 26px 20px 6px;
-  padding: 11px 15px 10px 16px; */
-  border-radius: 6px;
-  border: solid 1px #ddd;
-  background-color: #fff;
-
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #888;
-}
-
-.btn.square_basic.navy {
-  width: 64px;
-  height: 33px;
-  /* margin: 1px 26px 20px 6px;
-  padding: 11px 15px 10px 16px; */
-  border-radius: 6px;
-  background-color: #3d3d4d;
-
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff;
-}
-
-.btn.square_basic.pupple {
-  /* width: 64px; */
-  height: 33px;
-  /* margin: 1px 26px 20px 6px;
-  padding: 11px 15px 10px 16px; */
-  border-radius: 6px;
-  border: solid 1px #ddd;
-  background-color: #6b70d6;
-
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #fff;
-}
-.btn.square_basic.red {
-  /* width: 64px; */
-  height: 33px;
-  /* margin: 1px 26px 20px 6px;
-  padding: 11px 15px 10px 16px; */
-  border-radius: 6px;
-  border: solid 1px #ddd;
-  background-color: #fff;
-
-  font-family: 'Noto Sans KR', sans-serif;
-  font-size: 12px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 4;
-  letter-spacing: normal;
-  text-align: left;
-  color: #d01717;
-}
-
-.btn.square_basic:hover {
-  opacity: 60%;
-}
 /* square button for other hover */
 .btn.square{
   /* width: 64px; */
@@ -1055,59 +989,6 @@ input:checked + .toggle .toggle__handler{
   text-align: left;
   color: #464bba;
 }
-
-/* .process_progress {
-  display: flex;
-  flex-direction: row;
-  width: 60px;
-  height: 24px;
-  justify-content: center;
-  align-items: center;
-  transition: .3s;
-  background-position: 0 0;
-  background-color: #1aabea;
-  background-repeat: no-repeat;
-  overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid #1aabea;
-  font-size: 13px;
-  color: #fff;
-}
-
-.process_stop {
-  display: flex;
-  flex-direction: row;
-  width: 60px;
-  height: 24px;
-  justify-content: center;
-  align-items: center;
-  transition: .3s;
-  background-position: 0 0;
-  background-color: #f3873f;
-  background-repeat: no-repeat;
-  overflow: hidden;
-  border-radius: 12px;
-  color: #fff;
-  border: 1px solid #f3873f;
-  font-size: 13px;
-}
-
-.process_end {
-  display: flex;
-  flex-direction: row;
-  width: 60px;
-  height: 24px;
-  justify-content: center;
-  align-items: center;
-  transition: .3s;
-  background-position: 0 0;
-  background-color: rgba(153, 150, 150, 0.37);
-  background-repeat: no-repeat;
-  overflow: hidden;
-  border-radius: 12px;
-  border: 1px solid rgba(75, 74, 74, 0.6);
-  font-size: 13px;
-} */
 
 /* 상태 버튼 */
 .process_progress.wait {

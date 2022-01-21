@@ -344,7 +344,8 @@ export default {
 
 <style>
 .grid_m.datalist {
-  grid-template-columns: 290px 90px 240px 90px 240px 70px 80px;
+  /* grid-template-columns: 290px 90px 240px 90px 240px 70px 80px; */
+  grid-template-columns: 27% 8% 22% 8% 22% 6% 7%;
 }
 .ing{
   color: #6b70d6;

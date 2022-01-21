@@ -51,7 +51,7 @@
 
               <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('Y')">사용중</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('N')">사용중지</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('D')">삭제</div>
+              <div class="btn redfont" style="margin-left:5px;width:80px; height: 36px;" v-on:click="division_change('D')">삭제</div>
             
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
@@ -503,6 +503,6 @@ export default {
   grid-template-columns: 50px 180px 240px 100px 180px 100px 150px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 100%;
 }
 </style>

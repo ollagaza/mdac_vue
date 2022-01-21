@@ -365,7 +365,7 @@ export default {
   grid-template-columns: 100px 60px 60px 60px 60px 60px 60px 120px 60px 120px 60px 120px 60px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 100%;
 }
 .colorLightgray {
   background-color: lightgray;

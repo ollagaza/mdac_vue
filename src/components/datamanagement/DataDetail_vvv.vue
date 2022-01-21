@@ -186,7 +186,8 @@ export default {
   grid-template-columns: 50px 200px 80px 120px 90px 90px 90px 90px 90px 100px;
 }
 .grid_m.title {
-  grid-template-columns: 200px 200px 400px 200px;
+  /* grid-template-columns: 230px 230px 400px 240px; */
+  grid-template-columns: 20% 20% 40% 20%;
   /*background-color: #1C3048;*/
   background-color: #345987;
   height: 30px;

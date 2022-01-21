@@ -100,13 +100,14 @@ tr.content:hover td.title{
 }
 .grid_m.bottom {
   background-color: #fff;
+  box-shadow: 0px 2px 0 0 #e8e8e8;
   border-radius: 0px 0px 10px 10px;
 }
 .grid_m.body:hover {
   background-color: #F1F1F8;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 100%;
 }
 .grid_m.subbody {
   background-color:#e8e8e8;

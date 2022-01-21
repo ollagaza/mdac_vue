@@ -77,10 +77,10 @@
                   <input class="text" type="text" v-model="label_cnt" style="border: 1px solid #ccc;width: 60px; height: 33px;" v-on:keypress="onlyNumber">
                 </div>
                 <div style="width: 80px;">
-                  <div class="btn square_basic navy" style="width: 70px; height: 33px;" v-on:click="onApplyClick()">작업추가</div>
+                  <div class="btn navy" style="width: 70px; height: 33px;" v-on:click="onApplyClick()">작업추가</div>
                 </div>
                 <div style="width: 80px;">
-                  <div class="btn square_basic red" style="width: 70px; height: 33px;" v-on:click="deleteWork">작업삭제</div>
+                  <div class="btn redfont" style="width: 70px; height: 33px;" v-on:click="deleteWork">작업삭제</div>
                 </div>
               </div>
               <div style="display: flex;  flex-direction: row; justify-content: right;">
@@ -933,7 +933,8 @@ export default {
 
 <style scoped>
 .grid_m.datalist {
-  grid-template-columns: 50px 310px 120px 120px 100px 100px 100px 100px 100px;
+  /* grid-template-columns: 50px 310px 120px 120px 100px 100px 100px 100px 100px; */
+  grid-template-columns: 5% 29% 11% 10% 9% 9% 9% 9% 9%;
 }
 
 .searchWrap {

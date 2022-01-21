@@ -46,7 +46,7 @@
             <div style="height: fit-content;display: flex; flex-direction: row;">
               <!-- <input style="width:3%; height:30px; border-radius:3px; padding:0 10px; border:1px solid #888;" type="checkbox" v-model="allChecked" @click="checkedAll($event.target.checked)"> -->
               <!-- <div class="btn deepgreen" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('1')">진행중</div>
-              <div class="btn red" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('3')">종료</div>
+              <div class="btn redfont" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('3')">종료</div>
               <div class="btn" style="margin-left:5px;width:80px; height: 36px;" v-on:click="project_change('2')">중지</div> -->
 
               <div style="flex: 2"></div>
@@ -424,9 +424,10 @@ export default {
 }
 
 .grid_m.project {
-  grid-template-columns: 120px 300px 150px 150px 150px 130px 100px;
+  /* grid-template-columns: 120px 300px 150px 150px 150px 130px 100px; */
+  grid-template-columns: 10% 27% 14% 14% 14% 12% 9%;
 }
 .grid_m.nodata {
-  grid-template-columns: 1100px;
+  grid-template-columns: 100%;
 }
 </style>

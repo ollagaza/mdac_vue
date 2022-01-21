@@ -39,7 +39,7 @@
                 <div class="lds-facebook"><div></div><div></div><div></div></div>
               </template>
               <template v-else>
-                <div class="btn square_basic pupple login w100p" v-on:click="onLoginClick"><span>로그인</span></div>
+                <div class="btn reg w100p" v-on:click="onLoginClick"><span>로그인</span></div>
               </template>
             </div>
           </template>
@@ -230,7 +230,7 @@ export default {
   methods: {
     ...mapActions(['Login']),
     onJoinClick (){
-      this.$router.push({ name: 'join' });
+      this.$router.push({ name: 'join' }).catch(()=>{})
       this.closePopup();
     },
     addKeyboardEvent() {
@@ -300,7 +300,7 @@ export default {
             localStorage.removeItem('user_id');
           }
           this.getUserData(result.member_seq);
-          this.$router.push({ name: 'dashboard', params: { menu_id: 1 } });
+          this.$router.push({ name: 'dashboard', params: { menu_id: 1 } }).catch(()=>{});
           return null;
         })
         .catch((e) => {
@@ -655,7 +655,7 @@ export default {
       }
     },
     onJoinClick() {
-      this.$router.push({ name: 'join' });
+      this.$router.push({ name: 'join' }).catch(()=>{});
       this.closePopup();
     },
     routeLogin() {
@@ -663,7 +663,7 @@ export default {
       //   this.closePopup();
       //   return;
       // }
-      this.$router.push({ name: 'dashboard' });
+      this.$router.push({ name: 'dashboard' }).catch(()=>{});
       this.closePopup();
     },
     setSavedId() {

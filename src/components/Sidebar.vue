@@ -211,12 +211,27 @@ export default {
   watch: {
   },  
   created() {
+    window.addEventListener('keypress', this.onKeyPress);
+  },
+  beforeDestroy() {
+    window.removeEventListener('keypress', this.onKeyPress);
   },
   methods: {
     ...mapActions(['LogOut']),
 
+    onKeyPress(e) {
+            // console.log('KEYPRESS EVENT', e)
+            // console.log(e.ctrlKey)
+            if(e.key === '\u0011')
+            {
+              this.viewMenu();
+            }
+            //... your code
+        },
+
     viewMenu() {
       this.menu_show = !this.menu_show;
+      this.$emit('viewMenu', this.menu_show)
     },
 
     Menu1() {

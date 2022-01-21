@@ -72,6 +72,6 @@ export default {
   grid-template-columns: 50px 200px 150px 100px 100px 100px 100px 100px 100px;
 }
 .grid_m.nodata {
-  grid-template-columns: 1000px;
+  grid-template-columns: 100%;
 }
 </style>

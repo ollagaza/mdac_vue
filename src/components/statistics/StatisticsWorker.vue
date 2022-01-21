@@ -10,7 +10,7 @@
   <div class="layout"><!-- float: left;position:absolute; -->
     <div class="layout2" style="width: 100%;">
       <div style="display:flex; flex-direction: row;" >
-        <Side_bar v-bind:menu_id="8"></Side_bar>
+        <Side_bar v-bind:menu_id="8" @viewMenu="viewMenu"></Side_bar>
         <div class="content_layout">
           <div class="main_title">
             Statistics
@@ -61,7 +61,7 @@
               <div class="btn square check" v-bind:class="{ on: search_seq === '2' }" style="margin-left:5px;width:64px;" v-on:click="statisticsGo('2')">검수자</div>
               <div style="flex: 2"></div>
               <div class="btn square" style="margin-left:5px;width:120px; " v-on:click="viewTooltips()">{{tooltips_title}}</div>
-              <div class="btn square_basic pupple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
+              <div class="btn purple" style="margin-left:5px;width:120px;" v-on:click="export_file()"><img src="/img/MDAC/download_icon.png">Export to excel</div>
             </div>
           </div>
         
@@ -269,6 +269,7 @@ export default {
       sum_check_ing: 0,
       sum_check_complete: 0,
       sum_check_reject: 0,
+      menu_show: true,
     };
   },
   watch: {
@@ -331,6 +332,20 @@ export default {
 
   },
   methods: {
+    viewMenu(menu_show) {
+      this.menu_show = menu_show
+
+      if(menu_show)
+      {
+        setTimeout(() => {
+          this.init()
+        }, 1500);
+      } else {
+        setTimeout(() => {
+          this.init()
+        }, 1000);
+      }
+    },
     // 통계 조회
     fnStatisticsList() {
       this.search_seq = String(this.$route.params.search_seq) ? String(this.$route.params.search_seq): '1';
@@ -557,16 +572,19 @@ export default {
   color: #888;
 }
 .grid_m.class_label {
-  grid-template-columns: 320px 150px 150px 160px 160px 160px;
+  /* grid-template-columns: 320px 150px 150px 160px 160px 160px; */
+  grid-template-columns: 30% 14% 14% 14% 14% 14%;
 }
 .grid_m.class_check {
-  grid-template-columns: 250px 150px 150px 140px 140px 150px 120px;
+  /* grid-template-columns: 250px 150px 150px 140px 140px 150px 120px; */
+  grid-template-columns: 22% 14% 14% 13% 13% 14% 10%;
 }
 .grid_m.class_label_all {
-  grid-template-columns: 260px 140px 120px 120px 120px 120px 120px 100px;
+  /* grid-template-columns: 260px 140px 120px 120px 120px 120px 120px 100px; */
+  grid-template-columns: 24% 12% 11% 11% 11% 11% 11% 9%;
 }
 .grid_m.nodata {
-  grid-template-columns: 1100px;
+  grid-template-columns: 100%;
 }
 .colorRed {
   color: red;

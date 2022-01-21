@@ -50,9 +50,9 @@
                 <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
               </div>
 
-              <div class="btn square navy" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('Y')">사용중</div>
-              <div class="btn square" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('N')">사용중지</div>
-              <div class="btn square red" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('D')">삭제</div>
+              <div class="btn navy" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('Y')">사용중</div>
+              <div class="btn" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('N')">사용중지</div>
+              <div class="btn redfont" style="margin-left:5px;width:80px;" v-on:click="codegroup_change('D')">삭제</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
@@ -443,13 +443,15 @@ export default {
 
 <style scoped>
 .grid_m.codegroup {
-  grid-template-columns: 100px 200px 320px 100px 180px 200px;
+  /* grid-template-columns: 100px 200px 320px 100px 180px 200px; */
+  grid-template-columns: 9% 18% 30% 9% 16% 18%;
 }
 .grid_m.code {
-  grid-template-columns: 100px 250px 250px 200px 200px;
+  /* grid-template-columns: 100px 300px 250px 200px 250px; */
+  grid-template-columns: 11% 27% 22% 18% 22%;
 }
 .grid_m.nodata {
-  grid-template-columns: 1100px;
+  grid-template-columns: 100%;
 }
 
 

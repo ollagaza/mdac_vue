@@ -140,6 +140,7 @@
           tooltips: {
             enabled: true,
           },
+          
           scales: {
             x: {
               stacked: true,

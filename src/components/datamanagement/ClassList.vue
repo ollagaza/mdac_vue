@@ -52,9 +52,9 @@
                 <div class="check_box" v-bind:class="{ on: check_click }"></div> <div class="check_text">전체 선택</div>
               </div>
 
-              <div class="btn square navy" style="margin-left:5px;width:80px;" v-on:click="class_change('Y')">사용중</div>
-              <div class="btn square" style="margin-left:5px;width:80px;" v-on:click="class_change('N')">사용중지</div>
-              <div class="btn square red" style="margin-left:5px;width:80px;" v-on:click="class_change('D')">삭제</div>
+              <div class="btn navy" style="margin-left:5px;width:80px;" v-on:click="class_change('Y')">사용중</div>
+              <div class="btn" style="margin-left:5px;width:80px;" v-on:click="class_change('N')">사용중지</div>
+              <div class="btn redfont" style="margin-left:5px;width:80px;" v-on:click="class_change('D')">삭제</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
@@ -444,9 +444,11 @@ export default {
 }
 
 .grid_m.class {
-  grid-template-columns: 50px 300px 150px 300px 150px 150px;
+  /* grid-template-columns: 50px 300px 150px 300px 150px 150px; */
+
+  grid-template-columns: 10% 20% 15% 20% 20% 15%;  
 }
 .grid_m.nodata {
-  grid-template-columns: 1100px;
+  grid-template-columns: 100%;
 }
 </style>

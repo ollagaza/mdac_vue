@@ -45,11 +45,11 @@
               </div>
 
 
-              <div class="btn square navy" style="margin-left:5px;width:80px;" v-on:click="member_change('Y')">사용중</div>
-              <div class="btn square" style="margin-left:5px;width:80px;" v-on:click="member_change('N')">사용정지</div>
-              <div class="btn square red" style="margin-left:5px;width:80px;" v-on:click="member_change('D')">삭제</div>
+              <div class="btn navy" style="margin-left:5px;width:80px;" v-on:click="member_change('Y')">사용중</div>
+              <div class="btn" style="margin-left:5px;width:80px;" v-on:click="member_change('N')">사용정지</div>
+              <div class="btn redfont" style="margin-left:5px;width:80px;" v-on:click="member_change('D')">삭제</div>
 
-              <div class="btn square pupple" style="margin-left:5px;width:80px;" v-on:click="python_go()">Python</div>
+              <div class="btn purple" style="margin-left:5px;width:80px;" v-on:click="python_go()">Python</div>
 
               <div style="flex: 2"></div>
               <div style="height: fit-content;display: flex; flex-direction: row; justify-content: right;">
@@ -485,11 +485,12 @@ export default {
 
 <style scoped>
 .grid_m.member {
-  grid-template-columns: 50px 120px 130px 230px 120px 100px 150px 100px 100px;
+  /* grid-template-columns: 50px 120px 130px 230px 120px 100px 150px 100px 100px; */
+  grid-template-columns: 5% 11% 12% 21% 10% 9% 14% 9% 9%;
 }
 
 .grid_m.nodata {
-  grid-template-columns: 1100px;
+  grid-template-columns: 100%;
 }
 .pagination {
   margin: 20px 0 0 0;
