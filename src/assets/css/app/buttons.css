@@ -652,10 +652,16 @@
   cursor: pointer;
 }
 .check_wrapper .check_text {
+  font-family: 'Noto Sans KR', sans-serif;
   margin-left: 10px;
+  margin-right: 10px;
   font-weight: 400;
-  font-size: 13px;
-  color: #555555;
+  font-size: 12px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  letter-spacing: normal;
+  color: #555;
 }
 
 .check_box {

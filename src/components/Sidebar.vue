@@ -147,7 +147,7 @@
         <span v-show="menu_show" v-bind:class="{ fade_in : this.menu_show, fade_out : !this.menu_show }" class="left_logout pointer" v-on:click="logout">로그아웃</span>
 
         <!-- small menu -->
-        <span v-show="!menu_show" v-bind:class="{ fade_in_3 : !this.menu_show, fade_out : this.menu_show }" class="left_name" style="margin-left:-14px;"><span style="color:#9fa4ea">홍길동</span>님</span>
+        <span v-show="!menu_show" v-bind:class="{ fade_in_3 : !this.menu_show, fade_out : this.menu_show }" class="left_name" style="margin-left:-14px;"><span style="color:#9fa4ea">{{c_usrname}}</span>님</span>
         <span v-show="!menu_show" v-bind:class="{ fade_in_3 : !this.menu_show, fade_out : this.menu_show }" class="left_logout pointer" v-on:click="logout">로그아웃</span>
       </div>
       
@@ -227,11 +227,10 @@ export default {
     onKeyPress(e) {
             // console.log('KEYPRESS EVENT', e)
             // console.log(e.ctrlKey)
-            if(e.key === '\u0011')
+            if(e.key === '\u0011') // ctrl+Q -- open menu/close menu
             {
               this.viewMenu();
             }
-            //... your code
         },
 
     viewMenu() {
