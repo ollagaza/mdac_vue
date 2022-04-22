@@ -22,6 +22,11 @@ const middleware = require('webpack-dev-middleware');
 const app = express();
 const compiler = webpack(webpackConfig);
 
+
+// // Express 라는 것을 숨김
+// app.disable('etag')
+// app.disable('x-powered-by')
+
 const devMiddleware = middleware(compiler, {
   publicPath: webpackConfig.output.publicPath,
   methods: [ 'GET', 'HEAD', 'POST' ],
